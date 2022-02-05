@@ -1,6 +1,6 @@
 {
 	"info": {
-		"_postman_id": "1d201a2a-34ed-47b9-8b24-5e80e2f30de0",
+		"_postman_id": "18285a69-cdbd-433f-b075-4e1337a43f43",
 		"name": "ThinkMoreForum",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
 	},
@@ -102,7 +102,7 @@
 							"query": [
 								{
 									"key": "token",
-									"value": null
+									"value": ""
 								}
 							]
 						}
@@ -484,18 +484,19 @@
 							"raw": ""
 						},
 						"url": {
-							"raw": "{{url}}/api/v1/follower?follower_id=5",
+							"raw": "{{url}}/api/v1/follow/unfollow_user?users_id=5",
 							"host": [
 								"{{url}}"
 							],
 							"path": [
 								"api",
 								"v1",
-								"follower"
+								"follow",
+								"unfollow_user"
 							],
 							"query": [
 								{
-									"key": "follower_id",
+									"key": "users_id",
 									"value": "5"
 								}
 							]
@@ -527,14 +528,15 @@
 							"raw": ""
 						},
 						"url": {
-							"raw": "{{url}}/api/v1/friends",
+							"raw": "{{url}}/api/v1/follow/view_followed_user",
 							"host": [
 								"{{url}}"
 							],
 							"path": [
 								"api",
 								"v1",
-								"friends"
+								"follow",
+								"view_followed_user"
 							]
 						}
 					},
@@ -564,14 +566,15 @@
 							"raw": ""
 						},
 						"url": {
-							"raw": "{{url}}/api/v1/follower",
+							"raw": "{{url}}/api/v1/follow/view_follower",
 							"host": [
 								"{{url}}"
 							],
 							"path": [
 								"api",
 								"v1",
-								"follower"
+								"follow",
+								"view_follower"
 							]
 						}
 					},
@@ -598,14 +601,15 @@
 							"raw": ""
 						},
 						"url": {
-							"raw": "{{url}}/api/v1/favorite_post?post_id=uuid",
+							"raw": "{{url}}/api/v1/follow/follow_post?post_id=uuid",
 							"host": [
 								"{{url}}"
 							],
 							"path": [
 								"api",
 								"v1",
-								"favorite_post"
+								"follow",
+								"follow_post"
 							],
 							"query": [
 								{
@@ -638,14 +642,15 @@
 							"raw": ""
 						},
 						"url": {
-							"raw": "{{url}}/api/v1/favorite_post?post_id=uuid",
+							"raw": "{{url}}/api/v1/follow/unfollow_post?post_id=uuid",
 							"host": [
 								"{{url}}"
 							],
 							"path": [
 								"api",
 								"v1",
-								"favorite_post"
+								"follow",
+								"unfollow_post"
 							],
 							"query": [
 								{
@@ -681,14 +686,15 @@
 							"raw": ""
 						},
 						"url": {
-							"raw": "{{url}}/api/v1/follower",
+							"raw": "{{url}}/api/v1/follow/view_followed_post",
 							"host": [
 								"{{url}}"
 							],
 							"path": [
 								"api",
 								"v1",
-								"follower"
+								"follow",
+								"view_followed_post"
 							]
 						}
 					},
@@ -706,7 +712,7 @@
 							"listen": "prerequest",
 							"script": {
 								"exec": [
-									"带JWT 验证验证码"
+									"带JWT 不验证验证码"
 								],
 								"type": "text/javascript"
 							}
@@ -732,6 +738,138 @@
 								"v1",
 								"notification",
 								"get_notification"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "profile",
+			"item": [
+				{
+					"name": "change_username",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									"带JWT 不验证验证码"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"url": {
+							"raw": "{{url}}/api/v1/profile/change_username?new_username=username",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"profile",
+								"change_username"
+							],
+							"query": [
+								{
+									"key": "new_username",
+									"value": "username"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "upload_img",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									"带JWT 不验证验证码"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "file",
+							"file": {}
+						},
+						"url": {
+							"raw": "{{url}}/api/v1/profile/upload_img?hash=hash&img_binary",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"profile",
+								"upload_img"
+							],
+							"query": [
+								{
+									"key": "hash",
+									"value": "hash"
+								},
+								{
+									"key": "img_binary",
+									"value": null
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "change_profile_img",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									"带JWT 不验证验证码"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "file",
+							"file": {}
+						},
+						"url": {
+							"raw": "{{url}}/api/v1/profile/change_profile_img?hash=hash&img_binary",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"profile",
+								"change_profile_img"
+							],
+							"query": [
+								{
+									"key": "hash",
+									"value": "hash"
+								},
+								{
+									"key": "img_binary",
+									"value": null
+								}
 							]
 						}
 					},
