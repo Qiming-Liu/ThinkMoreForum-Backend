@@ -1,4 +1,4 @@
-package com.thinkmore.forum.configuration;
+package com.thinkmore.forum.auth;
 
 import com.thinkmore.forum.entity.Users;
 import lombok.RequiredArgsConstructor;
@@ -8,17 +8,16 @@ import org.springframework.security.core.userdetails.UserDetails;
 import java.util.Set;
 
 @RequiredArgsConstructor
-public class UserConfig implements UserDetails {
+public class UserDetailsEntity implements UserDetails {
 
     private final String username;
     private final String password;
-    //    private final Set<? extends GrantedAuthority> grantedAuthorities;
     private final boolean isAccountNotExpired;
     private final boolean isAccountNonLocked;
     private final boolean isCredentialsNonExpired;
     private final boolean isEnabled;
 
-    public UserConfig(Users user) {
+    public UserDetailsEntity(Users user) {
         username = user.getUsername();
         password = user.getPassword();
         isAccountNotExpired = true;
@@ -29,7 +28,6 @@ public class UserConfig implements UserDetails {
 
     @Override
     public Set<? extends GrantedAuthority> getAuthorities() {
-        // TODO Auto-generated method stub
         return null;
     }
 

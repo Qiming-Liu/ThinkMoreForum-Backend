@@ -1,7 +1,7 @@
 package com.thinkmore.forum.configuration;
 
-import com.thinkmore.forum.filter.JwtTokenFilter;
-import com.thinkmore.forum.filter.JwtUsernameAndPasswordAuthFilter;
+import com.thinkmore.forum.filter.JwtGenerateFilter;
+import com.thinkmore.forum.filter.JwtCheckFilter;
 import com.thinkmore.forum.service.UsersService;
 import io.jsonwebtoken.security.Keys;
 import lombok.RequiredArgsConstructor;
@@ -11,7 +11,6 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
-import org.springframework.security.config.annotation.web.builders.WebSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.config.http.SessionCreationPolicy;
@@ -19,6 +18,7 @@ import org.springframework.security.crypto.argon2.Argon2PasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
 import javax.crypto.SecretKey;
+import java.nio.charset.StandardCharsets;
 
 @Configuration
 @RequiredArgsConstructor
@@ -27,22 +27,16 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     private final UsersService usersService;
 
-    @Override
-    public void configure(WebSecurity web) throws Exception {
-        super.configure(web);
-        web.ignoring().antMatchers("/**");
-    }
-
     @SneakyThrows
     protected void configure(HttpSecurity http) {
         http
                 .csrf().disable()
                 .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                 .and()
-                .addFilter(new JwtUsernameAndPasswordAuthFilter(authenticationManager(), secretKey()))
-                .addFilterAfter(new JwtTokenFilter(secretKey()), JwtUsernameAndPasswordAuthFilter.class)
+                .addFilter(new JwtGenerateFilter(usersService, authenticationManager(), secretKey()))
+                .addFilterAfter(new JwtCheckFilter(secretKey()), JwtGenerateFilter.class)
                 .authorizeRequests()
-                .antMatchers("/**").permitAll()
+                .antMatchers(Config.ignoreUrl).permitAll()
                 .anyRequest().authenticated();
     }
 
@@ -67,6 +61,6 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Bean
     public SecretKey secretKey() {
-        return Keys.hmacShaKeyFor("fruue37r7yrfhf87f7876guyggf%$$#$%^&%RTHGhjjkj23456rkkkkdkd".getBytes());
+        return Keys.hmacShaKeyFor(Config.JwtSecretKey.getBytes(StandardCharsets.UTF_8));
     }
 }
