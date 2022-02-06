@@ -23,9 +23,6 @@ public class Users {
     @Column(name = "password", nullable = false)
     private String password;
 
-    @Column(name = "salt", nullable = false, length = 32)
-    private String salt;
-
     @Column(name = "email", nullable = false)
     private String email;
 
