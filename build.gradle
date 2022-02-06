@@ -27,22 +27,15 @@ dependencies {
     implementation 'org.springframework.boot:spring-boot-starter-data-jpa:2.6.3'
     implementation 'org.springframework.boot:spring-boot-starter-security:2.6.3'
     implementation 'org.springframework.boot:spring-boot-starter-web:2.6.3'
-    annotationProcessor "org.springframework.boot:spring-boot-configuration-processor:2.6.3"
-
-    implementation 'org.mapstruct:mapstruct:1.4.2.Final'
-    annotationProcessor 'org.mapstruct:mapstruct-processor:1.4.2.Final'
 
     compileOnly 'org.projectlombok:lombok:1.18.22'
     annotationProcessor 'org.projectlombok:lombok:1.18.22'
 
-    implementation 'org.flywaydb:flyway-core:8.4.3'
+    implementation 'org.mapstruct:mapstruct:1.4.2.Final'
+    annotationProcessor 'org.mapstruct:mapstruct-processor:1.4.2.Final'
+
+    implementation 'org.flywaydb:flyway-core:8.4.2'
     runtimeOnly 'org.postgresql:postgresql:42.3.1'
-
-    implementation 'io.jsonwebtoken:jjwt-api:0.11.2'
-    runtimeOnly 'io.jsonwebtoken:jjwt-impl:0.11.2'
-    runtimeOnly 'io.jsonwebtoken:jjwt-jackson:0.11.2'
-
-    implementation 'org.bouncycastle:bcprov-jdk15on:1.69'
 
     testImplementation 'org.springframework.boot:spring-boot-starter-test:2.6.3'
     testImplementation 'org.springframework.security:spring-security-test:5.6.1'

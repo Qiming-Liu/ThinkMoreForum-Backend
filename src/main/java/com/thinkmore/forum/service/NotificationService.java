@@ -9,6 +9,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.UUID;
 import java.util.stream.Collectors;
 
 @Service
@@ -26,4 +27,8 @@ public class NotificationService {
                 .collect(Collectors.toList());
     }
 
+    public NotificationGetDto getNotificationById(UUID notificationId) {
+
+        return  notificationMapper.fromEntity(notificationRepo.findById(notificationId).get());
+    }
 }

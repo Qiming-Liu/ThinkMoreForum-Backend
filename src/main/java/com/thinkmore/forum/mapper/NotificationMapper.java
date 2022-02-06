@@ -13,5 +13,5 @@ public interface NotificationMapper {
     NotificationGetDto fromEntity(Notification notification);
 
     @BeanMapping(nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.IGNORE)
-    void copy(NotificationPutDto notificationDto, @MappingTarget Notification notification);
+    void copy(NotificationPutDto notificationPutDto, @MappingTarget Notification notification);
 }

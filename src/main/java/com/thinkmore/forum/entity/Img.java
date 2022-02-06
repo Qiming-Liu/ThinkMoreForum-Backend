@@ -23,10 +23,12 @@ public class Img {
     private String imgHash;
 
     public UUID getId() {
+        System.out.println(id);
         return id;
     }
 
     public void setId(UUID id) {
+        System.out.println(id);
         this.id = id;
     }
 
