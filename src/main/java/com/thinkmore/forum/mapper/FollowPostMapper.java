@@ -11,12 +11,11 @@ import com.thinkmore.forum.entity.FollowPost;
 import org.mapstruct.*;
 
 @Mapper(unmappedTargetPolicy = ReportingPolicy.IGNORE, componentModel = "spring")
-
 public interface FollowPostMapper {
-    FollowPost toEntity(FollowPostPutDto followPostPutDto);
+    FollowPost toEntity(FollowPostPostDto followPostPostDto);
 
     FollowPostGetDto fromEntity(FollowPost followPost);
 
     @BeanMapping(nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.IGNORE)
-    void copy(FollowPostPostDto followPostPostDto, @MappingTarget FollowPost followPost);
+    void copy(FollowPostPutDto followPostPutDto, @MappingTarget FollowPost followPost);
 }
