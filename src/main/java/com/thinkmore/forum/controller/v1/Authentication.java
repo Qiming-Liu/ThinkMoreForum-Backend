@@ -1,6 +1,6 @@
 package com.thinkmore.forum.controller.v1;
 
-import com.thinkmore.forum.dto.users.UsersPostDto;
+import com.thinkmore.forum.dto.users.UsersGetDto;
 import com.thinkmore.forum.service.UsersService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -15,7 +15,7 @@ public class Authentication {
     private final UsersService usersService;
 
     @PostMapping(path = "/registration")
-    public UsersPostDto registration(@RequestParam String email, @RequestParam String username, @RequestParam String password) {
+    public UsersGetDto registration(@RequestParam String email, @RequestParam String username, @RequestParam String password) {
         return usersService.registration(email, username, password);
     }
 

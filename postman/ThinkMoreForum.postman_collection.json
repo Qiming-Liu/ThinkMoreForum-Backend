@@ -15,7 +15,7 @@
 							"listen": "prerequest",
 							"script": {
 								"exec": [
-									"带JWT 不验证验证码"
+									"// 带JWT 不验证验证码"
 								],
 								"type": "text/javascript"
 							}
@@ -56,7 +56,7 @@
 							"listen": "prerequest",
 							"script": {
 								"exec": [
-									"不带JWT 验证验证码"
+									"// 不带JWT 验证验证码"
 								],
 								"type": "text/javascript"
 							}
@@ -116,7 +116,7 @@
 							"listen": "prerequest",
 							"script": {
 								"exec": [
-									"不带JWT 不验证验证码"
+									"// 不带JWT 不验证验证码"
 								],
 								"type": "text/javascript"
 							}
@@ -162,7 +162,7 @@
 							"listen": "prerequest",
 							"script": {
 								"exec": [
-									"不带JWT 验证验证码"
+									"// 不带JWT 验证验证码"
 								],
 								"type": "text/javascript"
 							}
@@ -172,7 +172,7 @@
 						"method": "POST",
 						"header": [],
 						"url": {
-							"raw": "{{url}}/api/v1/authentication/registration?email=123@123.com&username=123&pasword=123",
+							"raw": "{{url}}/api/v1/authentication/registration?email=123@123.com&username=123&password=123",
 							"host": [
 								"{{url}}"
 							],
@@ -192,7 +192,7 @@
 									"value": "123"
 								},
 								{
-									"key": "pasword",
+									"key": "password",
 									"value": "123"
 								}
 							]
@@ -207,7 +207,7 @@
 							"listen": "prerequest",
 							"script": {
 								"exec": [
-									"带JWT 验证验证码"
+									"// 带JWT 验证验证码"
 								],
 								"type": "text/javascript"
 							}
@@ -238,7 +238,7 @@
 							"listen": "prerequest",
 							"script": {
 								"exec": [
-									"不带JWT 不验证验证码"
+									"// 不带JWT 不验证验证码"
 								],
 								"type": "text/javascript"
 							}
@@ -275,7 +275,7 @@
 							"listen": "prerequest",
 							"script": {
 								"exec": [
-									"不带JWT 验证验证码"
+									"// 不带JWT 验证验证码"
 								],
 								"type": "text/javascript"
 							}
@@ -316,7 +316,7 @@
 							"listen": "prerequest",
 							"script": {
 								"exec": [
-									"带JWT 不验证验证码"
+									"// 带JWT 不验证验证码"
 								],
 								"type": "text/javascript"
 							}
@@ -361,7 +361,7 @@
 							"listen": "prerequest",
 							"script": {
 								"exec": [
-									"不带JWT 不验证验证码"
+									"// 不带JWT 不验证验证码"
 								],
 								"type": "text/javascript"
 							}
@@ -398,7 +398,7 @@
 							"listen": "prerequest",
 							"script": {
 								"exec": [
-									"不带JWT 不验证验证码"
+									"// 不带JWT 不验证验证码"
 								],
 								"type": "text/javascript"
 							}
@@ -440,7 +440,7 @@
 							"listen": "prerequest",
 							"script": {
 								"exec": [
-									"带JWT 不验证验证码"
+									"// 带JWT 不验证验证码"
 								],
 								"type": "text/javascript"
 							}
@@ -476,6 +476,17 @@
 				},
 				{
 					"name": "unfollow_user",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									"// 带JWT 不验证验证码"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
 					"request": {
 						"method": "DELETE",
 						"header": [],
@@ -511,7 +522,7 @@
 							"listen": "prerequest",
 							"script": {
 								"exec": [
-									"带JWT 不验证验证码"
+									"// 带JWT 不验证验证码"
 								],
 								"type": "text/javascript"
 							}
@@ -549,7 +560,7 @@
 							"listen": "prerequest",
 							"script": {
 								"exec": [
-									"带JWT 不验证验证码"
+									"// 带JWT 不验证验证码"
 								],
 								"type": "text/javascript"
 							}
@@ -628,7 +639,7 @@
 							"listen": "prerequest",
 							"script": {
 								"exec": [
-									"带JWT 不验证验证码"
+									"// 带JWT 不验证验证码"
 								],
 								"type": "text/javascript"
 							}
@@ -669,7 +680,7 @@
 							"listen": "prerequest",
 							"script": {
 								"exec": [
-									"带JWT 不验证验证码"
+									"// 带JWT 不验证验证码"
 								],
 								"type": "text/javascript"
 							}
@@ -712,7 +723,7 @@
 							"listen": "prerequest",
 							"script": {
 								"exec": [
-									"带JWT 不验证验证码"
+									"// 带JWT 不验证验证码"
 								],
 								"type": "text/javascript"
 							}
@@ -755,7 +766,7 @@
 							"listen": "prerequest",
 							"script": {
 								"exec": [
-									"带JWT 不验证验证码"
+									"// 带JWT 不验证验证码"
 								],
 								"type": "text/javascript"
 							}
@@ -792,7 +803,7 @@
 							"listen": "prerequest",
 							"script": {
 								"exec": [
-									"带JWT 不验证验证码"
+									"// 带JWT 不验证验证码"
 								],
 								"type": "text/javascript"
 							}
@@ -837,7 +848,7 @@
 							"listen": "prerequest",
 							"script": {
 								"exec": [
-									"带JWT 不验证验证码"
+									"// 带JWT 不验证验证码"
 								],
 								"type": "text/javascript"
 							}
@@ -922,12 +933,12 @@
 						"header": [
 							{
 								"key": "Authorization",
-								"value": "eyJhbGciOiJIUzM4NCJ9.eyJqdGkiOiIxZjdiZGMxNi04NzIwLTExZWMtYTY2MS0yNzE3MjFmMzA2NjYiLCJzdWIiOiJhZG1pbiIsImF1ZCI6Int9IiwiaWF0IjoxNjQ0MTYyOTQyLCJleHAiOjE2NDQyNDA2MDB9.tPbWHetkNpEiNUWqUTXiKUq6EPtTDEDAK5llQmKTX4jPKousLD4gO7Az-8L5WB5P",
+								"value": "eyJhbGciOiJIUzM4NCJ9.eyJqdGkiOiI1NzQ3OTdjOC04N2Y5LTExZWMtOThiYi01M2RjZGQ0OTZjNWQiLCJzdWIiOiJhZG1pbiIsImF1ZCI6Int9IiwiaWF0IjoxNjQ0MjI2ODMyLCJleHAiOjE2NDQyNDA2MDB9.7qGnvW6QxzP4Sn05v3jena7R0SVQZd-zkOXga-hbv-4RR7ZU5UJbYTd1fENkDUV5",
 								"type": "text"
 							}
 						],
 						"url": {
-							"raw": "http://localhost:8080/api/v1/test/get_current_user_id",
+							"raw": "http://localhost:8080/api/v1/test/get_jwt_context",
 							"protocol": "http",
 							"host": [
 								"localhost"
@@ -937,7 +948,7 @@
 								"api",
 								"v1",
 								"test",
-								"get_current_user_id"
+								"get_jwt_context"
 							]
 						}
 					},

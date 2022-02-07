@@ -2,7 +2,7 @@ package com.thinkmore.forum.service;
 
 import com.thinkmore.forum.entity.JwtUser;
 import com.thinkmore.forum.configuration.Config;
-import com.thinkmore.forum.dto.users.UsersPostDto;
+import com.thinkmore.forum.dto.users.UsersGetDto;
 import com.thinkmore.forum.entity.Users;
 import com.thinkmore.forum.mapper.UsersMapper;
 import com.thinkmore.forum.repository.RolesRepository;
@@ -35,7 +35,7 @@ public class UsersService implements UserDetailsService {
         return new JwtUser(getUserByUsername(username));
     }
 
-    public UsersPostDto registration(String email, String username, String password) {
+    public UsersGetDto registration(String email, String username, String password) {
         Users user = new Users();
 
         user.setUsername(username);

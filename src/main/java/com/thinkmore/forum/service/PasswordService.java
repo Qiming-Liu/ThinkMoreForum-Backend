@@ -20,14 +20,17 @@ public class PasswordService {
 
     private final PasswordRepository passwordRepository;
 
-    public String changePassword(PasswordPutDto passwordPutDto){
-        ArrayList<String> lists = Util.getJwtContext();
-        UUID id = UUID.fromString(lists.get(0));
+    public String changePassword(PasswordPutDto passwordPutDto) {
+        String users_id = Util.getJwtContext().get(0);
+        UUID id = UUID.fromString(users_id);
+
         Users user = passwordRepository.findByUsersId(id)
-                .orElseThrow(() -> new UserNotFoundException("User not found: " + lists.get(1)));
+                .orElseThrow(() -> new UserNotFoundException("User not found: " + users_id));
+
         if (!Util.match(passwordPutDto.getOldPassword(), user.getPassword())) {
             throw new InvalidOldPasswordException("Old password is wrong");
         }
+
         user.setPassword(Util.passwordEncoder(passwordPutDto.getNewPassword()));
         passwordRepository.save(user);
         return "You have successfully changed your password!";
