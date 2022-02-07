@@ -21,4 +21,7 @@ public class Util {
     public static String passwordEncoder(String password) {
         return Config.passwordEncoder.encode(password);
     }
+    public static boolean match(String rawPassword, String encodedPassword ) {
+        return Config.passwordEncoder.matches(rawPassword, encodedPassword);
+    }
 }
