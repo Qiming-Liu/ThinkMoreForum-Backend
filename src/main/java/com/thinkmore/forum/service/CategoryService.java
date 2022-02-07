@@ -1,11 +1,8 @@
 package com.thinkmore.forum.service;
 
 import com.thinkmore.forum.dto.category.CategoryGetDto;
-import com.thinkmore.forum.dto.post.PostGetDto;
 import com.thinkmore.forum.mapper.CategoryMapper;
-import com.thinkmore.forum.mapper.PostMapper;
 import com.thinkmore.forum.repository.CategoryRepository;
-import com.thinkmore.forum.repository.PostRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 

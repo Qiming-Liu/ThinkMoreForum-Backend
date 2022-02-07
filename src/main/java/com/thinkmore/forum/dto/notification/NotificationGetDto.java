@@ -1,6 +1,5 @@
 package com.thinkmore.forum.dto.notification;
 
-import com.thinkmore.forum.dto.users.UsersGetDto;
 import com.thinkmore.forum.dto.users.UsersMiniGetDto;
 import lombok.Data;
 import lombok.NoArgsConstructor;

@@ -15,5 +15,9 @@ public interface NotificationRepository extends JpaRepository<Notification, UUID
 
     List<Notification> findAll();
 
+    List<Notification> findByUsers_IdOrderByCreateTimestampDesc(UUID id);
+
+
+
 
 }

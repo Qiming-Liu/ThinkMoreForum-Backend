@@ -1,10 +1,8 @@
 package com.thinkmore.forum.service;
 
 import com.thinkmore.forum.dto.notification.NotificationGetDto;
-import com.thinkmore.forum.entity.Notification;
 import com.thinkmore.forum.mapper.NotificationMapper;
 import com.thinkmore.forum.repository.NotificationRepository;
-import lombok.NoArgsConstructor;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -30,5 +28,11 @@ public class NotificationService {
     public NotificationGetDto getNotificationById(UUID notificationId) {
 
         return  notificationMapper.fromEntity(notificationRepo.findById(notificationId).get());
+    }
+
+    public List<NotificationGetDto> getNotificationsByUserId(UUID userId) {
+        return notificationRepo.findByUsers_IdOrderByCreateTimestampDesc(userId).stream()
+                .map(notification -> notificationMapper.fromEntity(notification))
+                .collect(Collectors.toList());
     }
 }

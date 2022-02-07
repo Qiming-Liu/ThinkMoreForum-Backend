@@ -1,9 +1,7 @@
 package com.thinkmore.forum.controller;
 
 import com.thinkmore.forum.dto.followPost.FollowPostGetDto;
-import com.thinkmore.forum.dto.img.ImgGetDto;
 import com.thinkmore.forum.service.FollowPostService;
-import com.thinkmore.forum.service.ImgService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;

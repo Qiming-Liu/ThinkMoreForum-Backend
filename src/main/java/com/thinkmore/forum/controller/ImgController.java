@@ -1,9 +1,7 @@
 package com.thinkmore.forum.controller;
 
 import com.thinkmore.forum.dto.img.ImgGetDto;
-import com.thinkmore.forum.dto.notification.NotificationGetDto;
 import com.thinkmore.forum.service.ImgService;
-import com.thinkmore.forum.service.NotificationService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;

@@ -1,7 +1,6 @@
 package com.thinkmore.forum.dto.users;
 
 import com.thinkmore.forum.dto.img.ImgPutDto;
-import com.thinkmore.forum.dto.roles.RolesGetDto;
 import com.thinkmore.forum.dto.roles.RolesPutDto;
 import lombok.Data;
 import lombok.NoArgsConstructor;

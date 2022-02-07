@@ -1,10 +1,7 @@
 package com.thinkmore.forum.service;
 
-import com.thinkmore.forum.dto.notification.NotificationGetDto;
 import com.thinkmore.forum.dto.post.PostGetDto;
-import com.thinkmore.forum.mapper.NotificationMapper;
 import com.thinkmore.forum.mapper.PostMapper;
-import com.thinkmore.forum.repository.NotificationRepository;
 import com.thinkmore.forum.repository.PostRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
