@@ -16,7 +16,6 @@ public class UsersPutDto implements Serializable {
     private UUID id;
     private String username;
     private String password;
-    private String salt;
     private String email;
     private ImgPutDto profileImg;
     private RolesPutDto role;

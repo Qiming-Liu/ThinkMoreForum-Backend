@@ -18,7 +18,8 @@ public class TestController {
 
     @GetMapping(path = "/get_current_user_id")
     public Object getCurrentUsersId() {
-        return getJwt();
+        Object returnUserInfo = getJwt();
+        return returnUserInfo;
     }
 
     public static Object getJwt() {

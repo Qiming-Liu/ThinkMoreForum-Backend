@@ -15,7 +15,6 @@ public class UsersPostDto implements Serializable {
     private UUID id;
     private String username;
     private String password;
-    private String salt;
     private String email;
     private ImgPostDto profileImg;
     private RolesPostDto role;

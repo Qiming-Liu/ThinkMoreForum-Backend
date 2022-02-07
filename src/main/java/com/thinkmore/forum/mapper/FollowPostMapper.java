@@ -10,7 +10,7 @@ import com.thinkmore.forum.entity.Category;
 import com.thinkmore.forum.entity.FollowPost;
 import org.mapstruct.*;
 
-@Mapper(unmappedTargetPolicy = ReportingPolicy.IGNORE, componentModel = "spring")
+@Mapper(unmappedTargetPolicy = ReportingPolicy.IGNORE, componentModel = "spring", uses = {PostMapper.class})
 public interface FollowPostMapper {
     FollowPost toEntity(FollowPostPostDto followPostPostDto);
 

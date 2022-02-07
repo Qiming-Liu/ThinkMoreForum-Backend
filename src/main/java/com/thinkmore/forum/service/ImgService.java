@@ -19,7 +19,7 @@ public class ImgService {
     public List<ImgGetDto> getAllImgs() {
 
         return imgRepo.findAll().stream()
-                .map(img -> {System.out.println(imgMapper.fromEntity(img));return imgMapper.fromEntity(img);})
+                .map(img -> imgMapper.fromEntity(img))
                 .collect(Collectors.toList());
     }
 

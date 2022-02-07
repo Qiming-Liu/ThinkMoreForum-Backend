@@ -15,7 +15,6 @@ public class UsersGetDto implements Serializable {
     private UUID id;
     private String username;
     private String password;
-    private String salt;
     private String email;
     private ImgGetDto profileImg;
     private RolesGetDto role;
