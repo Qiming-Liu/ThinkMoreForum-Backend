@@ -14,4 +14,6 @@ public interface UsersRepository  extends JpaRepository<Users, UUID> {
 
     //add user
     Users save(Users user);
+    //check email
+
 }

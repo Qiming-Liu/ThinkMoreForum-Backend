@@ -18,4 +18,10 @@ public class Authentication {
     public UsersPostDto registration(@RequestParam String email, @RequestParam String username, @RequestParam String password) {
         return usersService.registration(email, username, password);
     }
+
+    @GetMapping(path = "/unique_email")
+    public boolean uniqueEmail(@RequestParam String email) {
+        return usersService.uniqueEmail(email);
+    }
+
 }

@@ -9,7 +9,9 @@ public class Config {
     public final static String[] ignoreUrl = new String[]{
             "/api/v1/test/hello_world",
             "/swagger-ui/**",
-            "/api/v1/authentication/registration"};
+            "/api/v1/authentication/registration",
+            "/api/v1/authentication/unique_email"
+    };
 
     public final static String JwtSecretKey = "fruue37r7yrfhf87f7876guyggf%$$#$%^&%RTHGhjjkj23456rkkkkdkd";
     public final static String JwtPrefix = "";//Bearer ";
