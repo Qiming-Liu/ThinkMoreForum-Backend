@@ -23,5 +23,4 @@ public class Authentication {
     public boolean uniqueEmail(@RequestParam String email) {
         return usersService.uniqueEmail(email);
     }
-
 }
