@@ -17,6 +17,7 @@ import org.springframework.stereotype.Service;
 
 import java.time.OffsetDateTime;
 import java.util.Optional;
+import java.util.UUID;
 
 @Service
 @RequiredArgsConstructor
@@ -82,5 +83,7 @@ public class UsersService implements UserDetailsService {
         return find.isEmpty();
     }
 
-
+    public UsersGetDto getUserById(UUID userId) {
+        return usersMapper.fromEntity(usersRepository.findById(userId).get());
+    }
 }
