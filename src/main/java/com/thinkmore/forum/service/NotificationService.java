@@ -5,6 +5,7 @@ import com.thinkmore.forum.mapper.NotificationMapper;
 import com.thinkmore.forum.repository.NotificationRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.UUID;
@@ -34,5 +35,12 @@ public class NotificationService {
         return notificationRepo.findByUsers_IdOrderByCreateTimestampDesc(userId).stream()
                 .map(notification -> notificationMapper.fromEntity(notification))
                 .collect(Collectors.toList());
+    }
+
+    @Transactional
+    public String userDeleteNotification(UUID notificationId, UUID userId) {
+        String deleteResponse = notificationRepo.deleteByIdAndUsers_Id(notificationId, userId) > 0?
+                "Successfully deleted!":"Deletion failed!";
+        return deleteResponse;
     }
 }
