@@ -16,7 +16,7 @@ CREATE TABLE roles
 
 CREATE TABLE users
 (
-    id                   uuid PRIMARY KEY DEFAULT uuid_generate_v1mc(),
+    id                   uuid PRIMARY KEY                  DEFAULT uuid_generate_v1mc(),
     username             varchar(20)              NOT NULL UNIQUE,
     password             text                     NOT NULL,
     email                varchar(255)             NOT NULL UNIQUE,
@@ -36,7 +36,7 @@ CREATE TABLE oauth
 
 CREATE TABLE notification
 (
-    id               uuid PRIMARY KEY DEFAULT uuid_generate_v1mc(),
+    id               uuid PRIMARY KEY                  DEFAULT uuid_generate_v1mc(),
     users_id         uuid                     NOT NULL references users (id),
     icon             varchar(20)              NOT NULL,
     context          text                     NOT NULL,
@@ -58,7 +58,7 @@ CREATE TABLE category
 
 CREATE TABLE post
 (
-    id               uuid PRIMARY KEY DEFAULT uuid_generate_v1mc(),
+    id               uuid PRIMARY KEY                  DEFAULT uuid_generate_v1mc(),
     post_users_id    uuid                     NOT NULL references users (id),
     category_id      uuid                     NOT NULL references category (id),
     title            varchar(60)              NOT NULL,
@@ -72,7 +72,7 @@ CREATE TABLE post
 
 CREATE TABLE follow_post
 (
-    id               uuid PRIMARY KEY DEFAULT uuid_generate_v1mc(),
+    id               uuid PRIMARY KEY                  DEFAULT uuid_generate_v1mc(),
     users_id         uuid                     NOT NULL references users (id),
     post_id          uuid                     NOT NULL references post (id),
     create_timestamp timestamp with time zone NOT NULL DEFAULT now()
@@ -80,7 +80,7 @@ CREATE TABLE follow_post
 
 CREATE TABLE follow_user
 (
-    id                uuid PRIMARY KEY DEFAULT uuid_generate_v1mc(),
+    id                uuid PRIMARY KEY                  DEFAULT uuid_generate_v1mc(),
     users_id          uuid                     NOT NULL references users (id),
     followed_users_id uuid                     NOT NULL references users (id),
     create_timestamp  timestamp with time zone NOT NULL DEFAULT now()
@@ -88,11 +88,11 @@ CREATE TABLE follow_user
 
 CREATE TABLE post_comment
 (
-    id                uuid PRIMARY KEY DEFAULT uuid_generate_v1mc(),
+    id                uuid PRIMARY KEY                  DEFAULT uuid_generate_v1mc(),
     post_users_id     uuid                     NOT NULL references users (id),
     post_id           uuid                     NOT NULL references post (id),
     parent_comment_id uuid references post_comment (id),
-    context           varchar(65535),
+    context           varchar(65535)           NOT NULL,
     visibility        boolean                  NOT NULL,
     create_timestamp  timestamp with time zone NOT NULL DEFAULT now()
 );

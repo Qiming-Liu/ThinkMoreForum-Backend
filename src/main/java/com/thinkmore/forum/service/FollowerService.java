@@ -21,4 +21,8 @@ public class FollowerService {
         return followerRepository.findAllByUsersId(Id).stream().map(followUser -> followerMapper.fromEntity(followUser)).collect(Collectors.toList());
     }
 
+    public List<FollowerGetDto> getFriendsById(UUID Id) {
+        return followerRepository.findAllByFollowedUsersId(Id).stream().map(followUser -> followerMapper.fromEntity(followUser)).collect(Collectors.toList());
+    }
+
 }

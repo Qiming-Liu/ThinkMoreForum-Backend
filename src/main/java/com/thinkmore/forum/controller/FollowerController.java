@@ -20,7 +20,11 @@ public class FollowerController {
 
     @GetMapping(path = "/follow_user")
     public ResponseEntity<List<FollowerGetDto>> follow_user(@RequestParam UUID Id) {
-        int i = 1;
         return ResponseEntity.ok(followerService.getFollowersById(Id));
+    }
+
+    @GetMapping(path = "/friends")
+    public ResponseEntity<List<FollowerGetDto>> friends(@RequestParam UUID Id) {
+        return ResponseEntity.ok(followerService.getFriendsById(Id));
     }
 }
