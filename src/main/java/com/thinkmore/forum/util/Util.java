@@ -4,7 +4,6 @@ import com.thinkmore.forum.configuration.Config;
 import org.springframework.security.core.context.SecurityContextHolder;
 
 import java.util.ArrayList;
-import java.util.UUID;
 
 public class Util {
 
