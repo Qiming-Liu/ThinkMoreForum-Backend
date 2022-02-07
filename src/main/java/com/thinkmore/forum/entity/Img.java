@@ -21,4 +21,12 @@ public class Img {
 
     @Column(name = "img_hash", nullable = false)
     private String imgHash;
+
+    public UUID getId() {
+        return id;
+    }
+
+    public void setId(UUID id) {
+        this.id = id;
+    }
 }

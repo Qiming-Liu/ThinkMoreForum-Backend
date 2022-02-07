@@ -1,6 +1,6 @@
 package com.thinkmore.forum.dto.post;
 
-import com.thinkmore.forum.dto.category.CategoryGetDto;
+import com.thinkmore.forum.dto.category.CategoryMiniGetDto;
 import com.thinkmore.forum.dto.users.UsersGetDto;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -14,7 +14,7 @@ import java.util.UUID;
 public class PostGetDto implements Serializable {
     private UUID id;
     private UsersGetDto postUsers;
-    private CategoryGetDto category;
+    private CategoryMiniGetDto category;
     private String title;
     private String context;
     private Integer viewCount;

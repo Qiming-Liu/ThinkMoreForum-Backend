@@ -10,7 +10,8 @@ public class Config {
             "/api/v1/test/hello_world",
             "/swagger-ui/**",
             "/api/v1/authentication/registration",
-            "/api/v1/authentication/unique_email"
+            "/api/v1/authentication/unique_email",
+            "/**"
     };
 
     public final static String JwtSecretKey = "fruue37r7yrfhf87f7876guyggf%$$#$%^&%RTHGhjjkj23456rkkkkdkd";
