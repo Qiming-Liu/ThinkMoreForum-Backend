@@ -23,4 +23,9 @@ public class Authentication {
     public boolean uniqueEmail(@RequestParam String email) {
         return usersService.uniqueEmail(email);
     }
+
+    @GetMapping(path = "/unique_username")
+    public boolean uniqueUsername(@RequestParam String username) {
+        return usersService.uniqueUsername(username);
+    }
 }
