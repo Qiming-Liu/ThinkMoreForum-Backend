@@ -1,8 +1,8 @@
 package com.thinkmore.forum.controller;
 
+import com.thinkmore.forum.util.Util;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -16,13 +16,8 @@ public class TestController {
         return "Hello World!";
     }
 
-    @GetMapping(path = "/get_current_user_id")
+    @GetMapping(path = "/get_jwt_context")
     public Object getCurrentUsersId() {
-        return getJwt();
+        return Util.getJwtContext();
     }
-
-    public static Object getJwt() {
-        return SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-    }
-
 }

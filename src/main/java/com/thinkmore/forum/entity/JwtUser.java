@@ -1,29 +1,33 @@
-package com.thinkmore.forum.auth;
+package com.thinkmore.forum.entity;
 
-import com.thinkmore.forum.entity.Users;
+import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import java.util.Set;
+import java.util.UUID;
 
 @RequiredArgsConstructor
-public class UserDetailsEntity implements UserDetails {
+public class JwtUser implements UserDetails {
 
     private final String username;
     private final String password;
-    private final boolean isAccountNotExpired;
-    private final boolean isAccountNonLocked;
-    private final boolean isCredentialsNonExpired;
-    private final boolean isEnabled;
 
-    public UserDetailsEntity(Users user) {
+    @Getter
+    private final UUID id;
+    @Getter
+    private final String roleName;
+    @Getter
+    private final String permission;
+
+    public JwtUser(Users user) {
         username = user.getUsername();
         password = user.getPassword();
-        isAccountNotExpired = true;
-        isAccountNonLocked = true;
-        isCredentialsNonExpired = true;
-        isEnabled = true;
+
+        id = user.getId();
+        roleName = user.getRole().getRoleName();
+        permission = user.getRole().getPermission();
     }
 
     @Override
@@ -43,21 +47,21 @@ public class UserDetailsEntity implements UserDetails {
 
     @Override
     public boolean isAccountNonExpired() {
-        return isAccountNotExpired;
+        return true;
     }
 
     @Override
     public boolean isAccountNonLocked() {
-        return isAccountNonLocked;
+        return true;
     }
 
     @Override
     public boolean isCredentialsNonExpired() {
-        return isCredentialsNonExpired;
+        return true;
     }
 
     @Override
     public boolean isEnabled() {
-        return isEnabled;
+        return true;
     }
 }

@@ -29,7 +29,7 @@ public class PostComment {
     @JoinColumn(name = "parent_comment_id")
     private PostComment parentComment;
 
-    @Column(name = "context", length = 65535)
+    @Column(name = "context", length = 65535, nullable = false)
     private String context;
 
     @Column(name = "visibility", nullable = false)
