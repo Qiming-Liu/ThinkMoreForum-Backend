@@ -1,5 +1,6 @@
 package com.thinkmore.forum.service;
 
+import com.thinkmore.forum.dto.users.UsersGetDto;
 import com.thinkmore.forum.entity.JwtUser;
 import com.thinkmore.forum.configuration.Config;
 import com.thinkmore.forum.dto.users.UsersGetDto;
