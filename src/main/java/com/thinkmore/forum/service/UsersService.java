@@ -15,6 +15,7 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
 import java.time.OffsetDateTime;
+import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -43,6 +44,7 @@ public class UsersService implements UserDetailsService {
         user.setProfileImg(null);
         user.setRole(rolesRepository.findByRoleName(Config.DefaultRole).orElseThrow());
         user.setLastLoginTimestamp(OffsetDateTime.now());
+        user.setCreateTimestamp(OffsetDateTime.now());
 
         usersRepository.save(user);
 
@@ -54,4 +56,18 @@ public class UsersService implements UserDetailsService {
         user.setLastLoginTimestamp(OffsetDateTime.now());
         usersRepository.save(user);
     }
+
+    public boolean uniqueEmail(String email) {
+        Optional<Users> find = usersRepository.findByEmail(email);
+
+        boolean result = find.isEmpty();
+        if (result){
+            System.out.println("you can use this email!");
+        } else{
+            System.out.println("email is already been regist");
+        }
+        return find.isEmpty();
+    }
+
+
 }

@@ -9,7 +9,7 @@ public class Util {
 
     /**
      * @return [
-     * "1f7bdc16-8720-11ec-a661-271721f30666",   get(0)
+     * "1f7bdc16-8720-11ec-a661-271721f30666",   UUID.fromString(get(0))
      * "admin",                                  get(1)
      * "{}"                                      get(2)
      * ]
@@ -21,6 +21,7 @@ public class Util {
     public static String passwordEncoder(String password) {
         return Config.passwordEncoder.encode(password);
     }
+
     public static boolean match(String rawPassword, String encodedPassword ) {
         return Config.passwordEncoder.matches(rawPassword, encodedPassword);
     }
