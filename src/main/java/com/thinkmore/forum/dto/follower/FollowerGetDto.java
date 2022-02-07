@@ -1,6 +1,6 @@
 package com.thinkmore.forum.dto.follower;
 
-import com.thinkmore.forum.entity.Users;
+import com.thinkmore.forum.dto.users.UsersGetDto;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -12,9 +12,9 @@ import java.util.UUID;
 public class FollowerGetDto {
     private UUID id;
 
-    private Users users;
+    private UsersGetDto usersGetDto;
 
-    private Users followedUsers;
+    private UsersGetDto followedUsersGetDto;
 
     private OffsetDateTime createTimestamp;
 }

@@ -8,6 +8,7 @@ import io.jsonwebtoken.JwtException;
 import io.jsonwebtoken.Jwts;
 import lombok.RequiredArgsConstructor;
 
+import org.springframework.http.HttpHeaders;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -20,6 +21,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Date;
 
 @RequiredArgsConstructor
 public class JwtCheckFilter extends OncePerRequestFilter {
@@ -37,6 +39,7 @@ public class JwtCheckFilter extends OncePerRequestFilter {
         String token = authorizationHeader.replace(Config.JwtPrefix, "");
 
         try {
+            //check jwt
             Jws<Claims> claimsJws = Jwts.parserBuilder()
                     .setSigningKey(secretKey)
                     .build()
@@ -54,6 +57,19 @@ public class JwtCheckFilter extends OncePerRequestFilter {
                     null
             );
             SecurityContextHolder.getContext().setAuthentication(authentication);
+
+            //update jwt
+            String jwtToken = Jwts.builder()
+                    .setId(principal.get(0))
+                    .setSubject(principal.get(1))
+                    .setAudience(principal.get(2))
+                    .setIssuedAt(new Date())
+                    .setExpiration(java.sql.Date.valueOf(Config.ExpireTime))
+                    .signWith(secretKey)
+                    .compact();
+
+            response.addHeader(HttpHeaders.AUTHORIZATION, Config.JwtPrefix + jwtToken);
+
         } catch (JwtException e) {
             throw new InvalidJwtException(String.format("Token invalid: %s", token));
         }

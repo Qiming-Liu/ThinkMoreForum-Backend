@@ -1,7 +1,7 @@
 package com.thinkmore.forum.filter;
 
+import com.thinkmore.forum.entity.JwtUser;
 import com.thinkmore.forum.configuration.Config;
-import com.thinkmore.forum.entity.Users;
 import com.thinkmore.forum.service.UsersService;
 import io.jsonwebtoken.Jwts;
 import lombok.RequiredArgsConstructor;
@@ -20,13 +20,14 @@ import java.util.Date;
 
 @RequiredArgsConstructor
 public class JwtGenerateFilter extends UsernamePasswordAuthenticationFilter {
-
     private final UsersService usersService;
     private final AuthenticationManager authenticationManager;
     private final SecretKey secretKey;
 
     @Override
     public Authentication attemptAuthentication(HttpServletRequest request, HttpServletResponse response) throws AuthenticationException {
+
+        //check username and password
         String username = obtainUsername(request);
         String password = obtainPassword(request);
         if (username == null) {
@@ -46,12 +47,16 @@ public class JwtGenerateFilter extends UsernamePasswordAuthenticationFilter {
                                             FilterChain chain,
                                             Authentication authResult) {
 
-        Users user = usersService.getUserByUsername(authResult.getName());
+        //update last login timestamp
+        usersService.updateLastLoginTimestamp(authResult.getName());
+
+        //generate jwt
+        JwtUser jwtUser = (JwtUser) authResult.getPrincipal();
 
         String jwtToken = Jwts.builder()
-                .setId(user.getId() + "")
-                .setSubject(user.getRole().getRoleName())
-                .setAudience(user.getRole().getPermission())
+                .setId(jwtUser.getId() + "")
+                .setSubject(jwtUser.getRoleName())
+                .setAudience(jwtUser.getPermission())
                 .setIssuedAt(new Date())
                 .setExpiration(java.sql.Date.valueOf(Config.ExpireTime))
                 .signWith(secretKey)
