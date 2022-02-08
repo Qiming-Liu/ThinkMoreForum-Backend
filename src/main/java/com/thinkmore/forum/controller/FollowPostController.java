@@ -17,9 +17,17 @@ public class FollowPostController {
 
     private final FollowPostService followPostService;
 
+    // Get all followpost in db, a function might not be recommended.
+//    @GetMapping
+//    public ResponseEntity<List<FollowPostGetDto>> findAll() {
+//        List<FollowPostGetDto> followPostList = followPostService.getAllFollowPosts();
+//        return ResponseEntity.ok(followPostList);
+//    }
+
     @GetMapping
-    public ResponseEntity<List<FollowPostGetDto>> findAll() {
-        List<FollowPostGetDto> followPostList = followPostService.getAllFollowPosts();
+    public ResponseEntity<List<FollowPostGetDto>> findAllByUserId() {
+        UUID userId = UUID.fromString(Util.getJwtContext().get(0));
+        List<FollowPostGetDto> followPostList = followPostService.getAllFollowPostsByUserId(userId);
         return ResponseEntity.ok(followPostList);
     }
 

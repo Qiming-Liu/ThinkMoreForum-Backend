@@ -43,6 +43,12 @@ public class FollowPostService {
                 .collect(Collectors.toList());
     }
 
+    public List<FollowPostGetDto> getAllFollowPostsByUserId(UUID userId) {
+        return followPostRepo.findByUsers_IdOrderByCreateTimestampDesc(userId).stream()
+                .map(followPost -> followPostMapper.fromEntity(followPost))
+                .collect(Collectors.toList());
+    }
+
     public void postFollowPostToUser(UUID postId, UUID userId) {
         UsersMiniGetDto usersMiniGetDto = usersMapper.entityToMiniDto(usersRepo.findById(userId).get());
 
@@ -62,4 +68,5 @@ public class FollowPostService {
                 "Successfully unfollowed!":"Unfollow failed or you didn't follow this post";
         return deleteResponse;
     }
+
 }
