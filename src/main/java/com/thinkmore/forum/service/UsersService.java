@@ -62,9 +62,21 @@ public class UsersService implements UserDetailsService {
 
         boolean result = find.isEmpty();
         if (result){
-            System.out.println("you can use this email!");
+            System.out.println("You can use this Email!");
         } else{
-            System.out.println("email is already been regist");
+            System.out.println("Email is Already Registered. Please use another one.");
+        }
+        return find.isEmpty();
+    }
+
+    public boolean uniqueUsername(String username) {
+        Optional<Users> find = usersRepository.findByUsername(username);
+
+        boolean result = find.isEmpty();
+        if (result){
+            System.out.println("This is a validate username.");
+        } else{
+            System.out.println("Username has already been taken.Please use another one.");
         }
         return find.isEmpty();
     }
