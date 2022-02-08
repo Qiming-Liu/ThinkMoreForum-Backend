@@ -15,7 +15,7 @@ public class PasswordController {
     private final PasswordService passwordService;
 
     @PutMapping("/change_password")
-    public ResponseEntity<String> modify(@RequestBody PasswordPutDto passwordPutDto){
+    public ResponseEntity<String> modify(@RequestParam PasswordPutDto passwordPutDto){
         return ResponseEntity.ok(passwordService.changePassword(passwordPutDto));
     }
 }
