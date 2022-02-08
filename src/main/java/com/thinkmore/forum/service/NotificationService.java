@@ -20,15 +20,13 @@ public class NotificationService {
     private final NotificationMapper notificationMapper;
 
     public List<NotificationGetDto> getAllNotifications() {
-
         return notificationRepo.findAll().stream()
                 .map(notification -> notificationMapper.fromEntity(notification))
                 .collect(Collectors.toList());
     }
 
-    public NotificationGetDto getNotificationById(UUID notificationId) {
-
-        return  notificationMapper.fromEntity(notificationRepo.findById(notificationId).get());
+    public NotificationGetDto getNotificationById(UUID notificationId, UUID userId) {
+        return  notificationMapper.fromEntity(notificationRepo.findByIdAndUsers_Id(notificationId, userId).get());
     }
 
     public List<NotificationGetDto> getNotificationsByUserId(UUID userId) {
