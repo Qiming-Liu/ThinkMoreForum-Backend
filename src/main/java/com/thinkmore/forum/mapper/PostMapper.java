@@ -1,6 +1,7 @@
 package com.thinkmore.forum.mapper;
 
 import com.thinkmore.forum.dto.post.PostGetDto;
+import com.thinkmore.forum.dto.post.PostMiniGetDto;
 import com.thinkmore.forum.dto.post.PostPostDto;
 import com.thinkmore.forum.dto.post.PostPutDto;
 import com.thinkmore.forum.entity.Post;
@@ -12,6 +13,10 @@ public interface PostMapper {
 
     PostGetDto fromEntity(Post post);
 
+    PostMiniGetDto entityToMiniDto(Post post);
+
     @BeanMapping(nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.IGNORE)
     void copy(PostPutDto postPutDto, @MappingTarget Post post);
+
+
 }

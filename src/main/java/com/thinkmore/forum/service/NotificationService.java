@@ -5,6 +5,7 @@ import com.thinkmore.forum.mapper.NotificationMapper;
 import com.thinkmore.forum.repository.NotificationRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.UUID;
@@ -19,20 +20,25 @@ public class NotificationService {
     private final NotificationMapper notificationMapper;
 
     public List<NotificationGetDto> getAllNotifications() {
-
         return notificationRepo.findAll().stream()
                 .map(notification -> notificationMapper.fromEntity(notification))
                 .collect(Collectors.toList());
     }
 
-    public NotificationGetDto getNotificationById(UUID notificationId) {
-
-        return  notificationMapper.fromEntity(notificationRepo.findById(notificationId).get());
+    public NotificationGetDto getNotificationById(UUID notificationId, UUID userId) {
+        return  notificationMapper.fromEntity(notificationRepo.findByIdAndUsers_Id(notificationId, userId).get());
     }
 
     public List<NotificationGetDto> getNotificationsByUserId(UUID userId) {
         return notificationRepo.findByUsers_IdOrderByCreateTimestampDesc(userId).stream()
                 .map(notification -> notificationMapper.fromEntity(notification))
                 .collect(Collectors.toList());
+    }
+
+    @Transactional
+    public String userDeleteNotification(UUID notificationId, UUID userId) {
+        String deleteResponse = notificationRepo.deleteByIdAndUsers_Id(notificationId, userId) > 0?
+                "Successfully deleted!":"Deletion failed!";
+        return deleteResponse;
     }
 }
