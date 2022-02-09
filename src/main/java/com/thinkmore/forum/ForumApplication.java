@@ -11,7 +11,7 @@ import java.net.UnknownHostException;
 
 @Slf4j
 @SpringBootApplication
-public class ForumApplication {
+public class ForumApplication{
 
     public static void main(String[] args) throws UnknownHostException {
         ConfigurableApplicationContext application = SpringApplication.run(ForumApplication.class, args);

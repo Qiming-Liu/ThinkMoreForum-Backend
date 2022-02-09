@@ -5,7 +5,9 @@ import com.thinkmore.forum.dto.users.UsersGetDto;
 import com.thinkmore.forum.entity.JwtUser;
 import com.thinkmore.forum.configuration.Config;
 import com.thinkmore.forum.entity.Users;
+import com.thinkmore.forum.exception.InvalidOldEmailException;
 import com.thinkmore.forum.exception.InvalidOldPasswordException;
+import com.thinkmore.forum.exception.InvalidOldUsernameException;
 import com.thinkmore.forum.exception.UserNotFoundException;
 import com.thinkmore.forum.mapper.UsersMapper;
 import com.thinkmore.forum.repository.RolesRepository;
@@ -19,6 +21,7 @@ import org.springframework.stereotype.Service;
 
 import java.io.IOException;
 import java.time.OffsetDateTime;
+import java.util.Objects;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -122,6 +125,42 @@ public class UsersService implements UserDetailsService {
                 .orElseThrow(() -> new UserNotFoundException("User not found"));
 
         user.setPassword(Util.passwordEncoder(password));
+        usersRepository.save(user);
+        return true;
+    }
+
+    public boolean changeUsername(String oldUsername, String newUsername ) {
+        String users_id = Util.getJwtContext().get(0);
+        UUID id = UUID.fromString(users_id);
+
+        Users user = usersRepository.findById(id)
+                .orElseThrow(() -> new UserNotFoundException("Invalid UserID"));
+
+        if (!Objects.equals(oldUsername, user.getUsername())){
+            throw new InvalidOldUsernameException("Username does not exist");
+        }
+
+        user.setUsername(newUsername);
+        usersRepository.save(user);
+        return true;
+    }
+
+    public boolean checkVerificationEmail(String old_email, String new_email) throws IOException {
+        Users user = usersRepository.findByEmail(old_email)
+                .orElseThrow(() -> new InvalidOldEmailException("Invalid Email Address"));
+        Email emailAddress = new Email(new_email);
+        Util.sendVerificationEmail(emailAddress, Util.createJwtToken(user));
+        return true;
+    }
+
+    public boolean changeEmail(String newEmail) {
+        String users_id = Util.getJwtContext().get(0);
+        UUID id = UUID.fromString(users_id);
+
+        Users user = usersRepository.findById(id)
+                .orElseThrow(() -> new UserNotFoundException("Invalid UserID"));
+
+        user.setEmail(newEmail);
         usersRepository.save(user);
         return true;
     }

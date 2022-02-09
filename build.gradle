@@ -27,7 +27,14 @@ dependencies {
     implementation 'org.springframework.boot:spring-boot-starter-data-jpa:2.6.3'
     implementation 'org.springframework.boot:spring-boot-starter-security:2.6.3'
     implementation 'org.springframework.boot:spring-boot-starter-web:2.6.3'
+    implementation 'org.springframework.social:spring-social-facebook:2.0.3.RELEASE'
+    implementation 'org.springframework.social:spring-social-config:1.1.6.RELEASE'
+    implementation 'org.springframework.social:spring-social-security:1.1.6.RELEASE'
+    implementation 'org.springframework.social:spring-social-web:1.1.6.RELEASE'
+    implementation 'org.springframework.social:spring-social-core:1.1.6.RELEASE'
     annotationProcessor "org.springframework.boot:spring-boot-configuration-processor:2.6.3"
+
+    implementation 'org.apache.commons:commons-lang3:3.12.0'
 
     compileOnly 'org.projectlombok:lombok:1.18.22'
     annotationProcessor 'org.projectlombok:lombok:1.18.22'
