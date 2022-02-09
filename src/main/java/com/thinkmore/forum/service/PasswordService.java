@@ -7,11 +7,8 @@ import com.thinkmore.forum.exception.UserNotFoundException;
 import com.thinkmore.forum.repository.PasswordRepository;
 import com.thinkmore.forum.util.Util;
 import lombok.RequiredArgsConstructor;
-import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
 import java.util.UUID;
 
 @Service

@@ -26,7 +26,7 @@ public class ForumApplication {
                 "Application Demo is running! Access URLs:\n\t" +
                 "Local:   \thttp://localhost:" + port + path + "/\n\t" +
                 "Public:  \thttp://" + ip + ":" + port + path + "/\n\t" +
-                "Swagger: \thttp://" + ip + ":" + port + path + "/swagger-ui/\n" +
+                "Swagger: \thttp://localhost:" + port + path + "/swagger-ui/\n" +
                 "----------------------------------------------------------");
     }
 

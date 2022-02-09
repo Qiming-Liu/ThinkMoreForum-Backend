@@ -6,208 +6,106 @@
 	},
 	"item": [
 		{
-			"name": "password",
+			"name": "users",
 			"item": [
 				{
-					"name": "change_password",
+					"name": "signup",
 					"event": [
 						{
 							"listen": "prerequest",
 							"script": {
 								"exec": [
-									"// 带JWT 不验证验证码"
+									""
 								],
 								"type": "text/javascript"
 							}
 						}
 					],
-					"request": {
-						"method": "PUT",
-						"header": [],
-						"url": {
-							"raw": "{{url}}/api/v1/password/change_password?old_password=123456&new_password=123456",
-							"host": [
-								"{{url}}"
-							],
-							"path": [
-								"api",
-								"v1",
-								"password",
-								"change_password"
-							],
-							"query": [
-								{
-									"key": "old_password",
-									"value": "123456"
-								},
-								{
-									"key": "new_password",
-									"value": "123456"
-								}
-							]
-						}
+					"protocolProfileBehavior": {
+						"disabledSystemHeaders": {}
 					},
-					"response": []
-				},
-				{
-					"name": "reset_password_send_email",
-					"event": [
-						{
-							"listen": "prerequest",
-							"script": {
-								"exec": [
-									"// 不带JWT 验证验证码"
-								],
-								"type": "text/javascript"
-							}
-						}
-					],
-					"request": {
-						"method": "GET",
-						"header": [],
-						"url": {
-							"raw": "{{url}}/api/v1/password/reset_password_send_email?email=shshj@gmail.com",
-							"host": [
-								"{{url}}"
-							],
-							"path": [
-								"api",
-								"v1",
-								"password",
-								"reset_password_send_email"
-							],
-							"query": [
-								{
-									"key": "email",
-									"value": "shshj@gmail.com"
-								}
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "reset_password_page 前端",
-					"request": {
-						"method": "GET",
-						"header": [],
-						"url": {
-							"raw": "{{url}}/reset_password_page?token",
-							"host": [
-								"{{url}}"
-							],
-							"path": [
-								"reset_password_page"
-							],
-							"query": [
-								{
-									"key": "token",
-									"value": ""
-								}
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "reset_password",
-					"event": [
-						{
-							"listen": "prerequest",
-							"script": {
-								"exec": [
-									"// 不带JWT 不验证验证码"
-								],
-								"type": "text/javascript"
-							}
-						}
-					],
-					"request": {
-						"method": "PUT",
-						"header": [],
-						"url": {
-							"raw": "{{url}}/api/v1/password/reset_password?token=123&new_password=123",
-							"host": [
-								"{{url}}"
-							],
-							"path": [
-								"api",
-								"v1",
-								"password",
-								"reset_password"
-							],
-							"query": [
-								{
-									"key": "token",
-									"value": "123"
-								},
-								{
-									"key": "new_password",
-									"value": "123"
-								}
-							]
-						}
-					},
-					"response": []
-				}
-			]
-		},
-		{
-			"name": "authentication",
-			"item": [
-				{
-					"name": "registration",
-					"event": [
-						{
-							"listen": "prerequest",
-							"script": {
-								"exec": [
-									"// 不带JWT 验证验证码"
-								],
-								"type": "text/javascript"
-							}
-						}
-					],
 					"request": {
 						"method": "POST",
 						"header": [],
 						"url": {
-							"raw": "{{url}}/api/v1/authentication/registration?email=123@123.com&username=123&password=123",
+							"raw": "{{url}}/v1/users/signup/:email/:username/:password",
 							"host": [
 								"{{url}}"
 							],
 							"path": [
-								"api",
 								"v1",
-								"authentication",
-								"registration"
+								"users",
+								"signup",
+								":email",
+								":username",
+								":password"
 							],
-							"query": [
+							"variable": [
 								{
 									"key": "email",
-									"value": "123@123.com"
+									"value": null
 								},
 								{
 									"key": "username",
-									"value": "123"
+									"value": null
 								},
 								{
 									"key": "password",
-									"value": "123"
+									"value": null
 								}
 							]
 						}
 					},
-					"response": []
+					"response": [
+						{
+							"name": "验证码",
+							"originalRequest": {
+								"method": "POST",
+								"header": [],
+								"url": {
+									"raw": "{{url}}/v1/authentication/signup/:email/:username/:password",
+									"host": [
+										"{{url}}"
+									],
+									"path": [
+										"v1",
+										"authentication",
+										"signup",
+										":email",
+										":username",
+										":password"
+									],
+									"variable": [
+										{
+											"key": "email",
+											"value": "prossliu@gmail.com"
+										},
+										{
+											"key": "username",
+											"value": "alan"
+										},
+										{
+											"key": "password",
+											"value": "123456"
+										}
+									]
+								}
+							},
+							"_postman_previewlanguage": null,
+							"header": null,
+							"cookie": [],
+							"body": null
+						}
+					]
 				},
 				{
-					"name": "send_email",
+					"name": "signup-email 获取验证邮件",
 					"event": [
 						{
 							"listen": "prerequest",
 							"script": {
 								"exec": [
-									"// 带JWT 验证验证码"
+									""
 								],
 								"type": "text/javascript"
 							}
@@ -217,65 +115,72 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "{{url}}/api/v1/authentication/send_email",
+							"raw": "{{url}}/v1/users/signup-email",
 							"host": [
 								"{{url}}"
 							],
 							"path": [
-								"api",
 								"v1",
-								"authentication",
-								"send_email"
+								"users",
+								"signup-email"
 							]
 						}
 					},
-					"response": []
-				},
-				{
-					"name": "check_email",
-					"event": [
+					"response": [
 						{
-							"listen": "prerequest",
-							"script": {
-								"exec": [
-									"// 不带JWT 不验证验证码"
-								],
-								"type": "text/javascript"
-							}
-						}
-					],
-					"request": {
-						"method": "GET",
-						"header": [],
-						"url": {
-							"raw": "{{url}}/api/v1/authentication/check_email?token=123",
-							"host": [
-								"{{url}}"
-							],
-							"path": [
-								"api",
-								"v1",
-								"authentication",
-								"check_email"
-							],
-							"query": [
-								{
-									"key": "token",
-									"value": "123"
+							"name": "JWT",
+							"originalRequest": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{url}}/v1/authentication/email",
+									"host": [
+										"{{url}}"
+									],
+									"path": [
+										"v1",
+										"authentication",
+										"email"
+									]
 								}
-							]
+							},
+							"_postman_previewlanguage": null,
+							"header": null,
+							"cookie": [],
+							"body": null
+						},
+						{
+							"name": "验证码",
+							"originalRequest": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{url}}/v1/authentication/email",
+									"host": [
+										"{{url}}"
+									],
+									"path": [
+										"v1",
+										"authentication",
+										"email"
+									]
+								}
+							},
+							"_postman_previewlanguage": null,
+							"header": null,
+							"cookie": [],
+							"body": null
 						}
-					},
-					"response": []
+					]
 				},
 				{
-					"name": "login",
+					"name": "signup-email 验证邮件Token",
 					"event": [
 						{
 							"listen": "prerequest",
 							"script": {
 								"exec": [
-									"// 不带JWT 验证验证码"
+									""
 								],
 								"type": "text/javascript"
 							}
@@ -285,24 +190,20 @@
 						"method": "POST",
 						"header": [],
 						"url": {
-							"raw": "{{url}}/api/v1/authentication/login?email=123@123.com&pasword=123",
+							"raw": "{{url}}/v1/users/signup-email/:token",
 							"host": [
 								"{{url}}"
 							],
 							"path": [
-								"api",
 								"v1",
-								"authentication",
-								"login"
+								"users",
+								"signup-email",
+								":token"
 							],
-							"query": [
+							"variable": [
 								{
-									"key": "email",
-									"value": "123@123.com"
-								},
-								{
-									"key": "pasword",
-									"value": "123"
+									"key": "token",
+									"value": null
 								}
 							]
 						}
@@ -310,13 +211,13 @@
 					"response": []
 				},
 				{
-					"name": "logout",
+					"name": "unique-email 是否是唯一",
 					"event": [
 						{
 							"listen": "prerequest",
 							"script": {
 								"exec": [
-									"// 带JWT 不验证验证码"
+									""
 								],
 								"type": "text/javascript"
 							}
@@ -326,15 +227,58 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "{{url}}/api/v1/authentication/logout",
+							"raw": "{{url}}/v1/users/unique-email/:email",
 							"host": [
 								"{{url}}"
 							],
 							"path": [
-								"api",
 								"v1",
-								"authentication",
-								"logout"
+								"users",
+								"unique-email",
+								":email"
+							],
+							"variable": [
+								{
+									"key": "email",
+									"value": null
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "unique-username 是否是唯一",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{url}}/v1/users/unique-username/:username",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"v1",
+								"users",
+								"unique-username",
+								":username"
+							],
+							"variable": [
+								{
+									"key": "username",
+									"value": null
+								}
 							]
 						}
 					},
@@ -355,13 +299,162 @@
 					"response": []
 				},
 				{
-					"name": "unique_email",
+					"name": "password 修改",
 					"event": [
 						{
 							"listen": "prerequest",
 							"script": {
 								"exec": [
-									"// 不带JWT 不验证验证码"
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"url": {
+							"raw": "{{url}}/v1/users/password/:old-password/:new-password",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"v1",
+								"users",
+								"password",
+								":old-password",
+								":new-password"
+							],
+							"variable": [
+								{
+									"key": "old-password",
+									"value": null
+								},
+								{
+									"key": "new-password",
+									"value": null
+								}
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "JWT",
+							"originalRequest": {
+								"method": "PUT",
+								"header": [],
+								"url": {
+									"raw": "{{url}}/v1/password/password/:old-password/:new-password",
+									"host": [
+										"{{url}}"
+									],
+									"path": [
+										"v1",
+										"password",
+										"password",
+										":old-password",
+										":new-password"
+									],
+									"variable": [
+										{
+											"key": "old-password",
+											"value": null
+										},
+										{
+											"key": "new-password",
+											"value": null
+										}
+									]
+								}
+							},
+							"_postman_previewlanguage": null,
+							"header": null,
+							"cookie": [],
+							"body": null
+						}
+					]
+				},
+				{
+					"name": "username 修改",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"url": {
+							"raw": "{{url}}/v1/users/username/:new-username",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"v1",
+								"users",
+								"username",
+								":new-username"
+							],
+							"variable": [
+								{
+									"key": "new-username",
+									"value": null
+								}
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "JWT",
+							"originalRequest": {
+								"method": "PUT",
+								"header": [],
+								"url": {
+									"raw": "{{url}}/v1/password/password/:old-password/:new-password",
+									"host": [
+										"{{url}}"
+									],
+									"path": [
+										"v1",
+										"password",
+										"password",
+										":old-password",
+										":new-password"
+									],
+									"variable": [
+										{
+											"key": "old-password",
+											"value": null
+										},
+										{
+											"key": "new-password",
+											"value": null
+										}
+									]
+								}
+							},
+							"_postman_previewlanguage": null,
+							"header": null,
+							"cookie": [],
+							"body": null
+						}
+					]
+				},
+				{
+					"name": "email 修改发送验证邮件",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									""
 								],
 								"type": "text/javascript"
 							}
@@ -371,20 +464,92 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "{{url}}/api/v1/authentication/unique_email?email=123@123.com",
+							"raw": "{{url}}/v1/users/email/:new-email",
 							"host": [
 								"{{url}}"
 							],
 							"path": [
-								"api",
 								"v1",
-								"authentication",
-								"unique_email"
+								"users",
+								"email",
+								":new-email"
 							],
-							"query": [
+							"variable": [
 								{
-									"key": "email",
-									"value": "123@123.com"
+									"key": "new-email",
+									"value": null
+								}
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "JWT",
+							"originalRequest": {
+								"method": "PUT",
+								"header": [],
+								"url": {
+									"raw": "{{url}}/v1/password/password/:old-password/:new-password",
+									"host": [
+										"{{url}}"
+									],
+									"path": [
+										"v1",
+										"password",
+										"password",
+										":old-password",
+										":new-password"
+									],
+									"variable": [
+										{
+											"key": "old-password",
+											"value": null
+										},
+										{
+											"key": "new-password",
+											"value": null
+										}
+									]
+								}
+							},
+							"_postman_previewlanguage": null,
+							"header": null,
+							"cookie": [],
+							"body": null
+						}
+					]
+				},
+				{
+					"name": "email 修改验证邮件Token",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"url": {
+							"raw": "{{url}}/v1/users/email/:token",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"v1",
+								"users",
+								"email",
+								":token"
+							],
+							"variable": [
+								{
+									"key": "token",
+									"value": null
 								}
 							]
 						}
@@ -392,13 +557,13 @@
 					"response": []
 				},
 				{
-					"name": "unique_username",
+					"name": "reset-password 发送邮件验证",
 					"event": [
 						{
 							"listen": "prerequest",
 							"script": {
 								"exec": [
-									"// 不带JWT 不验证验证码"
+									""
 								],
 								"type": "text/javascript"
 							}
@@ -408,19 +573,89 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "{{url}}/api/v1/authentication/unique_username?username=123",
+							"raw": "{{url}}/v1/users/reset-password/:email",
 							"host": [
 								"{{url}}"
 							],
 							"path": [
-								"api",
 								"v1",
-								"authentication",
-								"unique_username"
+								"users",
+								"reset-password",
+								":email"
+							],
+							"variable": [
+								{
+									"key": "email",
+									"value": null
+								}
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "验证码",
+							"originalRequest": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{url}}/v1/users/reset-password/:email",
+									"host": [
+										"{{url}}"
+									],
+									"path": [
+										"v1",
+										"users",
+										"reset-password",
+										":email"
+									],
+									"variable": [
+										{
+											"key": "email",
+											"value": null
+										}
+									]
+								}
+							},
+							"_postman_previewlanguage": null,
+							"header": null,
+							"cookie": [],
+							"body": null
+						}
+					]
+				},
+				{
+					"name": "reset-password 验证邮件Token",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"url": {
+							"raw": "{{url}}/v1/users/reset-password?token=123&new_password=123",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"v1",
+								"users",
+								"reset-password"
 							],
 							"query": [
 								{
-									"key": "username",
+									"key": "token",
+									"value": "123"
+								},
+								{
+									"key": "new_password",
 									"value": "123"
 								}
 							]
@@ -446,15 +681,24 @@
 							}
 						}
 					],
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
 					"request": {
-						"method": "POST",
-						"header": [],
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "eyJhbGciOiJIUzM4NCJ9.eyJqdGkiOiI5MDg1ODMyMC04ODA3LTExZWMtYTRhYy0xZmZkMTA3ODQxYWUiLCJzdWIiOiJhZG1pbiIsImF1ZCI6Int9IiwiaWF0IjoxNjQ0MjMzMDExLCJleHAiOjE2NDQyNDA2MDB9.p2ghzhXYjPvIHys26VQyqFFkdTztaKJMYAQ1CJ0jgGR795BnfAxuwAd5N5IXMqpF",
+								"type": "text"
+							}
+						],
 						"body": {
 							"mode": "raw",
 							"raw": ""
 						},
 						"url": {
-							"raw": "{{url}}/api/v1/follow/follow_user?users_id=uuid",
+							"raw": "{{url}}/api/v1/follow/follow_user?id=90861db2-8807-11ec-a4ac-7ff8b1ad4d8a",
 							"host": [
 								"{{url}}"
 							],
@@ -466,8 +710,8 @@
 							],
 							"query": [
 								{
-									"key": "users_id",
-									"value": "uuid"
+									"key": "id",
+									"value": "90861db2-8807-11ec-a4ac-7ff8b1ad4d8a"
 								}
 							]
 						}
@@ -892,69 +1136,95 @@
 			"name": "test",
 			"item": [
 				{
-					"name": "login",
-					"request": {
-						"method": "POST",
-						"header": [
-							{
-								"key": "",
-								"value": "",
-								"type": "text"
-							}
-						],
-						"url": {
-							"raw": "http://localhost:8080/login?username=admin&password=123456",
-							"protocol": "http",
-							"host": [
-								"localhost"
-							],
-							"port": "8080",
-							"path": [
-								"login"
-							],
-							"query": [
-								{
-									"key": "username",
-									"value": "admin"
-								},
-								{
-									"key": "password",
-									"value": "123456"
-								}
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "get_current_user_id",
+					"name": "jwt-context",
 					"request": {
 						"method": "GET",
 						"header": [
 							{
 								"key": "Authorization",
-								"value": "eyJhbGciOiJIUzM4NCJ9.eyJqdGkiOiI1NzQ3OTdjOC04N2Y5LTExZWMtOThiYi01M2RjZGQ0OTZjNWQiLCJzdWIiOiJhZG1pbiIsImF1ZCI6Int9IiwiaWF0IjoxNjQ0MjI2ODMyLCJleHAiOjE2NDQyNDA2MDB9.7qGnvW6QxzP4Sn05v3jena7R0SVQZd-zkOXga-hbv-4RR7ZU5UJbYTd1fENkDUV5",
+								"value": "eyJhbGciOiJIUzM4NCJ9.eyJqdGkiOiI5MDg1ODMyMC04ODA3LTExZWMtYTRhYy0xZmZkMTA3ODQxYWUiLCJzdWIiOiJhZG1pbiIsImF1ZCI6Int9IiwiaWF0IjoxNjQ0MjMzMDExLCJleHAiOjE2NDQyNDA2MDB9.p2ghzhXYjPvIHys26VQyqFFkdTztaKJMYAQ1CJ0jgGR795BnfAxuwAd5N5IXMqpF",
 								"type": "text"
 							}
 						],
 						"url": {
-							"raw": "http://localhost:8080/api/v1/test/get_jwt_context",
-							"protocol": "http",
+							"raw": "{{url}}/v1/test/jwt-context",
 							"host": [
-								"localhost"
+								"{{url}}"
 							],
-							"port": "8080",
 							"path": [
-								"api",
 								"v1",
 								"test",
-								"get_jwt_context"
+								"jwt-context"
 							]
 						}
 					},
-					"response": []
+					"response": [
+						{
+							"name": "JWT",
+							"originalRequest": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "eyJhbGciOiJIUzM4NCJ9.eyJqdGkiOiI5MDg1ODMyMC04ODA3LTExZWMtYTRhYy0xZmZkMTA3ODQxYWUiLCJzdWIiOiJhZG1pbiIsImF1ZCI6Int9IiwiaWF0IjoxNjQ0MjMzMDExLCJleHAiOjE2NDQyNDA2MDB9.p2ghzhXYjPvIHys26VQyqFFkdTztaKJMYAQ1CJ0jgGR795BnfAxuwAd5N5IXMqpF",
+										"type": "text"
+									}
+								],
+								"url": {
+									"raw": "{{url}}/v1/test/jwt-context",
+									"host": [
+										"{{url}}"
+									],
+									"path": [
+										"v1",
+										"test",
+										"jwt-context"
+									]
+								}
+							},
+							"_postman_previewlanguage": null,
+							"header": null,
+							"cookie": [],
+							"body": null
+						}
+					]
 				}
 			]
+		},
+		{
+			"name": "login",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "",
+						"value": "",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "http://localhost:8080/login?username=admin&password=123456",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"login"
+					],
+					"query": [
+						{
+							"key": "username",
+							"value": "admin"
+						},
+						{
+							"key": "password",
+							"value": "123456"
+						}
+					]
+				}
+			},
+			"response": []
 		}
 	]
 }
