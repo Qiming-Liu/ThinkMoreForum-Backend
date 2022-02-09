@@ -1,10 +1,12 @@
 package com.thinkmore.forum.service;
 
+import com.sendgrid.helpers.mail.objects.Email;
 import com.thinkmore.forum.dto.users.UsersGetDto;
 import com.thinkmore.forum.entity.JwtUser;
 import com.thinkmore.forum.configuration.Config;
-import com.thinkmore.forum.dto.users.UsersGetDto;
 import com.thinkmore.forum.entity.Users;
+import com.thinkmore.forum.exception.InvalidOldPasswordException;
+import com.thinkmore.forum.exception.UserNotFoundException;
 import com.thinkmore.forum.mapper.UsersMapper;
 import com.thinkmore.forum.repository.RolesRepository;
 import com.thinkmore.forum.repository.UsersRepository;
@@ -15,6 +17,7 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
+import java.io.IOException;
 import java.time.OffsetDateTime;
 import java.util.Optional;
 import java.util.UUID;
@@ -85,5 +88,41 @@ public class UsersService implements UserDetailsService {
 
     public UsersGetDto getUserById(UUID userId) {
         return usersMapper.fromEntity(usersRepository.findById(userId).get());
+    }
+
+    public boolean changePassword(String oldPassword, String newPassword) {
+        String users_id = Util.getJwtContext().get(0);
+        UUID id = UUID.fromString(users_id);
+
+        Users user = usersRepository.findById(id)
+                .orElseThrow(() -> new UserNotFoundException("User not found: " + users_id));
+
+        if (!Util.match(oldPassword, user.getPassword())) {
+            throw new InvalidOldPasswordException("Old password is wrong");
+        }
+
+        user.setPassword(Util.passwordEncoder(newPassword));
+        usersRepository.save(user);
+        return true;
+    }
+
+    public boolean checkEmail(String email) throws IOException {
+        Users user = usersRepository.findByEmail(email)
+                .orElseThrow(() -> new UserNotFoundException("Email address not found: " + email ));
+        Email emailAddress = new Email(email);
+        Util.sendMail(emailAddress, Util.createJwtToken(user));
+        return true;
+    }
+
+    public boolean resetPassword(String password){
+        String users_id = Util.getJwtContext().get(0);
+        UUID id = UUID.fromString(users_id);
+
+        Users user = usersRepository.findById(id)
+                .orElseThrow(() -> new UserNotFoundException("User not found"));
+
+        user.setPassword(Util.passwordEncoder(password));
+        usersRepository.save(user);
+        return true;
     }
 }
