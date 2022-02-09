@@ -1,22 +1,17 @@
 package com.thinkmore.forum.controller;
 
-import com.thinkmore.forum.dto.followPost.FollowPostGetDto;
 import com.thinkmore.forum.dto.users.UsersGetDto;
-import com.thinkmore.forum.service.FollowPostService;
 import com.thinkmore.forum.service.UsersService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
+import java.io.IOException;
 import java.util.UUID;
 
 @RestController
-@RequestMapping(path = "/api/v1/users")
+@RequestMapping(path = "/v1/users")
 @RequiredArgsConstructor
 @Slf4j
 public class UsersController {
@@ -27,5 +22,20 @@ public class UsersController {
         UUID userId = UUID.fromString(user_id);
         UsersGetDto usersGetDto = usersService.getUserById(userId);
         return ResponseEntity.ok(usersGetDto);
+    }
+
+    @PutMapping("/password/{old_password}/{new_password}")
+    public ResponseEntity<Boolean> modify(@PathVariable String old_password, @PathVariable String new_password){
+        return ResponseEntity.ok(usersService.changePassword(old_password, new_password));
+    }
+
+    @GetMapping("/reset-password/{email}")
+    public ResponseEntity<Boolean> find(@PathVariable String email) throws IOException {
+        return ResponseEntity.ok(usersService.checkEmail(email));
+    }
+
+    @PutMapping("/reset-password/{new_password}")
+    public ResponseEntity<Boolean> modify(@PathVariable String new_password){
+        return ResponseEntity.ok(usersService.resetPassword(new_password));
     }
 }

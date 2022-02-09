@@ -8,15 +8,19 @@ import com.sendgrid.helpers.mail.Mail;
 import com.sendgrid.helpers.mail.objects.Content;
 import com.sendgrid.helpers.mail.objects.Email;
 import com.thinkmore.forum.configuration.Config;
+import com.thinkmore.forum.entity.Users;
+import io.jsonwebtoken.Jwts;
+import io.jsonwebtoken.security.Keys;
 import org.apache.commons.codec.binary.Hex;
 import org.springframework.security.core.context.SecurityContextHolder;
 
 import javax.crypto.Cipher;
-import javax.crypto.SecretKey;
 import javax.crypto.spec.SecretKeySpec;
 import java.io.IOException;
+import java.nio.charset.StandardCharsets;
 import java.security.Key;
 import java.util.ArrayList;
+import java.util.Date;
 
 public class Util {
 
@@ -70,5 +74,16 @@ public class Util {
             e.printStackTrace();
         }
         return null;
+    }
+
+    public static String createJwtToken(Users user){
+        return Jwts.builder()
+                .setId(user.getId() + "")
+                .setSubject(user.getRole().getRoleName())
+                .setAudience(user.getRole().getPermission())
+                .setIssuedAt(new Date())
+                .setExpiration(java.sql.Date.valueOf(Config.ExpireTime))
+                .signWith(Keys.hmacShaKeyFor(Config.JwtSecretKey.getBytes(StandardCharsets.UTF_8)))
+                .compact();
     }
 }
