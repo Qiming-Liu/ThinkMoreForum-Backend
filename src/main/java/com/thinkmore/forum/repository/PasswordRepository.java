@@ -13,5 +13,7 @@ public interface PasswordRepository extends JpaRepository<Users, UUID> {
     @Query("select u from Users u where u.id = :id")
     Optional<Users> findByUsersId(@Param("id") UUID id);
 
+    @Query("select u from Users u where u.email = :email")
+    Optional<Users> findByEmail(@Param("email") String email);
 
 }
