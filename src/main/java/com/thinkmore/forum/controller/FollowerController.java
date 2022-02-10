@@ -15,18 +15,19 @@ import java.util.UUID;
 public class FollowerController {
     private final FollowerService followerService;
 
-    @GetMapping(path = "/follow_user")
-    public ResponseEntity<List<FollowerGetDto>> follow_user(@RequestParam UUID Id) {
+//  view fans
+    @GetMapping(path = "/view_follower")
+    public ResponseEntity<List<FollowerGetDto>> view_follower(@RequestParam UUID Id) {
         return ResponseEntity.ok(followerService.getFollowersById(Id));
     }
 
-    @GetMapping(path = "/friends")
-    public ResponseEntity<List<FollowerGetDto>> friends(@RequestParam UUID Id) {
+    @GetMapping(path = "/view_followed_user")
+    public ResponseEntity<List<FollowerGetDto>> view_followed_user(@RequestParam UUID Id) {
         return ResponseEntity.ok(followerService.getFriendsById(Id));
     }
 
-    @PostMapping(path = "/follow")
-    public ResponseEntity<FollowerGetDto> follow(@RequestParam UUID Id) {
+    @PostMapping(path = "/follow_user")
+    public ResponseEntity<FollowerGetDto> follow_user(@RequestParam UUID Id) {
         return ResponseEntity.ok(followerService.followUsers(Id));
     }
 }
