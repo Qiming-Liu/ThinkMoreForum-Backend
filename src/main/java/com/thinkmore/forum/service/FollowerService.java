@@ -1,11 +1,17 @@
 package com.thinkmore.forum.service;
 
 import com.thinkmore.forum.dto.follower.FollowerGetDto;
+import com.thinkmore.forum.entity.FollowUser;
+import com.thinkmore.forum.entity.Users;
+import com.thinkmore.forum.exception.UserNotFoundException;
 import com.thinkmore.forum.mapper.FollowerMapper;
 import com.thinkmore.forum.repository.FollowerRepository;
+import com.thinkmore.forum.repository.UsernameRepository;
+import com.thinkmore.forum.util.Util;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.time.OffsetDateTime;
 import java.util.List;
 import java.util.UUID;
 import java.util.stream.Collectors;
@@ -14,7 +20,7 @@ import java.util.stream.Collectors;
 @RequiredArgsConstructor
 public class FollowerService {
     private final FollowerRepository followerRepository;
-
+    private final UsernameRepository usernameRepository;
     private final FollowerMapper followerMapper;
 
     public List<FollowerGetDto> getFollowersById(UUID Id) {
@@ -25,4 +31,23 @@ public class FollowerService {
         return followerRepository.findAllByFollowedUsersId(Id).stream().map(followUser -> followerMapper.fromEntity(followUser)).collect(Collectors.toList());
     }
 
+    public FollowerGetDto followUsers(UUID Id) {
+        FollowUser followUser = new FollowUser();
+        UUID currentId = UUID.fromString(Util.getJwtContext().get(0));
+        Users user = usernameRepository.findByUsersId(currentId)
+                .orElseThrow(() -> new UserNotFoundException("Invalid UserID"));
+        Users followedUser = usernameRepository.findByUsersId(Id)
+                .orElseThrow(() -> new UserNotFoundException("Invalid UserID"));
+        if (followerRepository.findByUsersIdAndFollowedUsersId(Id, currentId).isEmpty()) {
+            followUser.setUsers(user);
+            followUser.setFollowedUsers(followedUser);
+            followUser.setCreateTimestamp(OffsetDateTime.now());
+
+            followerRepository.save(followUser);
+        } else {
+            System.out.println("You have already followed this user");
+        }
+
+        return followerMapper.fromEntity(followUser);
+    }
 }

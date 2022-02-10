@@ -13,15 +13,12 @@ import java.util.UUID;
 @Repository
 public interface FollowerRepository extends JpaRepository<FollowUser, UUID> {
 
-//    @Query("select a from FollowUser a order by a.id desc")
-//    List<FollowUser> findAllByOrderByIdDesc();
-
-
     List<FollowUser> findAllByUsersId(UUID userId);
 
-//    List<FollowUser> findAllByFollowedUsersId(UUID FollowedUsersId);
-
-    //@Query("select a from FollowUser a where a.followed_users_id = ?1")
     List<FollowUser> findAllByFollowedUsersId(UUID FollowedUsersId);
+
+    List<FollowUser> findByUsersIdAndFollowedUsersId(UUID userId, UUID FollowedUsersId);
+
+    FollowUser save(FollowUser followUser);
 
 }
