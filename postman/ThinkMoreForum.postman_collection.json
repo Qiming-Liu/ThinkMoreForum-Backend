@@ -56,158 +56,6 @@
 							]
 						}
 					},
-					"response": [
-						{
-							"name": "验证码",
-							"originalRequest": {
-								"method": "POST",
-								"header": [],
-								"url": {
-									"raw": "{{url}}/v1/authentication/signup/:email/:username/:password",
-									"host": [
-										"{{url}}"
-									],
-									"path": [
-										"v1",
-										"authentication",
-										"signup",
-										":email",
-										":username",
-										":password"
-									],
-									"variable": [
-										{
-											"key": "email",
-											"value": "prossliu@gmail.com"
-										},
-										{
-											"key": "username",
-											"value": "alan"
-										},
-										{
-											"key": "password",
-											"value": "123456"
-										}
-									]
-								}
-							},
-							"_postman_previewlanguage": null,
-							"header": null,
-							"cookie": [],
-							"body": null
-						}
-					]
-				},
-				{
-					"name": "signup-email 获取验证邮件",
-					"event": [
-						{
-							"listen": "prerequest",
-							"script": {
-								"exec": [
-									""
-								],
-								"type": "text/javascript"
-							}
-						}
-					],
-					"request": {
-						"method": "GET",
-						"header": [],
-						"url": {
-							"raw": "{{url}}/v1/users/signup-email",
-							"host": [
-								"{{url}}"
-							],
-							"path": [
-								"v1",
-								"users",
-								"signup-email"
-							]
-						}
-					},
-					"response": [
-						{
-							"name": "JWT",
-							"originalRequest": {
-								"method": "GET",
-								"header": [],
-								"url": {
-									"raw": "{{url}}/v1/authentication/email",
-									"host": [
-										"{{url}}"
-									],
-									"path": [
-										"v1",
-										"authentication",
-										"email"
-									]
-								}
-							},
-							"_postman_previewlanguage": null,
-							"header": null,
-							"cookie": [],
-							"body": null
-						},
-						{
-							"name": "验证码",
-							"originalRequest": {
-								"method": "GET",
-								"header": [],
-								"url": {
-									"raw": "{{url}}/v1/authentication/email",
-									"host": [
-										"{{url}}"
-									],
-									"path": [
-										"v1",
-										"authentication",
-										"email"
-									]
-								}
-							},
-							"_postman_previewlanguage": null,
-							"header": null,
-							"cookie": [],
-							"body": null
-						}
-					]
-				},
-				{
-					"name": "signup-email 验证邮件Token",
-					"event": [
-						{
-							"listen": "prerequest",
-							"script": {
-								"exec": [
-									""
-								],
-								"type": "text/javascript"
-							}
-						}
-					],
-					"request": {
-						"method": "POST",
-						"header": [],
-						"url": {
-							"raw": "{{url}}/v1/users/signup-email/:token",
-							"host": [
-								"{{url}}"
-							],
-							"path": [
-								"v1",
-								"users",
-								"signup-email",
-								":token"
-							],
-							"variable": [
-								{
-									"key": "token",
-									"value": null
-								}
-							]
-						}
-					},
 					"response": []
 				},
 				{
@@ -299,83 +147,6 @@
 					"response": []
 				},
 				{
-					"name": "password 修改",
-					"event": [
-						{
-							"listen": "prerequest",
-							"script": {
-								"exec": [
-									""
-								],
-								"type": "text/javascript"
-							}
-						}
-					],
-					"request": {
-						"method": "PUT",
-						"header": [],
-						"url": {
-							"raw": "{{url}}/v1/users/password/:old-password/:new-password",
-							"host": [
-								"{{url}}"
-							],
-							"path": [
-								"v1",
-								"users",
-								"password",
-								":old-password",
-								":new-password"
-							],
-							"variable": [
-								{
-									"key": "old-password",
-									"value": null
-								},
-								{
-									"key": "new-password",
-									"value": null
-								}
-							]
-						}
-					},
-					"response": [
-						{
-							"name": "JWT",
-							"originalRequest": {
-								"method": "PUT",
-								"header": [],
-								"url": {
-									"raw": "{{url}}/v1/password/password/:old-password/:new-password",
-									"host": [
-										"{{url}}"
-									],
-									"path": [
-										"v1",
-										"password",
-										"password",
-										":old-password",
-										":new-password"
-									],
-									"variable": [
-										{
-											"key": "old-password",
-											"value": null
-										},
-										{
-											"key": "new-password",
-											"value": null
-										}
-									]
-								}
-							},
-							"_postman_previewlanguage": null,
-							"header": null,
-							"cookie": [],
-							"body": null
-						}
-					]
-				},
-				{
 					"name": "username 修改",
 					"event": [
 						{
@@ -392,7 +163,7 @@
 						"method": "PUT",
 						"header": [],
 						"url": {
-							"raw": "{{url}}/v1/users/username/:new-username",
+							"raw": "{{url}}/v1/users/username/:new_username",
 							"host": [
 								"{{url}}"
 							],
@@ -400,11 +171,11 @@
 								"v1",
 								"users",
 								"username",
-								":new-username"
+								":new_username"
 							],
 							"variable": [
 								{
-									"key": "new-username",
+									"key": "new_username",
 									"value": null
 								}
 							]
@@ -464,21 +235,14 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "{{url}}/v1/users/email/:new-email",
+							"raw": "{{url}}/v1/users/email",
 							"host": [
 								"{{url}}"
 							],
 							"path": [
 								"v1",
 								"users",
-								"email",
-								":new-email"
-							],
-							"variable": [
-								{
-									"key": "new-email",
-									"value": null
-								}
+								"email"
 							]
 						}
 					},
@@ -536,7 +300,7 @@
 						"method": "PUT",
 						"header": [],
 						"url": {
-							"raw": "{{url}}/v1/users/email/:token",
+							"raw": "{{url}}/v1/users/email/:new_email",
 							"host": [
 								"{{url}}"
 							],
@@ -544,17 +308,136 @@
 								"v1",
 								"users",
 								"email",
-								":token"
+								":new_email"
 							],
 							"variable": [
 								{
-									"key": "token",
+									"key": "new_email",
 									"value": null
 								}
 							]
 						}
 					},
-					"response": []
+					"response": [
+						{
+							"name": "JWT",
+							"originalRequest": {
+								"method": "PUT",
+								"header": [],
+								"url": {
+									"raw": "{{url}}/v1/users/email/:token",
+									"host": [
+										"{{url}}"
+									],
+									"path": [
+										"v1",
+										"users",
+										"email",
+										":token"
+									],
+									"variable": [
+										{
+											"key": "token",
+											"value": null
+										}
+									]
+								}
+							},
+							"_postman_previewlanguage": null,
+							"header": null,
+							"cookie": [],
+							"body": null
+						}
+					]
+				},
+				{
+					"name": "password 修改",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"url": {
+							"raw": "{{url}}/v1/users/password/:old_password/:new_password",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"v1",
+								"users",
+								"password",
+								":old_password",
+								":new_password"
+							],
+							"query": [
+								{
+									"key": "oldPassword",
+									"value": null,
+									"disabled": true
+								},
+								{
+									"key": "newPassword",
+									"value": null,
+									"disabled": true
+								}
+							],
+							"variable": [
+								{
+									"key": "old_password",
+									"value": null
+								},
+								{
+									"key": "new_password",
+									"value": null
+								}
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "JWT",
+							"originalRequest": {
+								"method": "PUT",
+								"header": [],
+								"url": {
+									"raw": "{{url}}/v1/password/password/:old-password/:new-password",
+									"host": [
+										"{{url}}"
+									],
+									"path": [
+										"v1",
+										"password",
+										"password",
+										":old-password",
+										":new-password"
+									],
+									"variable": [
+										{
+											"key": "old-password",
+											"value": null
+										},
+										{
+											"key": "new-password",
+											"value": null
+										}
+									]
+								}
+							},
+							"_postman_previewlanguage": null,
+							"header": null,
+							"cookie": [],
+							"body": null
+						}
+					]
 				},
 				{
 					"name": "reset-password 发送邮件验证",
@@ -583,45 +466,22 @@
 								"reset-password",
 								":email"
 							],
+							"query": [
+								{
+									"key": "email",
+									"value": null,
+									"disabled": true
+								}
+							],
 							"variable": [
 								{
 									"key": "email",
-									"value": null
+									"value": "alfred.minjiang@gmail.com"
 								}
 							]
 						}
 					},
-					"response": [
-						{
-							"name": "验证码",
-							"originalRequest": {
-								"method": "GET",
-								"header": [],
-								"url": {
-									"raw": "{{url}}/v1/users/reset-password/:email",
-									"host": [
-										"{{url}}"
-									],
-									"path": [
-										"v1",
-										"users",
-										"reset-password",
-										":email"
-									],
-									"variable": [
-										{
-											"key": "email",
-											"value": null
-										}
-									]
-								}
-							},
-							"_postman_previewlanguage": null,
-							"header": null,
-							"cookie": [],
-							"body": null
-						}
-					]
+					"response": []
 				},
 				{
 					"name": "reset-password 验证邮件Token",
@@ -640,36 +500,72 @@
 						"method": "PUT",
 						"header": [],
 						"url": {
-							"raw": "{{url}}/v1/users/reset-password?token=123&new_password=123",
+							"raw": "{{url}}/v1/users/reset-password/:new_password",
 							"host": [
 								"{{url}}"
 							],
 							"path": [
 								"v1",
 								"users",
-								"reset-password"
+								"reset-password",
+								":new_password"
 							],
 							"query": [
 								{
-									"key": "token",
-									"value": "123"
-								},
+									"key": "password",
+									"value": null,
+									"disabled": true
+								}
+							],
+							"variable": [
 								{
 									"key": "new_password",
-									"value": "123"
+									"value": null
 								}
 							]
 						}
 					},
-					"response": []
-				}
-			]
-		},
-		{
-			"name": "follow",
-			"item": [
+					"response": [
+						{
+							"name": "JWT",
+							"originalRequest": {
+								"method": "PUT",
+								"header": [],
+								"url": {
+									"raw": "{{url}}/v1/users/reset-password/:new_password",
+									"host": [
+										"{{url}}"
+									],
+									"path": [
+										"v1",
+										"users",
+										"reset-password",
+										":new_password"
+									],
+									"query": [
+										{
+											"key": "password",
+											"value": null,
+											"disabled": true
+										}
+									],
+									"variable": [
+										{
+											"key": "new_password",
+											"value": null
+										}
+									]
+								}
+							},
+							"_postman_previewlanguage": null,
+							"header": null,
+							"cookie": [],
+							"body": null
+						}
+					]
+				},
 				{
-					"name": "follow_user",
+					"name": "followed 查看该用户关注的用户",
 					"event": [
 						{
 							"listen": "prerequest",
@@ -686,6 +582,132 @@
 					},
 					"request": {
 						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "{{url}}/v1/users/followed",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"v1",
+								"users",
+								"followed"
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "JWT",
+							"originalRequest": {
+								"method": "GET",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": ""
+								},
+								"url": {
+									"raw": "{{url}}/v1/users/followed",
+									"host": [
+										"{{url}}"
+									],
+									"path": [
+										"v1",
+										"users",
+										"followed"
+									]
+								}
+							},
+							"_postman_previewlanguage": null,
+							"header": null,
+							"cookie": [],
+							"body": null
+						}
+					]
+				},
+				{
+					"name": "follower 查看关注该用户的用户",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									"// 带JWT 不验证验证码"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "{{url}}/v1/users/follower",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"v1",
+								"users",
+								"follower"
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "JWT",
+							"originalRequest": {
+								"method": "GET",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": ""
+								},
+								"url": {
+									"raw": "{{url}}/api/v1/follow/view_follower",
+									"host": [
+										"{{url}}"
+									],
+									"path": [
+										"api",
+										"v1",
+										"follow",
+										"view_follower"
+									]
+								}
+							},
+							"_postman_previewlanguage": null,
+							"header": null,
+							"cookie": [],
+							"body": null
+						}
+					]
+				},
+				{
+					"name": "follows 关注一个用户",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
 						"header": [
 							{
 								"key": "Authorization",
@@ -698,34 +720,73 @@
 							"raw": ""
 						},
 						"url": {
-							"raw": "{{url}}/api/v1/follow/follow_user?id=90861db2-8807-11ec-a4ac-7ff8b1ad4d8a",
+							"raw": "{{url}}/v1/users/follows/:uses_id",
 							"host": [
 								"{{url}}"
 							],
 							"path": [
-								"api",
 								"v1",
-								"follow",
-								"follow_user"
+								"users",
+								"follows",
+								":uses_id"
 							],
-							"query": [
+							"variable": [
 								{
-									"key": "id",
-									"value": "90861db2-8807-11ec-a4ac-7ff8b1ad4d8a"
+									"key": "uses_id",
+									"value": null
 								}
 							]
 						}
 					},
-					"response": []
+					"response": [
+						{
+							"name": "JWT",
+							"originalRequest": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "eyJhbGciOiJIUzM4NCJ9.eyJqdGkiOiI5MDg1ODMyMC04ODA3LTExZWMtYTRhYy0xZmZkMTA3ODQxYWUiLCJzdWIiOiJhZG1pbiIsImF1ZCI6Int9IiwiaWF0IjoxNjQ0MjMzMDExLCJleHAiOjE2NDQyNDA2MDB9.p2ghzhXYjPvIHys26VQyqFFkdTztaKJMYAQ1CJ0jgGR795BnfAxuwAd5N5IXMqpF",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": ""
+								},
+								"url": {
+									"raw": "{{url}}/v1/follow/follow_user?id=90861db2-8807-11ec-a4ac-7ff8b1ad4d8a",
+									"host": [
+										"{{url}}"
+									],
+									"path": [
+										"v1",
+										"follow",
+										"follow_user"
+									],
+									"query": [
+										{
+											"key": "id",
+											"value": "90861db2-8807-11ec-a4ac-7ff8b1ad4d8a"
+										}
+									]
+								}
+							},
+							"_postman_previewlanguage": null,
+							"header": null,
+							"cookie": [],
+							"body": null
+						}
+					]
 				},
 				{
-					"name": "unfollow_user",
+					"name": "follows 取消关注用户",
 					"event": [
 						{
 							"listen": "prerequest",
 							"script": {
 								"exec": [
-									"// 带JWT 不验证验证码"
+									""
 								],
 								"type": "text/javascript"
 							}
@@ -739,28 +800,67 @@
 							"raw": ""
 						},
 						"url": {
-							"raw": "{{url}}/api/v1/follow/unfollow_user?users_id=5",
+							"raw": "{{url}}/v1/users/follows/:uses_id",
 							"host": [
 								"{{url}}"
 							],
 							"path": [
-								"api",
 								"v1",
-								"follow",
-								"unfollow_user"
+								"users",
+								"follows",
+								":uses_id"
 							],
-							"query": [
+							"variable": [
 								{
-									"key": "users_id",
-									"value": "5"
+									"key": "uses_id",
+									"value": null
 								}
 							]
 						}
 					},
-					"response": []
-				},
+					"response": [
+						{
+							"name": "JWT",
+							"originalRequest": {
+								"method": "DELETE",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": ""
+								},
+								"url": {
+									"raw": "{{url}}/api/v1/follow/unfollow_user?users_id=5",
+									"host": [
+										"{{url}}"
+									],
+									"path": [
+										"api",
+										"v1",
+										"follow",
+										"unfollow_user"
+									],
+									"query": [
+										{
+											"key": "users_id",
+											"value": "5"
+										}
+									]
+								}
+							},
+							"_postman_previewlanguage": null,
+							"header": null,
+							"cookie": [],
+							"body": null
+						}
+					]
+				}
+			]
+		},
+		{
+			"name": "post",
+			"item": [
 				{
-					"name": "view_followed_user",
+					"name": "followed 查看该用户关注的帖子",
 					"event": [
 						{
 							"listen": "prerequest",
@@ -783,60 +883,49 @@
 							"raw": ""
 						},
 						"url": {
-							"raw": "{{url}}/api/v1/follow/view_followed_user",
+							"raw": "{{url}}/v1/post/followed",
 							"host": [
 								"{{url}}"
 							],
 							"path": [
-								"api",
 								"v1",
-								"follow",
-								"view_followed_user"
+								"post",
+								"followed"
 							]
 						}
 					},
-					"response": []
-				},
-				{
-					"name": "view_follower",
-					"event": [
+					"response": [
 						{
-							"listen": "prerequest",
-							"script": {
-								"exec": [
-									"// 带JWT 不验证验证码"
-								],
-								"type": "text/javascript"
-							}
+							"name": "JWT",
+							"originalRequest": {
+								"method": "GET",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": ""
+								},
+								"url": {
+									"raw": "{{url}}/api/v1/follow/view_followed_post",
+									"host": [
+										"{{url}}"
+									],
+									"path": [
+										"api",
+										"v1",
+										"follow",
+										"view_followed_post"
+									]
+								}
+							},
+							"_postman_previewlanguage": null,
+							"header": null,
+							"cookie": [],
+							"body": null
 						}
-					],
-					"protocolProfileBehavior": {
-						"disableBodyPruning": true
-					},
-					"request": {
-						"method": "GET",
-						"header": [],
-						"body": {
-							"mode": "raw",
-							"raw": ""
-						},
-						"url": {
-							"raw": "{{url}}/api/v1/follow/view_follower",
-							"host": [
-								"{{url}}"
-							],
-							"path": [
-								"api",
-								"v1",
-								"follow",
-								"view_follower"
-							]
-						}
-					},
-					"response": []
+					]
 				},
 				{
-					"name": "follow_post",
+					"name": "follows 关注一个帖子",
 					"event": [
 						{
 							"listen": "test",
@@ -856,34 +945,68 @@
 							"raw": ""
 						},
 						"url": {
-							"raw": "{{url}}/api/v1/follow/follow_post?post_id=uuid",
+							"raw": "{{url}}/v1/post/follows/:post_id",
 							"host": [
 								"{{url}}"
 							],
 							"path": [
-								"api",
 								"v1",
-								"follow",
-								"follow_post"
+								"post",
+								"follows",
+								":post_id"
 							],
-							"query": [
+							"variable": [
 								{
 									"key": "post_id",
-									"value": "uuid"
+									"value": null
 								}
 							]
 						}
 					},
-					"response": []
+					"response": [
+						{
+							"name": "JWT",
+							"originalRequest": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": ""
+								},
+								"url": {
+									"raw": "{{url}}/v1/post/follow/:post-id",
+									"host": [
+										"{{url}}"
+									],
+									"path": [
+										"v1",
+										"post",
+										"follow",
+										":post-id"
+									],
+									"variable": [
+										{
+											"key": "post-id",
+											"value": null
+										}
+									]
+								}
+							},
+							"_postman_previewlanguage": null,
+							"header": null,
+							"cookie": [],
+							"body": null
+						}
+					]
 				},
 				{
-					"name": "unfollow_post",
+					"name": "follows 取消关注帖子",
 					"event": [
 						{
 							"listen": "prerequest",
 							"script": {
 								"exec": [
-									"// 带JWT 不验证验证码"
+									""
 								],
 								"type": "text/javascript"
 							}
@@ -897,63 +1020,59 @@
 							"raw": ""
 						},
 						"url": {
-							"raw": "{{url}}/api/v1/follow/unfollow_post?post_id=uuid",
+							"raw": "{{url}}/v1/post/follows/:post_id",
 							"host": [
 								"{{url}}"
 							],
 							"path": [
-								"api",
 								"v1",
-								"follow",
-								"unfollow_post"
+								"post",
+								"follows",
+								":post_id"
 							],
-							"query": [
+							"variable": [
 								{
 									"key": "post_id",
-									"value": "uuid"
+									"value": null
 								}
 							]
 						}
 					},
-					"response": []
-				},
-				{
-					"name": "view_followed_post",
-					"event": [
+					"response": [
 						{
-							"listen": "prerequest",
-							"script": {
-								"exec": [
-									"// 带JWT 不验证验证码"
-								],
-								"type": "text/javascript"
-							}
+							"name": "JWT",
+							"originalRequest": {
+								"method": "DELETE",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": ""
+								},
+								"url": {
+									"raw": "{{url}}/v1/post/follow/:post_id",
+									"host": [
+										"{{url}}"
+									],
+									"path": [
+										"v1",
+										"post",
+										"follow",
+										":post_id"
+									],
+									"variable": [
+										{
+											"key": "post_id",
+											"value": null
+										}
+									]
+								}
+							},
+							"_postman_previewlanguage": null,
+							"header": null,
+							"cookie": [],
+							"body": null
 						}
-					],
-					"protocolProfileBehavior": {
-						"disableBodyPruning": true
-					},
-					"request": {
-						"method": "GET",
-						"header": [],
-						"body": {
-							"mode": "raw",
-							"raw": ""
-						},
-						"url": {
-							"raw": "{{url}}/api/v1/follow/view_followed_post",
-							"host": [
-								"{{url}}"
-							],
-							"path": [
-								"api",
-								"v1",
-								"follow",
-								"view_followed_post"
-							]
-						}
-					},
-					"response": []
+					]
 				}
 			]
 		},
@@ -967,7 +1086,7 @@
 							"listen": "prerequest",
 							"script": {
 								"exec": [
-									"// 带JWT 不验证验证码"
+									""
 								],
 								"type": "text/javascript"
 							}
@@ -984,70 +1103,59 @@
 							"raw": ""
 						},
 						"url": {
-							"raw": "{{url}}/api/v1/notification/get_notification",
+							"raw": "{{url}}/v1/notification",
 							"host": [
 								"{{url}}"
 							],
 							"path": [
-								"api",
 								"v1",
-								"notification",
-								"get_notification"
+								"notification"
 							]
 						}
 					},
-					"response": []
+					"response": [
+						{
+							"name": "JWT",
+							"originalRequest": {
+								"method": "GET",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": ""
+								},
+								"url": {
+									"raw": "{{url}}/api/v1/notification/get_notification",
+									"host": [
+										"{{url}}"
+									],
+									"path": [
+										"api",
+										"v1",
+										"notification",
+										"get_notification"
+									]
+								}
+							},
+							"_postman_previewlanguage": null,
+							"header": null,
+							"cookie": [],
+							"body": null
+						}
+					]
 				}
 			]
 		},
 		{
-			"name": "profile",
+			"name": "img",
 			"item": [
 				{
-					"name": "change_username",
+					"name": "upload 上传图片接口",
 					"event": [
 						{
 							"listen": "prerequest",
 							"script": {
 								"exec": [
-									"// 带JWT 不验证验证码"
-								],
-								"type": "text/javascript"
-							}
-						}
-					],
-					"request": {
-						"method": "PUT",
-						"header": [],
-						"url": {
-							"raw": "{{url}}/api/v1/profile/change_username?new_username=username",
-							"host": [
-								"{{url}}"
-							],
-							"path": [
-								"api",
-								"v1",
-								"profile",
-								"change_username"
-							],
-							"query": [
-								{
-									"key": "new_username",
-									"value": "username"
-								}
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "upload_img",
-					"event": [
-						{
-							"listen": "prerequest",
-							"script": {
-								"exec": [
-									"// 带JWT 不验证验证码"
+									""
 								],
 								"type": "text/javascript"
 							}
@@ -1057,42 +1165,80 @@
 						"method": "POST",
 						"header": [],
 						"body": {
-							"mode": "file",
-							"file": {}
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "hash",
+									"value": "",
+									"type": "text"
+								},
+								{
+									"key": "img_binary",
+									"type": "file",
+									"src": []
+								}
+							]
 						},
 						"url": {
-							"raw": "{{url}}/api/v1/profile/upload_img?hash=hash&img_binary",
+							"raw": "{{url}}/v1/img/upload",
 							"host": [
 								"{{url}}"
 							],
 							"path": [
-								"api",
 								"v1",
-								"profile",
-								"upload_img"
-							],
-							"query": [
-								{
-									"key": "hash",
-									"value": "hash"
-								},
-								{
-									"key": "img_binary",
-									"value": null
-								}
+								"img",
+								"upload"
 							]
 						}
 					},
-					"response": []
+					"response": [
+						{
+							"name": "JWT",
+							"originalRequest": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "formdata",
+									"formdata": [
+										{
+											"key": "hash",
+											"value": "",
+											"type": "text"
+										},
+										{
+											"key": "img_binary",
+											"type": "file",
+											"src": []
+										}
+									]
+								},
+								"url": {
+									"raw": "{{url}}/v1/img/upload",
+									"host": [
+										"{{url}}"
+									],
+									"path": [
+										"v1",
+										"img",
+										"upload"
+									]
+								}
+							},
+							"_postman_previewlanguage": null,
+							"header": null,
+							"cookie": [],
+							"body": null
+						}
+					]
 				},
 				{
-					"name": "change_profile_img",
+					"name": "profile 修改头像",
 					"event": [
 						{
 							"listen": "prerequest",
 							"script": {
 								"exec": [
-									"// 带JWT 不验证验证码"
+									""
 								],
 								"type": "text/javascript"
 							}
@@ -1102,33 +1248,71 @@
 						"method": "PUT",
 						"header": [],
 						"body": {
-							"mode": "file",
-							"file": {}
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "hash",
+									"value": "",
+									"type": "text"
+								},
+								{
+									"key": "img_binary",
+									"type": "file",
+									"src": []
+								}
+							]
 						},
 						"url": {
-							"raw": "{{url}}/api/v1/profile/change_profile_img?hash=hash&img_binary",
+							"raw": "{{url}}/v1/img/profile",
 							"host": [
 								"{{url}}"
 							],
 							"path": [
-								"api",
 								"v1",
-								"profile",
-								"change_profile_img"
-							],
-							"query": [
-								{
-									"key": "hash",
-									"value": "hash"
-								},
-								{
-									"key": "img_binary",
-									"value": null
-								}
+								"img",
+								"profile"
 							]
 						}
 					},
-					"response": []
+					"response": [
+						{
+							"name": "JWT",
+							"originalRequest": {
+								"method": "PUT",
+								"header": [],
+								"body": {
+									"mode": "file",
+									"file": {}
+								},
+								"url": {
+									"raw": "{{url}}/api/v1/profile/change_profile_img?hash=hash&img_binary",
+									"host": [
+										"{{url}}"
+									],
+									"path": [
+										"api",
+										"v1",
+										"profile",
+										"change_profile_img"
+									],
+									"query": [
+										{
+											"key": "hash",
+											"value": "hash"
+										},
+										{
+											"key": "img_binary",
+											"value": null
+										}
+									]
+								}
+							},
+							"_postman_previewlanguage": null,
+							"header": null,
+							"cookie": [],
+							"body": null
+						}
+					]
 				}
 			]
 		},
