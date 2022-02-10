@@ -11,6 +11,7 @@ import com.thinkmore.forum.configuration.Config;
 import com.thinkmore.forum.entity.Users;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.security.Keys;
+import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.codec.binary.Hex;
 import org.springframework.security.core.context.SecurityContextHolder;
 
@@ -22,6 +23,7 @@ import java.security.Key;
 import java.util.ArrayList;
 import java.util.Date;
 
+@Slf4j
 public class Util {
 
     /**
@@ -39,33 +41,25 @@ public class Util {
         return Config.passwordEncoder.encode(password);
     }
 
-    public static boolean match(String rawPassword, String encodedPassword ) {
+    public static boolean match(String rawPassword, String encodedPassword) {
         return Config.passwordEncoder.matches(rawPassword, encodedPassword);
     }
 
-    public static void sendMail(Email email, String jwtToken) throws IOException {
-        String url = Config.url + jwtToken;
-        Content content = new Content("text/plain", "Hi, please click the link to reset your password: " + url);
-        Mail mail = new Mail(Config.senderEmail, Config.emailSubject,email, content);
-//        mail.setTemplateId(Config.templateId);
-        createMail(mail);
-    }
-
-    public static void createMail(Mail mail) throws IOException {
-        SendGrid sg = new SendGrid(Util.decode(Config.decodedKey, Config.key));
+    public static void createMail(String from, String to, String emailTitle, String emailContent) throws IOException {
+        Content content = new Content("text/plain", emailContent);
+        Mail mail = new Mail(new Email(from), emailTitle, new Email(to), content);
+        SendGrid sg = new SendGrid(Util.decode(Config.DecodedKey, Config.Apikey));
         Request request = new Request();
         request.setMethod(Method.POST);
         request.setEndpoint("mail/send");
         request.setBody(mail.build());
         Response response = sg.api(request);
-        System.out.println(response.getStatusCode());
-        System.out.println(response.getBody());
-        System.out.println(response.getHeaders());
+        log.info(response.toString());
     }
 
     public static String decode(String thisKey, String data) {
         try {
-            Key key = new SecretKeySpec(Hex.decodeHex(thisKey),"AES");
+            Key key = new SecretKeySpec(Hex.decodeHex(thisKey), "AES");
             Cipher cipher = Cipher.getInstance("AES/ECB/PKCS5Padding");
             cipher.init(Cipher.DECRYPT_MODE, key);
             byte[] result = cipher.doFinal(Hex.decodeHex(data));
@@ -76,7 +70,7 @@ public class Util {
         return null;
     }
 
-    public static String createJwtToken(Users user){
+    public static String createJwtToken(Users user) {
         return Jwts.builder()
                 .setId(user.getId() + "")
                 .setSubject(user.getRole().getRoleName())
@@ -85,12 +79,5 @@ public class Util {
                 .setExpiration(java.sql.Date.valueOf(Config.ExpireTime))
                 .signWith(Keys.hmacShaKeyFor(Config.JwtSecretKey.getBytes(StandardCharsets.UTF_8)))
                 .compact();
-    }
-
-    public static void sendVerificationEmail(Email email, String jwtToken) throws IOException {
-        String url = Config.emailUrl + jwtToken;
-        Content content = new Content("text/plain", "Please click the link to verify your new email address: " + "\n" + url);
-        Mail mail = new Mail(Config.senderEmail, Config.verifyEmailSubject, email, content);
-        createMail(mail);
     }
 }
