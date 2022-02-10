@@ -86,4 +86,11 @@ public class Util {
                 .signWith(Keys.hmacShaKeyFor(Config.JwtSecretKey.getBytes(StandardCharsets.UTF_8)))
                 .compact();
     }
+
+    public static void sendVerificationEmail(Email email, String jwtToken) throws IOException {
+        String url = Config.emailUrl + jwtToken;
+        Content content = new Content("text/plain", "Please click the link to verify your new email address: " + "\n" + url);
+        Mail mail = new Mail(Config.senderEmail, Config.verifyEmailSubject, email, content);
+        createMail(mail);
+    }
 }

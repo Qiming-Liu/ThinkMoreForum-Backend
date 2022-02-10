@@ -38,4 +38,19 @@ public class UsersController {
     public ResponseEntity<Boolean> modify(@PathVariable String new_password){
         return ResponseEntity.ok(usersService.resetPassword(new_password));
     }
+
+    @PutMapping("/username/{old_username}/{new_username}")
+    public ResponseEntity<Boolean> modifyUsername(@PathVariable String old_username, @PathVariable String new_username){
+        return ResponseEntity.ok(usersService.changeUsername(old_username, new_username));
+    }
+
+    @GetMapping("/verify-email/{old_email}/{new_email}")
+    public ResponseEntity<Boolean> verifyNewEmail(@PathVariable String old_email, @PathVariable String new_email) throws IOException {
+        return ResponseEntity.ok(usersService.checkVerificationEmail(old_email, new_email));
+    }
+
+    @PutMapping("/update-email/{new_email}")
+    public ResponseEntity<Boolean> modifyEmail(@PathVariable String new_email){
+        return ResponseEntity.ok(usersService.changeEmail(new_email));
+    }
 }
