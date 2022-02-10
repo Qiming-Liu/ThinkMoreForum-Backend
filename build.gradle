@@ -54,7 +54,6 @@ dependencies {
     testImplementation 'org.springframework.boot:spring-boot-starter-test:2.6.3'
     testImplementation 'org.springframework.security:spring-security-test:5.6.1'
 
-    //mail
     implementation 'com.sendgrid:sendgrid-java:4.8.2'
 }
 
