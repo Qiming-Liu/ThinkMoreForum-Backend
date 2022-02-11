@@ -16,8 +16,8 @@ public class Img {
     @Column(name = "id", nullable = false)
     private UUID id;
 
-    @Column(name = "img_name", nullable = false, length = 260)
-    private String imgName;
+    @Column(name = "img_url", nullable = false, length = 260)
+    private String imgUrl;
 
     @Column(name = "img_hash", nullable = false)
     private String imgHash;

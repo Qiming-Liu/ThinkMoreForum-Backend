@@ -26,7 +26,7 @@ public class ImgService {
 
     public List<ImgGetDto> getImgByName(String img_name) {
 
-        return imgRepo.findByImgName(img_name).stream()
+        return imgRepo.findByImgUrl(img_name).stream()
                 .map(imgMapper::fromEntity)
                 .collect(Collectors.toList());
     }

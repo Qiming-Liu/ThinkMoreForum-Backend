@@ -588,14 +588,26 @@
 							"raw": ""
 						},
 						"url": {
-							"raw": "{{url}}/v1/users/followed",
+							"raw": "{{url}}/v1/users/followed/:user_id/:followed_users_id",
 							"host": [
 								"{{url}}"
 							],
 							"path": [
 								"v1",
 								"users",
-								"followed"
+								"followed",
+								":user_id",
+								":followed_users_id"
+							],
+							"variable": [
+								{
+									"key": "user_id",
+									"value": null
+								},
+								{
+									"key": "followed_users_id",
+									"value": null
+								}
 							]
 						}
 					},
@@ -652,14 +664,26 @@
 							"raw": ""
 						},
 						"url": {
-							"raw": "{{url}}/v1/users/follower",
+							"raw": "{{url}}/v1/users/follower/:user_id/:followed_users_id",
 							"host": [
 								"{{url}}"
 							],
 							"path": [
 								"v1",
 								"users",
-								"follower"
+								"follower",
+								":user_id",
+								":followed_users_id"
+							],
+							"variable": [
+								{
+									"key": "user_id",
+									"value": null
+								},
+								{
+									"key": "followed_users_id",
+									"value": null
+								}
 							]
 						}
 					},
@@ -1372,6 +1396,46 @@
 							"body": null
 						}
 					]
+				}
+			]
+		},
+		{
+			"name": "category",
+			"item": [
+				{
+					"name": "New Request",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{url}}/v1/category/:title/:description/:color",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"v1",
+								"category",
+								":title",
+								":description",
+								":color"
+							],
+							"variable": [
+								{
+									"key": "title",
+									"value": null
+								},
+								{
+									"key": "description",
+									"value": null
+								},
+								{
+									"key": "color",
+									"value": null
+								}
+							]
+						}
+					},
+					"response": []
 				}
 			]
 		},

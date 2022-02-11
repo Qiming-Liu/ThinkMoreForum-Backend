@@ -3,8 +3,8 @@ CREATE EXTENSION IF NOT EXISTS "uuid-ossp";
 CREATE TABLE img
 (
     id       uuid PRIMARY KEY DEFAULT uuid_generate_v1mc(),
-    img_name varchar(260) NOT NULL UNIQUE,
-    img_hash text         NOT NULL UNIQUE
+    img_url  text NOT NULL UNIQUE,
+    img_hash text NOT NULL UNIQUE
 );
 
 CREATE TABLE roles
@@ -61,6 +61,7 @@ CREATE TABLE post
     id               uuid PRIMARY KEY                  DEFAULT uuid_generate_v1mc(),
     post_users_id    uuid                     NOT NULL references users (id),
     category_id      uuid                     NOT NULL references category (id),
+    head_img_id      uuid references img (id),
     title            varchar(60)              NOT NULL,
     context          varchar(65535)           NOT NULL,
     view_count       int                      NOT NULL,

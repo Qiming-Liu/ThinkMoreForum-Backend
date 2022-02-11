@@ -37,5 +37,5 @@ VALUES ('banned_user',
         '$argon2id$v=19$m=4096,t=3,p=1$gL/kMr7KOOCqFFDDbUwzBg$yav+sp5kn7Y6RB/zLJYAKsDvPzDVnbUZbblCJLee9Yw',
         'banned_user@forum.com', null, (SELECT id FROM roles WHERE role_name = 'banned_user'), now());
 
-INSERT INTO img (img_name, img_hash)
+INSERT INTO img (img_url, img_hash)
 VALUES ('default_profile_img.png', 'be00b93b972c577de11bb7d37268fefc');
