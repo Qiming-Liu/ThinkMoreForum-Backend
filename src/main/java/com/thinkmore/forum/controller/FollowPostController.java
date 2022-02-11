@@ -39,8 +39,8 @@ public class FollowPostController {
         return ResponseEntity.ok(String.format("successfully followed post with id %s", post_id));
     }
 
-    @DeleteMapping
-    public ResponseEntity<String> userUnfollowPost(@RequestParam String post_id) {
+    @DeleteMapping(path = "/{post_id}")
+    public ResponseEntity<String> userUnfollowPost(@PathVariable("post_id") String post_id) {
         UUID postId = UUID.fromString(post_id);
         UUID userId = UUID.fromString(Util.getJwtContext().get(0));
         return ResponseEntity.ok(followPostService.userUnfollowPost(postId, userId));

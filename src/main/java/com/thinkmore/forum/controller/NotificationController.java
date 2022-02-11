@@ -25,7 +25,8 @@ public class NotificationController {
 //    }
 
     @GetMapping(path = "/{notification_id}")
-    public ResponseEntity<NotificationGetDto> findNotificationByIdAndUserId(@PathVariable("notification_id") UUID notificationId) {
+    public ResponseEntity<NotificationGetDto> findNotificationByIdAndUserId(@PathVariable("notification_id") String notification_id) {
+        UUID notificationId = UUID.fromString(notification_id);
         UUID userId = UUID.fromString(Util.getJwtContext().get(0));
         return ResponseEntity.ok(notificationService.getNotificationById(notificationId, userId));
     }
@@ -36,8 +37,8 @@ public class NotificationController {
         return ResponseEntity.ok(notificationService.getNotificationsByUserId(userId));
     }
 
-    @DeleteMapping
-    public ResponseEntity<String> userDeleteNotification(@RequestParam String notification_id) {
+    @DeleteMapping(path = "/{notification_id}")
+    public ResponseEntity<String> userDeleteNotification(@PathVariable("notification_id") String notification_id) {
         UUID notificationId = UUID.fromString(notification_id);
         UUID userId = UUID.fromString(Util.getJwtContext().get(0));
         return ResponseEntity.ok(notificationService.userDeleteNotification(notificationId, userId));
