@@ -28,7 +28,7 @@ public class PostController {
     public ResponseEntity<String> deletePostById(@PathVariable("post_id") String post_id){
         UUID postId = UUID.fromString(post_id);
         postService.deletePostById(postId);
-        return ResponseEntity.ok(String.format("successfully deleted the post with id %s", post_id));
+        return ResponseEntity.ok(String.format("Successfully deleted the post with id %s", post_id));
     }
 
     @PostMapping
