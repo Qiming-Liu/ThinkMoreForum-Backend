@@ -11,7 +11,7 @@ import java.util.List;
 import java.util.UUID;
 
 @RestController
-@RequestMapping(path = "/v1/watching_post")
+@RequestMapping(path = "/v1/post/follows")
 @RequiredArgsConstructor
 public class FollowPostController {
 
@@ -31,8 +31,8 @@ public class FollowPostController {
         return ResponseEntity.ok(followPostList);
     }
 
-    @PostMapping
-    public ResponseEntity<String> userFollowPost(@RequestParam String post_id) {
+    @PostMapping(path = "/{post_id}")
+    public ResponseEntity<String> userFollowPost(@PathVariable("post_id") String post_id) {
         UUID postId = UUID.fromString(post_id);
         UUID userId = UUID.fromString(Util.getJwtContext().get(0));
         followPostService.postFollowPostToUser(postId, userId);
