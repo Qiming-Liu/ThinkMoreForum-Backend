@@ -10,7 +10,7 @@ import java.util.List;
 import java.util.UUID;
 
 @RestController
-@RequestMapping(path = "/api/v1/follower")
+@RequestMapping(path = "/v1/follower")
 @RequiredArgsConstructor
 public class FollowerController {
     private final FollowerService followerService;

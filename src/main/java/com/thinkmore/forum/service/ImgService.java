@@ -19,7 +19,7 @@ public class ImgService {
     public List<ImgGetDto> getAllImgs() {
 
         return imgRepo.findAll().stream()
-                .map(img -> imgMapper.fromEntity(img))
+                .map(imgMapper::fromEntity)
                 .collect(Collectors.toList());
     }
 
@@ -27,7 +27,7 @@ public class ImgService {
     public List<ImgGetDto> getImgByName(String img_name) {
 
         return imgRepo.findByImgName(img_name).stream()
-                .map(img -> imgMapper.fromEntity(img))
+                .map(imgMapper::fromEntity)
                 .collect(Collectors.toList());
     }
 }

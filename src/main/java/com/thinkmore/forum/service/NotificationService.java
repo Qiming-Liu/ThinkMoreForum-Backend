@@ -21,7 +21,7 @@ public class NotificationService {
 
     public List<NotificationGetDto> getAllNotifications() {
         return notificationRepo.findAll().stream()
-                .map(notification -> notificationMapper.fromEntity(notification))
+                .map(notificationMapper::fromEntity)
                 .collect(Collectors.toList());
     }
 
@@ -31,14 +31,13 @@ public class NotificationService {
 
     public List<NotificationGetDto> getNotificationsByUserId(UUID userId) {
         return notificationRepo.findByUsers_IdOrderByCreateTimestampDesc(userId).stream()
-                .map(notification -> notificationMapper.fromEntity(notification))
+                .map(notificationMapper::fromEntity)
                 .collect(Collectors.toList());
     }
 
     @Transactional
     public String userDeleteNotification(UUID notificationId, UUID userId) {
-        String deleteResponse = notificationRepo.deleteByIdAndUsers_Id(notificationId, userId) > 0?
+        return notificationRepo.deleteByIdAndUsers_Id(notificationId, userId) > 0?
                 "Successfully deleted!":"Deletion failed!";
-        return deleteResponse;
     }
 }

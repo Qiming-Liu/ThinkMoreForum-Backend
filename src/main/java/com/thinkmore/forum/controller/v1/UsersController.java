@@ -1,12 +1,10 @@
-package com.thinkmore.forum.controller;
+package com.thinkmore.forum.controller.v1;
 
 import com.thinkmore.forum.service.UsersService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
-import java.io.IOException;
 
 @RestController
 @RequestMapping(path = "/v1/users")
@@ -43,7 +41,7 @@ public class UsersController {
     }
 
     @GetMapping("/email/{new_email}")
-    public ResponseEntity<Boolean> sendVerificationEmail(@PathVariable String new_email) throws IOException {
+    public ResponseEntity<Boolean> sendVerificationEmail(@PathVariable String new_email) throws Exception {
         return ResponseEntity.ok(usersService.sendVerificationEmail(new_email));
     }
 
@@ -58,7 +56,7 @@ public class UsersController {
     }
 
     @GetMapping("/reset-password/{email}")
-    public ResponseEntity<Boolean> sendResetPasswordEmail(@PathVariable String email) throws IOException {
+    public ResponseEntity<Boolean> sendResetPasswordEmail(@PathVariable String email) throws Exception {
         return ResponseEntity.ok(usersService.sendResetPasswordEmail(email));
     }
 

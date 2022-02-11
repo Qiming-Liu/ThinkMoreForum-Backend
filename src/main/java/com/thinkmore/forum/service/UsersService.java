@@ -1,12 +1,10 @@
 package com.thinkmore.forum.service;
 
-import com.thinkmore.forum.dto.users.UsersGetDto;
 import com.thinkmore.forum.entity.JwtUser;
 import com.thinkmore.forum.configuration.Config;
 import com.thinkmore.forum.entity.Users;
 import com.thinkmore.forum.exception.InvalidOldPasswordException;
 import com.thinkmore.forum.exception.UserNotFoundException;
-import com.thinkmore.forum.mapper.UsersMapper;
 import com.thinkmore.forum.repository.RolesRepository;
 import com.thinkmore.forum.repository.UsersRepository;
 import com.thinkmore.forum.util.Util;
@@ -17,7 +15,6 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
-import java.io.IOException;
 import java.time.OffsetDateTime;
 import java.util.UUID;
 
@@ -26,7 +23,6 @@ import java.util.UUID;
 public class UsersService implements UserDetailsService {
     private final UsersRepository usersRepository;
     private final RolesRepository rolesRepository;
-    private final UsersMapper usersMapper;
 
     //only for jwt
     @Override
@@ -41,7 +37,7 @@ public class UsersService implements UserDetailsService {
         Users user = new Users();
 
         user.setUsername(username);
-        user.setPassword(Util.passwordEncoder(password));
+        user.setPassword(Util.passwordEncoder.encode(password));
         user.setEmail(email);
         user.setProfileImg(null);
         user.setRole(rolesRepository.findByRoleName(Config.DefaultRole).orElseThrow());
@@ -69,39 +65,9 @@ public class UsersService implements UserDetailsService {
         return usersRepository.findByUsername(username).isEmpty();
     }
 
-    public UsersGetDto getUserById(UUID userId) {
-        return usersMapper.fromEntity(usersRepository.findById(userId).get());
-    }
-
-    @Transactional
-    public boolean changePassword(String oldPassword, String newPassword) {
-        String users_id = Util.getJwtContext().get(0);
-        UUID id = UUID.fromString(users_id);
-
-        Users user = usersRepository.findById(id)
-                .orElseThrow(() -> new UserNotFoundException("User not found: " + users_id));
-
-        if (!Util.match(oldPassword, user.getPassword())) {
-            throw new InvalidOldPasswordException("Old password is wrong");
-        }
-
-        user.setPassword(Util.passwordEncoder(newPassword));
-        usersRepository.save(user);
-        return true;
-    }
-
-    @Transactional
-    public boolean resetPassword(String password) {
-        String users_id = Util.getJwtContext().get(0);
-        UUID id = UUID.fromString(users_id);
-
-        Users user = usersRepository.findById(id)
-                .orElseThrow(() -> new UserNotFoundException("User not found"));
-
-        user.setPassword(Util.passwordEncoder(password));
-        usersRepository.save(user);
-        return true;
-    }
+//    public UsersGetDto getUserById(UUID userId) {
+//        return usersMapper.fromEntity(usersRepository.findById(userId).get());
+//    }
 
     @Transactional
     public boolean changeUsername(String newUsername) {
@@ -116,25 +82,10 @@ public class UsersService implements UserDetailsService {
     }
 
     @Transactional
-    public boolean sendResetPasswordEmail(String email) throws IOException {
-        Users user = usersRepository.findByEmail(email)
-                .orElseThrow(() -> new UserNotFoundException("Email address not found: " + email));
+    public boolean sendVerificationEmail(String newEmail) throws Exception {
 
         Util.createMail(
-                Config.senderEmail,
-                email,
-                "Reset password",
-                Config.ResetPasswordContext + Config.ResetPasswordUrl + Util.createJwtToken(user));
-
-
-        return true;
-    }
-
-    @Transactional
-    public boolean sendVerificationEmail(String newEmail) throws IOException {
-
-        Util.createMail(
-                Config.senderEmail,
+                Config.fromEmail,
                 newEmail,
                 "Verify Email",
                 Config.VerifyEmailContext + Config.VerifyEmailUrl + newEmail);
@@ -151,6 +102,50 @@ public class UsersService implements UserDetailsService {
         user.setEmail(newEmail);
         usersRepository.save(user);
 
+        return true;
+    }
+
+    @Transactional
+    public boolean changePassword(String oldPassword, String newPassword) {
+        String users_id = Util.getJwtContext().get(0);
+        UUID id = UUID.fromString(users_id);
+
+        Users user = usersRepository.findById(id)
+                .orElseThrow(() -> new UserNotFoundException("User not found: " + users_id));
+
+        if (!Util.passwordEncoder.matches(oldPassword, user.getPassword())) {
+            throw new InvalidOldPasswordException("Old password is wrong");
+        }
+
+        user.setPassword(Util.passwordEncoder.encode(newPassword));
+        usersRepository.save(user);
+        return true;
+    }
+
+    @Transactional
+    public boolean sendResetPasswordEmail(String email) throws Exception {
+        Users user = usersRepository.findByEmail(email)
+                .orElseThrow(() -> new UserNotFoundException("Email address not found: " + email));
+
+        Util.createMail(
+                Config.fromEmail,
+                email,
+                "Reset password",
+                Config.ResetPasswordContext + Config.ResetPasswordUrl + Util.generateJwt(new JwtUser(user)));
+
+        return true;
+    }
+
+    @Transactional
+    public boolean resetPassword(String password) {
+        String users_id = Util.getJwtContext().get(0);
+        UUID id = UUID.fromString(users_id);
+
+        Users user = usersRepository.findById(id)
+                .orElseThrow(() -> new UserNotFoundException("User not found"));
+
+        user.setPassword(Util.passwordEncoder.encode(password));
+        usersRepository.save(user);
         return true;
     }
 }

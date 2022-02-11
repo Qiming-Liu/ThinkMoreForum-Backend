@@ -3,7 +3,7 @@ package com.thinkmore.forum.filter;
 import com.thinkmore.forum.entity.JwtUser;
 import com.thinkmore.forum.configuration.Config;
 import com.thinkmore.forum.service.UsersService;
-import io.jsonwebtoken.Jwts;
+import com.thinkmore.forum.util.Util;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpHeaders;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -16,7 +16,6 @@ import javax.crypto.SecretKey;
 import javax.servlet.FilterChain;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.util.Date;
 
 @RequiredArgsConstructor
 public class JwtGenerateFilter extends UsernamePasswordAuthenticationFilter {
@@ -52,15 +51,7 @@ public class JwtGenerateFilter extends UsernamePasswordAuthenticationFilter {
 
         //generate jwt
         JwtUser jwtUser = (JwtUser) authResult.getPrincipal();
-
-        String jwtToken = Jwts.builder()
-                .setId(jwtUser.getId() + "")
-                .setSubject(jwtUser.getRoleName())
-                .setAudience(jwtUser.getPermission())
-                .setIssuedAt(new Date())
-                .setExpiration(java.sql.Date.valueOf(Config.ExpireTime))
-                .signWith(secretKey)
-                .compact();
+        String jwtToken = Util.generateJwt(jwtUser);
 
         response.addHeader(HttpHeaders.AUTHORIZATION, Config.JwtPrefix + jwtToken);
     }

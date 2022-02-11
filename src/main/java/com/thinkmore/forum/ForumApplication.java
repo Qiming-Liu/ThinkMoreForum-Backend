@@ -24,9 +24,9 @@ public class ForumApplication{
         path = path == null ? "" : path;
         log.info("\n----------------------------------------------------------\n\t" +
                 "Application Demo is running! Access URLs:\n\t" +
-                "Local:   \thttp://localhost:" + port + path + "/\n\t" +
-                "Public:  \thttp://" + ip + ":" + port + path + "/\n\t" +
-                "Swagger: \thttp://localhost:" + port + path + "/swagger-ui/\n" +
+                "Local:   \thttp://localhost:" + port + path + "\n\t" +
+                "Public:  \thttp://" + ip + ":" + port + path + "\n\t" +
+                "Swagger: \thttp://localhost:" + port + path + "/swagger-ui.html\n" +
                 "----------------------------------------------------------");
     }
 

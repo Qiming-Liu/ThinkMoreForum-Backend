@@ -5,14 +5,13 @@ import com.thinkmore.forum.service.NotificationService;
 import com.thinkmore.forum.util.Util;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
-import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 import java.util.UUID;
 
 @RestController
-@RequestMapping(path = "/api/v1/notification")
+@RequestMapping(path = "/v1/notification")
 @RequiredArgsConstructor
 public class NotificationController {
 
