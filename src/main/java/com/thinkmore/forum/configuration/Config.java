@@ -18,6 +18,7 @@ public class Config {
             "/v1/users/unique-email/**",
             "/v1/users/unique-username/**",
             "/v1/users/reset-password/**",
+            "/v1/img/upload",
     };
     public final static String JwtSecretKey = "fruue37r7yrfhf87f7876guyggf%$$#$%^&%RTHGhjjkj23456rkkkkdkd";
     public final static String JwtPrefix = "";//Bearer ";
@@ -34,4 +35,9 @@ public class Config {
     public final static String ResetPasswordContext = "Please click the link to reset your new password:\n";
     public final static String VerifyEmailUrl = "前端url?token=";
     public final static String VerifyEmailContext = "Please click the link to verify your new email:\n";
+
+    // OSS
+    public final static String OssUrl = "http://localhost:9000/";
+    public final static String MINIO_ROOT_USER = "admin";
+    public final static String MINIO_ROOT_PASSWORD = "development";
 }

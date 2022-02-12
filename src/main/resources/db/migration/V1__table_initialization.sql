@@ -3,8 +3,8 @@ CREATE EXTENSION IF NOT EXISTS "uuid-ossp";
 CREATE TABLE img
 (
     id       uuid PRIMARY KEY DEFAULT uuid_generate_v1mc(),
-    img_url  text NOT NULL UNIQUE,
-    img_hash text NOT NULL UNIQUE
+    url  text NOT NULL UNIQUE,
+    hash text NOT NULL UNIQUE
 );
 
 CREATE TABLE roles

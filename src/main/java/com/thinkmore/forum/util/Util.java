@@ -11,6 +11,7 @@ import com.thinkmore.forum.configuration.Config;
 import com.thinkmore.forum.configuration.SecurityConfig;
 import com.thinkmore.forum.entity.JwtUser;
 import io.jsonwebtoken.Jwts;
+import io.minio.MinioClient;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.codec.binary.Hex;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -36,21 +37,8 @@ public class Util {
     }
 
     public final static PasswordEncoder passwordEncoder = new Argon2PasswordEncoder();
-
-    public static void createMail(String from, String to, String emailTitle, String emailContent) throws Exception {
-        Content content = new Content("text/plain", emailContent);
-        Mail mail = new Mail(new Email(from), emailTitle, new Email(to), content);
-        Key key = new SecretKeySpec(Hex.decodeHex(Config.DecodedKey), "AES");
-        Cipher cipher = Cipher.getInstance("AES/ECB/PKCS5Padding");
-        cipher.init(Cipher.DECRYPT_MODE, key);;
-        SendGrid sg = new SendGrid(new String(cipher.doFinal(Hex.decodeHex(Config.Apikey))));
-        Request request = new Request();
-        request.setMethod(Method.POST);
-        request.setEndpoint("mail/send");
-        request.setBody(mail.build());
-        Response response = sg.api(request);
-        log.info(response.toString());
-    }
+    public final static MinioClient minioClient = MinioClient.builder().endpoint(Config.OssUrl)
+            .credentials(Config.MINIO_ROOT_USER, Config.MINIO_ROOT_PASSWORD).build();
 
     public static String generateJwt(JwtUser user) {
         return Jwts.builder()
@@ -61,5 +49,20 @@ public class Util {
                 .setExpiration(java.sql.Date.valueOf(Config.ExpireTime))
                 .signWith(SecurityConfig.secretKey)
                 .compact();
+    }
+
+    public static void createMail(String from, String to, String emailTitle, String emailContent) throws Exception {
+        Content content = new Content("text/plain", emailContent);
+        Mail mail = new Mail(new Email(from), emailTitle, new Email(to), content);
+        Key key = new SecretKeySpec(Hex.decodeHex(Config.DecodedKey), "AES");
+        Cipher cipher = Cipher.getInstance("AES/ECB/PKCS5Padding");
+        cipher.init(Cipher.DECRYPT_MODE, key);
+        SendGrid sg = new SendGrid(new String(cipher.doFinal(Hex.decodeHex(Config.Apikey))));
+        Request request = new Request();
+        request.setMethod(Method.POST);
+        request.setEndpoint("mail/send");
+        request.setBody(mail.build());
+        Response response = sg.api(request);
+        log.info(response.toString());
     }
 }
