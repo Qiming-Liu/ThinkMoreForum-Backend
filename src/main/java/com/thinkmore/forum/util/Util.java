@@ -8,7 +8,12 @@ import com.sendgrid.helpers.mail.Mail;
 import com.sendgrid.helpers.mail.objects.Content;
 import com.sendgrid.helpers.mail.objects.Email;
 import com.thinkmore.forum.configuration.Config;
+<<<<<<< Updated upstream
 import com.thinkmore.forum.entity.JwtUser;
+=======
+import com.thinkmore.forum.entity.Users;
+import com.thinkmore.forum.exception.InvalidOldPasswordException;
+>>>>>>> Stashed changes
 import io.jsonwebtoken.Jwts;
 import io.minio.MinioClient;
 import lombok.extern.slf4j.Slf4j;
@@ -58,5 +63,11 @@ public class Util {
         request.setBody(mail.build());
         Response response = sg.api(request);
         log.info(response.toString());
+    }
+    public static void checkPassword (String password){
+        String pattern = "(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=.*[@#$^&+=])(?=\\S+$).{8,}";
+        if (!password.matches(pattern)){
+            throw new InvalidOldPasswordException("Invalid Password!" );
+        }
     }
 }

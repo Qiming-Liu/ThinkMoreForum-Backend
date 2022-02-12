@@ -70,9 +70,19 @@ public class UsersService implements UserDetailsService {
 //        return usersMapper.fromEntity(usersRepository.findById(userId).get());
 //    }
 
+<<<<<<< Updated upstream
     @Transactional
     public boolean changeUsername(String newUsername) {
         UUID users_id = UUID.fromString(Util.getJwtContext().get(0));
+=======
+    public boolean changePassword(String oldPassword, String newPassword) {
+        Util.checkPassword(newPassword);
+        String users_id = Util.getJwtContext().get(0);
+        UUID id = UUID.fromString(users_id);
+
+        Users user = usersRepository.findById(id)
+                .orElseThrow(() -> new UserNotFoundException("User not found: " + users_id));
+>>>>>>> Stashed changes
 
         Users user = usersRepository.findById(users_id)
                 .orElseThrow(() -> new UserNotFoundException("Invalid UserID"));
@@ -94,11 +104,21 @@ public class UsersService implements UserDetailsService {
         return true;
     }
 
+<<<<<<< Updated upstream
     @Transactional
     public boolean changeEmail(String newEmail) {
         UUID users_id = UUID.fromString(Util.getJwtContext().get(0));
         Users user = usersRepository.findById(users_id)
                 .orElseThrow(() -> new UserNotFoundException("Invalid UserID"));
+=======
+    public boolean resetPassword(String password){
+        Util.checkPassword(password);
+        String users_id = Util.getJwtContext().get(0);
+        UUID id = UUID.fromString(users_id);
+
+        Users user = usersRepository.findById(id)
+                .orElseThrow(() -> new UserNotFoundException("User not found"));
+>>>>>>> Stashed changes
 
         user.setEmail(newEmail);
         usersRepository.save(user);
