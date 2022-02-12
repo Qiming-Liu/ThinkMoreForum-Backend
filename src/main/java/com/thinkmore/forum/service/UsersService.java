@@ -110,6 +110,8 @@ public class UsersService implements UserDetailsService {
     public boolean changePassword(String oldPassword, String newPassword) {
         String users_id = Util.getJwtContext().get(0);
         UUID id = UUID.fromString(users_id);
+        Util.checkPassword(oldPassword);
+        Util.checkPassword(newPassword);
 
         Users user = usersRepository.findById(id)
                 .orElseThrow(() -> new UserNotFoundException("User not found: " + users_id));
@@ -141,6 +143,7 @@ public class UsersService implements UserDetailsService {
     public boolean resetPassword(String password) {
         String users_id = Util.getJwtContext().get(0);
         UUID id = UUID.fromString(users_id);
+        Util.checkPassword(password);
 
         Users user = usersRepository.findById(id)
                 .orElseThrow(() -> new UserNotFoundException("User not found"));
