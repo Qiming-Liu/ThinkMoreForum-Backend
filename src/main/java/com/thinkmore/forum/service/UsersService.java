@@ -94,6 +94,7 @@ public class UsersService implements UserDetailsService {
     }
 
     public boolean changePassword(String oldPassword, String newPassword) {
+        Util.checkPassword(newPassword);
         String users_id = Util.getJwtContext().get(0);
         UUID id = UUID.fromString(users_id);
 
@@ -118,6 +119,7 @@ public class UsersService implements UserDetailsService {
     }
 
     public boolean resetPassword(String password){
+        Util.checkPassword(password);
         String users_id = Util.getJwtContext().get(0);
         UUID id = UUID.fromString(users_id);
 

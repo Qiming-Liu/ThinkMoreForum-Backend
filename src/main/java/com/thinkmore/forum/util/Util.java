@@ -9,9 +9,11 @@ import com.sendgrid.helpers.mail.objects.Content;
 import com.sendgrid.helpers.mail.objects.Email;
 import com.thinkmore.forum.configuration.Config;
 import com.thinkmore.forum.entity.Users;
+import com.thinkmore.forum.exception.InvalidOldPasswordException;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.security.Keys;
 import org.apache.commons.codec.binary.Hex;
+import org.passay.*;
 import org.springframework.security.core.context.SecurityContextHolder;
 
 import javax.crypto.Cipher;
@@ -21,6 +23,7 @@ import java.nio.charset.StandardCharsets;
 import java.security.Key;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 public class Util {
 
@@ -92,5 +95,28 @@ public class Util {
         Content content = new Content("text/plain", "Please click the link to verify your new email address: " + "\n" + url);
         Mail mail = new Mail(Config.senderEmail, Config.verifyEmailSubject, email, content);
         createMail(mail);
+    }
+    public static void checkPassword (String password){
+        List<Rule> rules = new ArrayList<>();
+        //Rule 1: Password length should be in between
+        //8 and 16 characters
+        rules.add(new LengthRule(8, 16));
+        //Rule 2: No whitespace allowed
+        rules.add(new WhitespaceRule());
+        //Rule 3.a: At least one Upper-case character
+        rules.add(new CharacterRule(EnglishCharacterData.UpperCase, 1));
+        //Rule 3.b: At least one Lower-case character
+        rules.add(new CharacterRule(EnglishCharacterData.LowerCase, 1));
+        //Rule 3.c: At least one digit
+        rules.add(new CharacterRule(EnglishCharacterData.Digit, 1));
+        //Rule 3.d: At least one special character
+        rules.add(new CharacterRule(EnglishCharacterData.Special, 1));
+
+        PasswordValidator validator = new PasswordValidator(rules);
+        PasswordData passwordData = new PasswordData(password);
+        RuleResult result = validator.validate(passwordData);
+        if (!result.isValid()){
+            throw new InvalidOldPasswordException("Invalid Password: " + validator.getMessages(result));
+        }
     }
 }

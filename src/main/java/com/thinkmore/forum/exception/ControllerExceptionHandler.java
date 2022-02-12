@@ -18,6 +18,12 @@ public class ControllerExceptionHandler {
                 .body(new ForumErrorDto("USER_NOT_FOUND", "User is not found"));
     }
 
+    public ResponseEntity<ForumErrorDto> handleInvalidPasswordException(InvalidPasswordException e) {
+        log.info("Invalid password.", e);
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST)
+                .body(new ForumErrorDto("INVALID_PASSWORD", "Invalid password"));
+    }
+
     public ResponseEntity<ForumErrorDto> handleInvalidOldPasswordException(InvalidOldPasswordException e) {
         log.info("Password is wrong.", e);
         return ResponseEntity.status(HttpStatus.BAD_REQUEST)

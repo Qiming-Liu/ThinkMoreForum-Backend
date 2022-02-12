@@ -1,7 +1,6 @@
 package com.thinkmore.forum.entity;
 
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
 
 import javax.persistence.*;
 import java.util.UUID;
@@ -22,11 +21,4 @@ public class Img {
     @Column(name = "img_hash", nullable = false)
     private String imgHash;
 
-    public UUID getId() {
-        return id;
-    }
-
-    public void setId(UUID id) {
-        this.id = id;
-    }
 }
