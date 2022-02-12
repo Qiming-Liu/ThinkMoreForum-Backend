@@ -1,12 +1,5 @@
 package com.thinkmore.forum.configuration;
 
-<<<<<<< Updated upstream
-=======
-import com.sendgrid.helpers.mail.objects.Email;
-import org.springframework.security.crypto.argon2.Argon2PasswordEncoder;
-import org.springframework.security.crypto.password.PasswordEncoder;
-
->>>>>>> Stashed changes
 import java.time.LocalDate;
 
 public class Config {
