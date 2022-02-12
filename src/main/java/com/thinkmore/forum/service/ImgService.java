@@ -1,5 +1,6 @@
 package com.thinkmore.forum.service;
 
+import com.thinkmore.forum.configuration.Config;
 import com.thinkmore.forum.dto.img.ImgGetDto;
 import com.thinkmore.forum.entity.Img;
 import com.thinkmore.forum.mapper.ImgMapper;
@@ -44,46 +45,39 @@ public class ImgService {
     }
 
     @Transactional
-    public String uploadImg(InputStream imgStream, String md5) throws Exception {
-        // check
-        Optional<Img> image = imgRepo.findByHash(md5);
-        if (image.isPresent()) {
-            return image.get().getUrl();
-        }
-
-        // put
-        String BucketName = "img";
+    public Img uploadImg(InputStream imgStream, String md5) throws Exception {
+        String BucketName = "image";
+        String fileName = md5 + ".png";
         boolean found = Util.minioClient.bucketExists(BucketExistsArgs.builder().bucket(BucketName).build());
         if (!found) {
             Util.minioClient.makeBucket(MakeBucketArgs.builder().bucket(BucketName).build());
         }
+
+        // check
+        Optional<Img> image = imgRepo.findByHash(md5);
+        if (image.isPresent()) {
+            return image.get();
+        }
+
+        // put
         Util.minioClient.putObject(
                 PutObjectArgs.builder()
                         .bucket(BucketName)
-                        .object(md5)
+                        .object(fileName)
                         .stream(imgStream, -1, 5 * 1024 * 1024)
-                        .contentType("image/jpg")
+                        .contentType("image/png")
                         .build());
 
-        // get url
-        Map<String, String> reqParams = new HashMap<>();
-        reqParams.put("response-content-type", "image/jpg");
-
-        String url = Util.minioClient.getPresignedObjectUrl(
-                GetPresignedObjectUrlArgs.builder()
-                        .method(Method.GET)
-                        .bucket(BucketName)
-                        .object(md5)
-                        .expiry(7, TimeUnit.DAYS)
-                        .extraQueryParams(reqParams)
-                        .build());
+        String policyJson = "{\"Version\":\"2012-10-17\",\"Statement\":[{\"Effect\":\"Allow\",\"Principal\":{\"AWS\":[\"*\"]},\"Action\":[\"s3:ListBucketMultipartUploads\",\"s3:GetBucketLocation\",\"s3:ListBucket\"],\"Resource\":[\"arn:aws:s3:::image\"]},{\"Effect\":\"Allow\",\"Principal\":{\"AWS\":[\"*\"]},\"Action\":[\"s3:AbortMultipartUpload\",\"s3:DeleteObject\",\"s3:GetObject\",\"s3:ListMultipartUploadParts\",\"s3:PutObject\"],\"Resource\":[\"arn:aws:s3:::image/*\"]}]}";
+        Util.minioClient.setBucketPolicy(
+                SetBucketPolicyArgs.builder().bucket(BucketName).config(policyJson).build());
 
         // set
         Img img = new Img();
-        img.setUrl(url);
+        img.setUrl(Config.OssUrl + BucketName + "/" + fileName);
         img.setHash(md5);
         imgRepo.save(img);
 
-        return url;
+        return img;
     }
 }

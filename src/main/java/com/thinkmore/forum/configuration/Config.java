@@ -38,6 +38,6 @@ public class Config {
 
     // OSS
     public final static String OssUrl = "http://localhost:9000/";
-    public final static String MINIO_ROOT_USER = "admin";
+    public final static String MINIO_ROOT_USER = "minio";
     public final static String MINIO_ROOT_PASSWORD = "development";
 }
