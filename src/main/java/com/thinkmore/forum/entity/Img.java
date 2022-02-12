@@ -1,6 +1,7 @@
 package com.thinkmore.forum.entity;
 
-import lombok.*;
+import lombok.Getter;
+import lombok.Setter;
 
 import javax.persistence.*;
 import java.util.UUID;
@@ -18,12 +19,6 @@ public class Img {
     @Column(name = "url", nullable = false, length = 260)
     private String url;
 
-<<<<<<< Updated upstream
     @Column(name = "hash", nullable = false)
     private String hash;
-=======
-    @Column(name = "img_hash", nullable = false)
-    private String imgHash;
-
->>>>>>> Stashed changes
 }
