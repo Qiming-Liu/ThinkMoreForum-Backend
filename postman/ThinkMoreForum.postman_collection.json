@@ -1,7 +1,7 @@
 {
 	"info": {
-		"_postman_id": "410d238e-c689-4820-83a6-c5b5612e92c9",
-		"name": "ThinkMoreForum Copy",
+		"_postman_id": "7c4c1c38-c56d-46b4-8140-65540831e3d0",
+		"name": "ThinkMoreForum",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
 	},
 	"item": [
@@ -1317,89 +1317,6 @@
 			"name": "img",
 			"item": [
 				{
-					"name": "upload 上传图片接口",
-					"event": [
-						{
-							"listen": "prerequest",
-							"script": {
-								"exec": [
-									""
-								],
-								"type": "text/javascript"
-							}
-						}
-					],
-					"request": {
-						"method": "POST",
-						"header": [],
-						"body": {
-							"mode": "formdata",
-							"formdata": [
-								{
-									"key": "hash",
-									"value": "",
-									"type": "text"
-								},
-								{
-									"key": "img_binary",
-									"type": "file",
-									"src": []
-								}
-							]
-						},
-						"url": {
-							"raw": "{{url}}/v1/img/upload",
-							"host": [
-								"{{url}}"
-							],
-							"path": [
-								"v1",
-								"img",
-								"upload"
-							]
-						}
-					},
-					"response": [
-						{
-							"name": "JWT",
-							"originalRequest": {
-								"method": "POST",
-								"header": [],
-								"body": {
-									"mode": "formdata",
-									"formdata": [
-										{
-											"key": "hash",
-											"value": "",
-											"type": "text"
-										},
-										{
-											"key": "img_binary",
-											"type": "file",
-											"src": []
-										}
-									]
-								},
-								"url": {
-									"raw": "{{url}}/v1/img/upload",
-									"host": [
-										"{{url}}"
-									],
-									"path": [
-										"v1",
-										"img",
-										"upload"
-									]
-								}
-							},
-							"_postman_previewlanguage": "Text",
-							"header": [],
-							"cookie": [],
-							"body": ""
-						}
-					]
-				},
-				{
 					"name": "profile 修改头像",
 					"event": [
 						{
@@ -1479,6 +1396,89 @@
 							"header": [],
 							"cookie": [],
 							"body": ""
+						}
+					]
+				},
+				{
+					"name": "upload 上传图片接口 为了方便 所有图片只能是png",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "file",
+									"type": "file",
+									"src": []
+								},
+								{
+									"key": "md5",
+									"value": "be00b93b972c577de11bb7d37268fe",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "{{url}}/v1/img/upload",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"v1",
+								"img",
+								"upload"
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "JWT",
+							"originalRequest": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "formdata",
+									"formdata": [
+										{
+											"key": "hash",
+											"value": "",
+											"type": "text"
+										},
+										{
+											"key": "img_binary",
+											"type": "file",
+											"src": []
+										}
+									]
+								},
+								"url": {
+									"raw": "{{url}}/v1/img/upload",
+									"host": [
+										"{{url}}"
+									],
+									"path": [
+										"v1",
+										"img",
+										"upload"
+									]
+								}
+							},
+							"_postman_previewlanguage": null,
+							"header": null,
+							"cookie": [],
+							"body": null
 						}
 					]
 				}

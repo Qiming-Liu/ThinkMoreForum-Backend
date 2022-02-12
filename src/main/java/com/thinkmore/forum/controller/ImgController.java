@@ -1,6 +1,7 @@
 package com.thinkmore.forum.controller;
 
 import com.thinkmore.forum.dto.img.ImgGetDto;
+import com.thinkmore.forum.entity.Img;
 import com.thinkmore.forum.service.ImgService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -38,7 +39,7 @@ public class ImgController {
     }
 
     @PostMapping(path = "/upload")
-    public ResponseEntity<String> upload(@RequestParam MultipartFile file, @RequestParam String md5) throws Exception {
+    public ResponseEntity<Img> upload(@RequestParam MultipartFile file, @RequestParam String md5) throws Exception {
         byte[] byteArr = file.getBytes();
         InputStream inputStream = new ByteArrayInputStream(byteArr);
         return ResponseEntity.ok(imgService.uploadImg(inputStream, md5));

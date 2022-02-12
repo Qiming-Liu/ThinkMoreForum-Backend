@@ -1,7 +1,7 @@
 version: '3.8'
 services:
   db:
-    container_name: postgresql
+    container_name: db
     image: postgres:14.1
     restart: always
     environment:
@@ -9,3 +9,14 @@ services:
       POSTGRES_PASSWORD: development
     ports:
       - "5432:5432"
+  oss:
+    container_name: oss
+    image: minio/minio:RELEASE.2022-02-07T08-17-33Z
+    restart: always
+    environment:
+      MINIO_ROOT_USER: minio
+      MINIO_ROOT_PASSWORD: development
+    ports:
+      - "9000:9000"
+      - "9001:9001"
+    command: server --console-address ":9001" /data
