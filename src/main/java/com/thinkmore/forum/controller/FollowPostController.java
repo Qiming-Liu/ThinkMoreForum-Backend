@@ -11,7 +11,7 @@ import java.util.List;
 import java.util.UUID;
 
 @RestController
-@RequestMapping(path = "/api/v1/watching_post")
+@RequestMapping(path = "/v1/watching_post")
 @RequiredArgsConstructor
 public class FollowPostController {
 

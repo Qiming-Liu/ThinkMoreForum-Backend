@@ -36,13 +36,13 @@ public class FollowPostService {
 
     public List<FollowPostGetDto> getAllFollowPosts() {
         return followPostRepo.findAll().stream()
-                .map(followPost -> followPostMapper.fromEntity(followPost))
+                .map(followPostMapper::fromEntity)
                 .collect(Collectors.toList());
     }
 
     public List<FollowPostGetDto> getAllFollowPostsByUserId(UUID userId) {
         return followPostRepo.findByUsers_IdOrderByCreateTimestampDesc(userId).stream()
-                .map(followPost -> followPostMapper.fromEntity(followPost))
+                .map(followPostMapper::fromEntity)
                 .collect(Collectors.toList());
     }
 
@@ -61,9 +61,8 @@ public class FollowPostService {
 
     @Transactional
     public String userUnfollowPost(UUID postId, UUID userId) {
-        String deleteResponse = followPostRepo.deleteByUsers_IdAndPost_Id(userId, postId) > 0?
+        return followPostRepo.deleteByUsers_IdAndPost_Id(userId, postId) > 0?
                 "Successfully unfollowed!":"Unfollow failed or you didn't follow this post";
-        return deleteResponse;
     }
 
 }

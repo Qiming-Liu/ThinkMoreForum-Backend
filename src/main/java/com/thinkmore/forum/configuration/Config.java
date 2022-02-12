@@ -1,34 +1,37 @@
 package com.thinkmore.forum.configuration;
 
-import com.sendgrid.helpers.mail.objects.Content;
-import com.sendgrid.helpers.mail.objects.Email;
-import org.springframework.security.crypto.argon2.Argon2PasswordEncoder;
-import org.springframework.security.crypto.password.PasswordEncoder;
-
 import java.time.LocalDate;
 
 public class Config {
+    // Jwt
     public final static String[] ignoreUrl = new String[]{
-            "/**",
-            "/api/v1/test/hello_world",
-            "/swagger-ui/#**",
-            "/api/v1/authentication/registration",
-            "/api/v1/authentication/unique_email",
-            "/api/v1/password/reset_password_send_email",
+            // -- Swagger UI v2
+            "/v2/api-docs",
+            "/swagger-resources",
+            "/swagger-resources/**",
+            "/configuration/ui",
+            "/configuration/security",
+            "/swagger-ui.html",
+            "/webjars/**",
+            // -- API
+            "/v1/users/signup/**",
+            "/v1/users/unique-email/**",
+            "/v1/users/unique-username/**",
+            "/v1/users/reset-password/**",
     };
-
     public final static String JwtSecretKey = "fruue37r7yrfhf87f7876guyggf%$$#$%^&%RTHGhjjkj23456rkkkkdkd";
     public final static String JwtPrefix = "";//Bearer ";
-    public final static LocalDate ExpireTime = LocalDate.now().plusDays(1);
-    public final static PasswordEncoder passwordEncoder = new Argon2PasswordEncoder();
+    public final static LocalDate ExpireTime = LocalDate.now().plusDays(100);
+
+    // Role
     public final static String DefaultRole = "unverified_user";
-    public final static Email senderEmail = new Email("jiangjianglovezhou@gmail.com");
-    public final static String emailSubject = "Reset Password";
-    public final static String verifyEmailSubject = "Verify New Email";
-    public final static String url = "http://127.0.0.1:8080/user/changePassword?token=";
-//    public final static Content content = new Content("text/plain", "Reset your password!");
-    public final static String templateId = "d-100a0215815a45e58cf43751988a468e";
-    public final static String emailUrl = "http://172.22.160.1:8080/v1/user/update-email?token=";
-    public final static String key = "bf7429164ac97e5dae68b01c9b5f4db2fdf172b5e843d2c2d8f3f829e9b785c02cd38bda9be56537804f8e5626eeca116989564aa0d603c40355d037f4713c55c2638ef376ce12e5455e4dbfd5cd49cc";
-    public final static String decodedKey = "1a53d4469f513e1ae3856fc2c603b8d6";
+
+    // Email
+    public final static String DecodedKey = "1a53d4469f513e1ae3856fc2c603b8d6";
+    public final static String Apikey = "bf7429164ac97e5dae68b01c9b5f4db2fdf172b5e843d2c2d8f3f829e9b785c02cd38bda9be56537804f8e5626eeca116989564aa0d603c40355d037f4713c55c2638ef376ce12e5455e4dbfd5cd49cc";
+    public final static String fromEmail = "jiangjianglovezhou@gmail.com";
+    public final static String ResetPasswordUrl = "前端url?token=";
+    public final static String ResetPasswordContext = "Please click the link to reset your new password:\n";
+    public final static String VerifyEmailUrl = "前端url?token=";
+    public final static String VerifyEmailContext = "Please click the link to verify your new email:\n";
 }

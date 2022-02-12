@@ -3,6 +3,7 @@ package com.thinkmore.forum.configuration;
 import com.thinkmore.forum.filter.JwtGenerateFilter;
 import com.thinkmore.forum.filter.JwtCheckFilter;
 import com.thinkmore.forum.service.UsersService;
+import com.thinkmore.forum.util.Util;
 import io.jsonwebtoken.security.Keys;
 import lombok.RequiredArgsConstructor;
 import lombok.SneakyThrows;
@@ -24,6 +25,7 @@ import java.nio.charset.StandardCharsets;
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     private final UsersService usersService;
+    public static final SecretKey secretKey = Keys.hmacShaKeyFor(Config.JwtSecretKey.getBytes(StandardCharsets.UTF_8));
 
     @SneakyThrows
     protected void configure(HttpSecurity http) {
@@ -31,8 +33,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .csrf().disable()
                 .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                 .and()
-                .addFilter(new JwtGenerateFilter(usersService, authenticationManager(), secretKey()))
-                .addFilterAfter(new JwtCheckFilter(secretKey()), JwtGenerateFilter.class)
+                .addFilter(new JwtGenerateFilter(usersService, authenticationManager(), secretKey))
+                .addFilterAfter(new JwtCheckFilter(secretKey), JwtGenerateFilter.class)
                 .authorizeRequests()
                 .antMatchers(Config.ignoreUrl).permitAll()
                 .anyRequest().authenticated();
@@ -47,13 +49,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     @Bean
     public DaoAuthenticationProvider daoAuthenticationProvider() {
         DaoAuthenticationProvider provider = new DaoAuthenticationProvider();
-        provider.setPasswordEncoder(Config.passwordEncoder);
+        provider.setPasswordEncoder(Util.passwordEncoder);
         provider.setUserDetailsService(usersService);
         return provider;
-    }
-
-    @Bean
-    public SecretKey secretKey() {
-        return Keys.hmacShaKeyFor(Config.JwtSecretKey.getBytes(StandardCharsets.UTF_8));
     }
 }

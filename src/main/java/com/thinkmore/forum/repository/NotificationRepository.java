@@ -14,15 +14,10 @@ public interface NotificationRepository extends JpaRepository<Notification, UUID
     @Override
     Optional<Notification> findById(UUID uuid);
 
-    List<Notification> findAll();
-
     List<Notification> findByUsers_IdOrderByCreateTimestampDesc(UUID id);
 
     Optional<Notification> findByIdAndUsers_Id(UUID id, UUID id1);
-    
-    
 
     @Modifying
     long deleteByIdAndUsers_Id(UUID id, UUID id1);
-
 }

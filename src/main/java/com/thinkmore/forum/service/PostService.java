@@ -20,7 +20,7 @@ public class PostService {
     public List<PostGetDto> getAllPosts() {
 
         return postRepo.findAll().stream()
-                .map(post -> postMapper.fromEntity(post))
+                .map(postMapper::fromEntity)
                 .collect(Collectors.toList());
     }
 }

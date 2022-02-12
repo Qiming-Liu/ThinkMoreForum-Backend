@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.RestController;
 import java.util.List;
 
 @RestController
-@RequestMapping(path = "/api/v1/img")
+@RequestMapping(path = "/v1/img")
 @RequiredArgsConstructor
 public class ImgController {
 
