@@ -1,6 +1,6 @@
 {
 	"info": {
-		"_postman_id": "7c4c1c38-c56d-46b4-8140-65540831e3d0",
+		"_postman_id": "9f39a82e-2e53-4812-937a-0ba46e93129c",
 		"name": "ThinkMoreForum",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
 	},
@@ -588,26 +588,14 @@
 							"raw": ""
 						},
 						"url": {
-							"raw": "{{url}}/v1/users/followed/:user_id/:followed_users_id",
+							"raw": "{{url}}/v1/users/followed",
 							"host": [
 								"{{url}}"
 							],
 							"path": [
 								"v1",
 								"users",
-								"followed",
-								":user_id",
-								":followed_users_id"
-							],
-							"variable": [
-								{
-									"key": "user_id",
-									"value": null
-								},
-								{
-									"key": "followed_users_id",
-									"value": null
-								}
+								"followed"
 							]
 						}
 					},
@@ -660,26 +648,14 @@
 							"raw": ""
 						},
 						"url": {
-							"raw": "{{url}}/v1/users/follower/:user_id/:followed_users_id",
+							"raw": "{{url}}/v1/users/follower",
 							"host": [
 								"{{url}}"
 							],
 							"path": [
 								"v1",
 								"users",
-								"follower",
-								":user_id",
-								":followed_users_id"
-							],
-							"variable": [
-								{
-									"key": "user_id",
-									"value": null
-								},
-								{
-									"key": "followed_users_id",
-									"value": null
-								}
+								"follower"
 							]
 						}
 					},
@@ -710,7 +686,7 @@
 					]
 				},
 				{
-					"name": "follow 关注一个用户",
+					"name": "follows 关注一个用户",
 					"event": [
 						{
 							"listen": "prerequest",
@@ -736,14 +712,14 @@
 							"raw": ""
 						},
 						"url": {
-							"raw": "{{url}}/v1/users/follow/:uses_id",
+							"raw": "{{url}}/v1/users/follows/:uses_id",
 							"host": [
 								"{{url}}"
 							],
 							"path": [
 								"v1",
 								"users",
-								"follow",
+								"follows",
 								":uses_id"
 							],
 							"variable": [
@@ -792,7 +768,7 @@
 					]
 				},
 				{
-					"name": "follow 取消关注用户",
+					"name": "follows 取消关注用户",
 					"event": [
 						{
 							"listen": "prerequest",
@@ -812,14 +788,14 @@
 							"raw": ""
 						},
 						"url": {
-							"raw": "{{url}}/v1/users/follow/:uses_id",
+							"raw": "{{url}}/v1/users/follows/:uses_id",
 							"host": [
 								"{{url}}"
 							],
 							"path": [
 								"v1",
 								"users",
-								"follow",
+								"follows",
 								":uses_id"
 							],
 							"variable": [
@@ -895,14 +871,14 @@
 							"raw": ""
 						},
 						"url": {
-							"raw": "{{url}}/v1/post/follows",
+							"raw": "{{url}}/v1/post/followed",
 							"host": [
 								"{{url}}"
 							],
 							"path": [
 								"v1",
 								"post",
-								"follows"
+								"followed"
 							]
 						}
 					},
@@ -933,7 +909,7 @@
 					]
 				},
 				{
-					"name": "follow 关注一个帖子",
+					"name": "follows 关注一个帖子",
 					"event": [
 						{
 							"listen": "test",
@@ -1008,7 +984,7 @@
 					]
 				},
 				{
-					"name": "follow 取消关注帖子",
+					"name": "follows 取消关注帖子",
 					"event": [
 						{
 							"listen": "prerequest",
@@ -1081,102 +1057,6 @@
 							"body": ""
 						}
 					]
-				},
-				{
-					"name": "post a post 用户发帖",
-					"request": {
-						"method": "POST",
-						"header": [
-							{
-								"key": "Authorization",
-								"value": "eyJhbGciOiJIUzM4NCJ9.eyJqdGkiOiJhYTYxMmRkNC04ODBkLTExZWMtOWVhNi0zYmJhZDU3MGMxODUiLCJzdWIiOiJhZG1pbiIsImF1ZCI6Int9IiwiaWF0IjoxNjQ0NTc4MDU0LCJleHAiOjE2NTMxNDE2MDB9.wrbImgNfbUekwbf_mshK1W_lLnk-_w0Yp0bEkHg8J-FR97pDjQMHWIeWggg6u7Vl",
-								"type": "text"
-							}
-						],
-						"body": {
-							"mode": "raw",
-							"raw": "{\r\n    \"category\": {\r\n        \"id\": \"aa6a09ae-880d-11ec-9ea6-6f924a8f6f1d\",\r\n        \"title\": \"Default Category\"\r\n    },\r\n    \"title\": \"admin post title2\",\r\n    \"context\": \"<p>admin post context2</p>\"\r\n}",
-							"options": {
-								"raw": {
-									"language": "json"
-								}
-							}
-						},
-						"url": {
-							"raw": "{{url}}/v1/post/",
-							"host": [
-								"{{url}}"
-							],
-							"path": [
-								"v1",
-								"post",
-								""
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "delete a post 用户删帖",
-					"request": {
-						"method": "DELETE",
-						"header": [
-							{
-								"key": "Authorization",
-								"value": "eyJhbGciOiJIUzM4NCJ9.eyJqdGkiOiJhYTYxMmRkNC04ODBkLTExZWMtOWVhNi0zYmJhZDU3MGMxODUiLCJzdWIiOiJhZG1pbiIsImF1ZCI6Int9IiwiaWF0IjoxNjQ0NTc4MzE0LCJleHAiOjE2NTMxNDE2MDB9.SJbHrCJ3Ap5Mun8xVU0ZI7HXymsYqS9jTJ_sXob5czvV0q3u_4e3vJkScCdz13Fj",
-								"type": "text"
-							}
-						],
-						"url": {
-							"raw": "{{url}}/v1/post/:post_id",
-							"host": [
-								"{{url}}"
-							],
-							"path": [
-								"v1",
-								"post",
-								":post_id"
-							],
-							"variable": [
-								{
-									"key": "post_id",
-									"value": "f163ef88-7d6f-4074-bcdb-3f994041ce30"
-								}
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "view post by id 根据id查看帖子",
-					"request": {
-						"method": "GET",
-						"header": [
-							{
-								"key": "Authorization",
-								"value": "eyJhbGciOiJIUzM4NCJ9.eyJqdGkiOiJhYTYxMmRkNC04ODBkLTExZWMtOWVhNi0zYmJhZDU3MGMxODUiLCJzdWIiOiJhZG1pbiIsImF1ZCI6Int9IiwiaWF0IjoxNjQ0NTc3MTUzLCJleHAiOjE2NTMxNDE2MDB9.rCflqqiVYTMnz2YcFUtr-xC_PUlCw7mITwVKZQhNZrxDz3IGAX74rL_ZQMwn09oQ",
-								"type": "text"
-							}
-						],
-						"url": {
-							"raw": "{{url}}/v1/post/:post_id",
-							"host": [
-								"{{url}}"
-							],
-							"path": [
-								"v1",
-								"post",
-								":post_id"
-							],
-							"variable": [
-								{
-									"key": "post_id",
-									"value": null
-								}
-							]
-						}
-					},
-					"response": []
 				}
 			]
 		},
@@ -1184,7 +1064,7 @@
 			"name": "notification",
 			"item": [
 				{
-					"name": "view notifications 获得用户的所有提醒",
+					"name": "notification",
 					"event": [
 						{
 							"listen": "prerequest",
@@ -1201,13 +1081,7 @@
 					},
 					"request": {
 						"method": "GET",
-						"header": [
-							{
-								"key": "Authorization",
-								"value": "eyJhbGciOiJIUzM4NCJ9.eyJqdGkiOiJhYTYxOGZhNC04ODBkLTExZWMtOWVhNi04NzE0NDgwMDExMTMiLCJzdWIiOiJtb2RlcmF0b3IiLCJhdWQiOiJ7fSIsImlhdCI6MTY0NDU3ODE2OCwiZXhwIjoxNjUzMTQxNjAwfQ.M2jnZQmTBe9uzgZJsIMBJZLT8rHwgBJwtqeE_ghR9ZO1wC4-0VKolj27IMfAgOlj",
-								"type": "text"
-							}
-						],
+						"header": [],
 						"body": {
 							"mode": "raw",
 							"raw": ""
@@ -1248,74 +1122,95 @@
 							"body": ""
 						}
 					]
-				},
-				{
-					"name": "delete_notification 用户删除一个提醒",
-					"request": {
-						"method": "DELETE",
-						"header": [
-							{
-								"key": "Authorization",
-								"value": "",
-								"type": "text"
-							}
-						],
-						"url": {
-							"raw": "{{url}}/v1/notification/:notification_id",
-							"host": [
-								"{{url}}"
-							],
-							"path": [
-								"v1",
-								"notification",
-								":notification_id"
-							],
-							"variable": [
-								{
-									"key": "notification_id",
-									"value": null
-								}
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "view_notification_by_id 用户根据id查看一个提醒",
-					"request": {
-						"method": "GET",
-						"header": [
-							{
-								"key": "Authorization",
-								"value": "eyJhbGciOiJIUzM4NCJ9.eyJqdGkiOiJhYTYxMmRkNC04ODBkLTExZWMtOWVhNi0zYmJhZDU3MGMxODUiLCJzdWIiOiJhZG1pbiIsImF1ZCI6Int9IiwiaWF0IjoxNjQ0NTc2OTY1LCJleHAiOjE2NTMxNDE2MDB9.yTkFgz0xVKY9EPiaW9rgSH8Te2rMGY--dVcVDc3TXYfqa8wvzllVqjBaTisgKpbq",
-								"type": "text"
-							}
-						],
-						"url": {
-							"raw": "{{url}}/v1/notification/:notification_id",
-							"host": [
-								"{{url}}"
-							],
-							"path": [
-								"v1",
-								"notification",
-								":notification_id"
-							],
-							"variable": [
-								{
-									"key": "notification_id",
-									"value": "aa6e926c-880d-11ec-9ea6-73fb3ee4069f"
-								}
-							]
-						}
-					},
-					"response": []
 				}
 			]
 		},
 		{
 			"name": "img",
 			"item": [
+				{
+					"name": "upload 上传图片接口",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "hash",
+									"value": "",
+									"type": "text"
+								},
+								{
+									"key": "img_binary",
+									"type": "file",
+									"src": []
+								}
+							]
+						},
+						"url": {
+							"raw": "{{url}}/v1/img/upload",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"v1",
+								"img",
+								"upload"
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "JWT",
+							"originalRequest": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "formdata",
+									"formdata": [
+										{
+											"key": "hash",
+											"value": "",
+											"type": "text"
+										},
+										{
+											"key": "img_binary",
+											"type": "file",
+											"src": []
+										}
+									]
+								},
+								"url": {
+									"raw": "{{url}}/v1/img/upload",
+									"host": [
+										"{{url}}"
+									],
+									"path": [
+										"v1",
+										"img",
+										"upload"
+									]
+								}
+							},
+							"_postman_previewlanguage": "Text",
+							"header": [],
+							"cookie": [],
+							"body": ""
+						}
+					]
+				},
 				{
 					"name": "profile 修改头像",
 					"event": [
@@ -1398,89 +1293,121 @@
 							"body": ""
 						}
 					]
-				},
+				}
+			]
+		},
+		{
+			"name": "category",
+			"item": [
 				{
-					"name": "upload 上传图片接口 为了方便 所有图片只能是png",
-					"event": [
-						{
-							"listen": "prerequest",
-							"script": {
-								"exec": [
-									""
-								],
-								"type": "text/javascript"
-							}
-						}
-					],
+					"name": "New Request",
 					"request": {
-						"method": "POST",
-						"header": [],
-						"body": {
-							"mode": "formdata",
-							"formdata": [
-								{
-									"key": "file",
-									"type": "file",
-									"src": []
-								},
-								{
-									"key": "md5",
-									"value": "be00b93b972c577de11bb7d37268fe",
-									"type": "text"
-								}
-							]
-						},
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "eyJhbGciOiJIUzM4NCJ9.eyJqdGkiOiJmZWY4NmExYy04YTU5LTExZWMtOWUxZi01ZmIyZTk3OWUxMmQiLCJzdWIiOiJhZG1pbiIsImF1ZCI6Int9IiwiaWF0IjoxNjQ0NTg3ODAyLCJleHAiOjE2NTMyMjgwMDB9.SD02hRxDZVWlJbNMu6MxrYtpJcdf9BUR7c3j7FfyrET12HDEwf3CcMxeDmP5brYM",
+								"type": "text"
+							}
+						],
 						"url": {
-							"raw": "{{url}}/v1/img/upload",
+							"raw": "localhost:8080/v1/category",
 							"host": [
-								"{{url}}"
+								"localhost"
 							],
+							"port": "8080",
 							"path": [
 								"v1",
-								"img",
-								"upload"
+								"category"
 							]
 						}
 					},
-					"response": [
-						{
-							"name": "JWT",
-							"originalRequest": {
-								"method": "POST",
-								"header": [],
-								"body": {
-									"mode": "formdata",
-									"formdata": [
-										{
-											"key": "hash",
-											"value": "",
-											"type": "text"
-										},
-										{
-											"key": "img_binary",
-											"type": "file",
-											"src": []
-										}
-									]
+					"response": []
+				},
+				{
+					"name": "New Request",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "eyJhbGciOiJIUzM4NCJ9.eyJqdGkiOiJmZWY4NmExYy04YTU5LTExZWMtOWUxZi01ZmIyZTk3OWUxMmQiLCJzdWIiOiJhZG1pbiIsImF1ZCI6Int9IiwiaWF0IjoxNjQ0NTg5NjAzLCJleHAiOjE2NTMyMjgwMDB9.w8LMJnLsihpP1wrfEUqvIaPYcjbvdepny3eHT9tnPws8DxEDUAqB_pDKmzbZ_CAu",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "localhost:8080/v1/category/addCategory/:title/:description/:color",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"v1",
+								"category",
+								"addCategory",
+								":title",
+								":description",
+								":color"
+							],
+							"variable": [
+								{
+									"key": "title",
+									"value": "adf"
 								},
-								"url": {
-									"raw": "{{url}}/v1/img/upload",
-									"host": [
-										"{{url}}"
-									],
-									"path": [
-										"v1",
-										"img",
-										"upload"
-									]
+								{
+									"key": "description",
+									"value": "adfadsf"
+								},
+								{
+									"key": "color",
+									"value": "FFFF"
 								}
-							},
-							"_postman_previewlanguage": null,
-							"header": null,
-							"cookie": [],
-							"body": null
+							]
 						}
-					]
+					},
+					"response": []
+				},
+				{
+					"name": "New Request",
+					"request": {
+						"method": "GET",
+						"header": []
+					},
+					"response": []
+				},
+				{
+					"name": "New Request",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "eyJhbGciOiJIUzM4NCJ9.eyJqdGkiOiJmZWY4NmExYy04YTU5LTExZWMtOWUxZi01ZmIyZTk3OWUxMmQiLCJzdWIiOiJhZG1pbiIsImF1ZCI6Int9IiwiaWF0IjoxNjQ0NTkwMjg2LCJleHAiOjE2NTMyMjgwMDB9.wrgikVphxJS1yroAoPxy4GMuPy0_g4cU3mrMUwGs_04cp88aA81hQZsRerH3Jja1",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"id\": \"93fe63f3-5bb1-4119-8a6d-5503a79ec340\",\n    \"pinPost\": null,\n    \"profileImg\": null,\n    \"color\": \"uuususus\",\n    \"title\": \"adf\",\n    \"description\": \"jvavavava\",\n    \"postCount\": 0,\n    \"sortOrder\": 2\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "localhost:8080/v1/category",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"v1",
+								"category"
+							]
+						}
+					},
+					"response": []
 				}
 			]
 		},
@@ -1544,46 +1471,6 @@
 			]
 		},
 		{
-			"name": "category",
-			"item": [
-				{
-					"name": "New Request",
-					"request": {
-						"method": "GET",
-						"header": [],
-						"url": {
-							"raw": "{{url}}/v1/category/:title/:description/:color",
-							"host": [
-								"{{url}}"
-							],
-							"path": [
-								"v1",
-								"category",
-								":title",
-								":description",
-								":color"
-							],
-							"variable": [
-								{
-									"key": "title",
-									"value": null
-								},
-								{
-									"key": "description",
-									"value": null
-								},
-								{
-									"key": "color",
-									"value": null
-								}
-							]
-						}
-					},
-					"response": []
-				}
-			]
-		},
-		{
 			"name": "login",
 			"request": {
 				"method": "POST",
@@ -1617,33 +1504,6 @@
 				}
 			},
 			"response": []
-		}
-	],
-	"event": [
-		{
-			"listen": "prerequest",
-			"script": {
-				"type": "text/javascript",
-				"exec": [
-					""
-				]
-			}
-		},
-		{
-			"listen": "test",
-			"script": {
-				"type": "text/javascript",
-				"exec": [
-					""
-				]
-			}
-		}
-	],
-	"variable": [
-		{
-			"key": "url",
-			"value": "localhost:8080",
-			"type": "string"
 		}
 	]
 }
