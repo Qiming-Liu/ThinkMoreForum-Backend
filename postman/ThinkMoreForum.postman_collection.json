@@ -1,7 +1,7 @@
 {
 	"info": {
-		"_postman_id": "18285a69-cdbd-433f-b075-4e1337a43f43",
-		"name": "ThinkMoreForum",
+		"_postman_id": "410d238e-c689-4820-83a6-c5b5612e92c9",
+		"name": "ThinkMoreForum Copy",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
 	},
 	"item": [
@@ -211,10 +211,10 @@
 									]
 								}
 							},
-							"_postman_previewlanguage": null,
-							"header": null,
+							"_postman_previewlanguage": "Text",
+							"header": [],
 							"cookie": [],
-							"body": null
+							"body": ""
 						}
 					]
 				},
@@ -276,10 +276,10 @@
 									]
 								}
 							},
-							"_postman_previewlanguage": null,
-							"header": null,
+							"_postman_previewlanguage": "Text",
+							"header": [],
 							"cookie": [],
-							"body": null
+							"body": ""
 						}
 					]
 				},
@@ -343,10 +343,10 @@
 									]
 								}
 							},
-							"_postman_previewlanguage": null,
-							"header": null,
+							"_postman_previewlanguage": "Text",
+							"header": [],
 							"cookie": [],
-							"body": null
+							"body": ""
 						}
 					]
 				},
@@ -432,10 +432,10 @@
 									]
 								}
 							},
-							"_postman_previewlanguage": null,
-							"header": null,
+							"_postman_previewlanguage": "Text",
+							"header": [],
 							"cookie": [],
-							"body": null
+							"body": ""
 						}
 					]
 				},
@@ -557,10 +557,10 @@
 									]
 								}
 							},
-							"_postman_previewlanguage": null,
-							"header": null,
+							"_postman_previewlanguage": "Text",
+							"header": [],
 							"cookie": [],
-							"body": null
+							"body": ""
 						}
 					]
 				},
@@ -617,10 +617,6 @@
 							"originalRequest": {
 								"method": "GET",
 								"header": [],
-								"body": {
-									"mode": "raw",
-									"raw": ""
-								},
 								"url": {
 									"raw": "{{url}}/v1/users/followed",
 									"host": [
@@ -633,10 +629,10 @@
 									]
 								}
 							},
-							"_postman_previewlanguage": null,
-							"header": null,
+							"_postman_previewlanguage": "Text",
+							"header": [],
 							"cookie": [],
-							"body": null
+							"body": ""
 						}
 					]
 				},
@@ -693,10 +689,6 @@
 							"originalRequest": {
 								"method": "GET",
 								"header": [],
-								"body": {
-									"mode": "raw",
-									"raw": ""
-								},
 								"url": {
 									"raw": "{{url}}/api/v1/follow/view_follower",
 									"host": [
@@ -710,15 +702,15 @@
 									]
 								}
 							},
-							"_postman_previewlanguage": null,
-							"header": null,
+							"_postman_previewlanguage": "Text",
+							"header": [],
 							"cookie": [],
-							"body": null
+							"body": ""
 						}
 					]
 				},
 				{
-					"name": "follows 关注一个用户",
+					"name": "follow 关注一个用户",
 					"event": [
 						{
 							"listen": "prerequest",
@@ -744,14 +736,14 @@
 							"raw": ""
 						},
 						"url": {
-							"raw": "{{url}}/v1/users/follows/:uses_id",
+							"raw": "{{url}}/v1/users/follow/:uses_id",
 							"host": [
 								"{{url}}"
 							],
 							"path": [
 								"v1",
 								"users",
-								"follows",
+								"follow",
 								":uses_id"
 							],
 							"variable": [
@@ -774,10 +766,6 @@
 										"type": "text"
 									}
 								],
-								"body": {
-									"mode": "raw",
-									"raw": ""
-								},
 								"url": {
 									"raw": "{{url}}/v1/follow/follow_user?id=90861db2-8807-11ec-a4ac-7ff8b1ad4d8a",
 									"host": [
@@ -796,15 +784,15 @@
 									]
 								}
 							},
-							"_postman_previewlanguage": null,
-							"header": null,
+							"_postman_previewlanguage": "Text",
+							"header": [],
 							"cookie": [],
-							"body": null
+							"body": ""
 						}
 					]
 				},
 				{
-					"name": "follows 取消关注用户",
+					"name": "follow 取消关注用户",
 					"event": [
 						{
 							"listen": "prerequest",
@@ -824,14 +812,14 @@
 							"raw": ""
 						},
 						"url": {
-							"raw": "{{url}}/v1/users/follows/:uses_id",
+							"raw": "{{url}}/v1/users/follow/:uses_id",
 							"host": [
 								"{{url}}"
 							],
 							"path": [
 								"v1",
 								"users",
-								"follows",
+								"follow",
 								":uses_id"
 							],
 							"variable": [
@@ -871,10 +859,10 @@
 									]
 								}
 							},
-							"_postman_previewlanguage": null,
-							"header": null,
+							"_postman_previewlanguage": "Text",
+							"header": [],
 							"cookie": [],
-							"body": null
+							"body": ""
 						}
 					]
 				}
@@ -907,14 +895,14 @@
 							"raw": ""
 						},
 						"url": {
-							"raw": "{{url}}/v1/post/followed",
+							"raw": "{{url}}/v1/post/follows",
 							"host": [
 								"{{url}}"
 							],
 							"path": [
 								"v1",
 								"post",
-								"followed"
+								"follows"
 							]
 						}
 					},
@@ -924,10 +912,6 @@
 							"originalRequest": {
 								"method": "GET",
 								"header": [],
-								"body": {
-									"mode": "raw",
-									"raw": ""
-								},
 								"url": {
 									"raw": "{{url}}/api/v1/follow/view_followed_post",
 									"host": [
@@ -941,15 +925,15 @@
 									]
 								}
 							},
-							"_postman_previewlanguage": null,
-							"header": null,
+							"_postman_previewlanguage": "Text",
+							"header": [],
 							"cookie": [],
-							"body": null
+							"body": ""
 						}
 					]
 				},
 				{
-					"name": "follows 关注一个帖子",
+					"name": "follow 关注一个帖子",
 					"event": [
 						{
 							"listen": "test",
@@ -1016,15 +1000,15 @@
 									]
 								}
 							},
-							"_postman_previewlanguage": null,
-							"header": null,
+							"_postman_previewlanguage": "Text",
+							"header": [],
 							"cookie": [],
-							"body": null
+							"body": ""
 						}
 					]
 				},
 				{
-					"name": "follows 取消关注帖子",
+					"name": "follow 取消关注帖子",
 					"event": [
 						{
 							"listen": "prerequest",
@@ -1091,12 +1075,108 @@
 									]
 								}
 							},
-							"_postman_previewlanguage": null,
-							"header": null,
+							"_postman_previewlanguage": "Text",
+							"header": [],
 							"cookie": [],
-							"body": null
+							"body": ""
 						}
 					]
+				},
+				{
+					"name": "post a post 用户发帖",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "eyJhbGciOiJIUzM4NCJ9.eyJqdGkiOiJhYTYxMmRkNC04ODBkLTExZWMtOWVhNi0zYmJhZDU3MGMxODUiLCJzdWIiOiJhZG1pbiIsImF1ZCI6Int9IiwiaWF0IjoxNjQ0NTc4MDU0LCJleHAiOjE2NTMxNDE2MDB9.wrbImgNfbUekwbf_mshK1W_lLnk-_w0Yp0bEkHg8J-FR97pDjQMHWIeWggg6u7Vl",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"category\": {\r\n        \"id\": \"aa6a09ae-880d-11ec-9ea6-6f924a8f6f1d\",\r\n        \"title\": \"Default Category\"\r\n    },\r\n    \"title\": \"admin post title2\",\r\n    \"context\": \"<p>admin post context2</p>\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{url}}/v1/post/",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"v1",
+								"post",
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "delete a post 用户删帖",
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "eyJhbGciOiJIUzM4NCJ9.eyJqdGkiOiJhYTYxMmRkNC04ODBkLTExZWMtOWVhNi0zYmJhZDU3MGMxODUiLCJzdWIiOiJhZG1pbiIsImF1ZCI6Int9IiwiaWF0IjoxNjQ0NTc4MzE0LCJleHAiOjE2NTMxNDE2MDB9.SJbHrCJ3Ap5Mun8xVU0ZI7HXymsYqS9jTJ_sXob5czvV0q3u_4e3vJkScCdz13Fj",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{url}}/v1/post/:post_id",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"v1",
+								"post",
+								":post_id"
+							],
+							"variable": [
+								{
+									"key": "post_id",
+									"value": "f163ef88-7d6f-4074-bcdb-3f994041ce30"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "view post by id 根据id查看帖子",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "eyJhbGciOiJIUzM4NCJ9.eyJqdGkiOiJhYTYxMmRkNC04ODBkLTExZWMtOWVhNi0zYmJhZDU3MGMxODUiLCJzdWIiOiJhZG1pbiIsImF1ZCI6Int9IiwiaWF0IjoxNjQ0NTc3MTUzLCJleHAiOjE2NTMxNDE2MDB9.rCflqqiVYTMnz2YcFUtr-xC_PUlCw7mITwVKZQhNZrxDz3IGAX74rL_ZQMwn09oQ",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{url}}/v1/post/:post_id",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"v1",
+								"post",
+								":post_id"
+							],
+							"variable": [
+								{
+									"key": "post_id",
+									"value": null
+								}
+							]
+						}
+					},
+					"response": []
 				}
 			]
 		},
@@ -1104,7 +1184,7 @@
 			"name": "notification",
 			"item": [
 				{
-					"name": "notification",
+					"name": "view notifications 获得用户的所有提醒",
 					"event": [
 						{
 							"listen": "prerequest",
@@ -1121,7 +1201,13 @@
 					},
 					"request": {
 						"method": "GET",
-						"header": [],
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "eyJhbGciOiJIUzM4NCJ9.eyJqdGkiOiJhYTYxOGZhNC04ODBkLTExZWMtOWVhNi04NzE0NDgwMDExMTMiLCJzdWIiOiJtb2RlcmF0b3IiLCJhdWQiOiJ7fSIsImlhdCI6MTY0NDU3ODE2OCwiZXhwIjoxNjUzMTQxNjAwfQ.M2jnZQmTBe9uzgZJsIMBJZLT8rHwgBJwtqeE_ghR9ZO1wC4-0VKolj27IMfAgOlj",
+								"type": "text"
+							}
+						],
 						"body": {
 							"mode": "raw",
 							"raw": ""
@@ -1143,10 +1229,6 @@
 							"originalRequest": {
 								"method": "GET",
 								"header": [],
-								"body": {
-									"mode": "raw",
-									"raw": ""
-								},
 								"url": {
 									"raw": "{{url}}/api/v1/notification/get_notification",
 									"host": [
@@ -1160,12 +1242,74 @@
 									]
 								}
 							},
-							"_postman_previewlanguage": null,
-							"header": null,
+							"_postman_previewlanguage": "Text",
+							"header": [],
 							"cookie": [],
-							"body": null
+							"body": ""
 						}
 					]
+				},
+				{
+					"name": "delete_notification 用户删除一个提醒",
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{url}}/v1/notification/:notification_id",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"v1",
+								"notification",
+								":notification_id"
+							],
+							"variable": [
+								{
+									"key": "notification_id",
+									"value": null
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "view_notification_by_id 用户根据id查看一个提醒",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "eyJhbGciOiJIUzM4NCJ9.eyJqdGkiOiJhYTYxMmRkNC04ODBkLTExZWMtOWVhNi0zYmJhZDU3MGMxODUiLCJzdWIiOiJhZG1pbiIsImF1ZCI6Int9IiwiaWF0IjoxNjQ0NTc2OTY1LCJleHAiOjE2NTMxNDE2MDB9.yTkFgz0xVKY9EPiaW9rgSH8Te2rMGY--dVcVDc3TXYfqa8wvzllVqjBaTisgKpbq",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{url}}/v1/notification/:notification_id",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"v1",
+								"notification",
+								":notification_id"
+							],
+							"variable": [
+								{
+									"key": "notification_id",
+									"value": "aa6e926c-880d-11ec-9ea6-73fb3ee4069f"
+								}
+							]
+						}
+					},
+					"response": []
 				}
 			]
 		},
@@ -1248,10 +1392,10 @@
 									]
 								}
 							},
-							"_postman_previewlanguage": null,
-							"header": null,
+							"_postman_previewlanguage": "Text",
+							"header": [],
 							"cookie": [],
-							"body": null
+							"body": ""
 						}
 					]
 				},
@@ -1331,10 +1475,10 @@
 									]
 								}
 							},
-							"_postman_previewlanguage": null,
-							"header": null,
+							"_postman_previewlanguage": "Text",
+							"header": [],
 							"cookie": [],
-							"body": null
+							"body": ""
 						}
 					]
 				}
@@ -1390,10 +1534,10 @@
 									]
 								}
 							},
-							"_postman_previewlanguage": null,
-							"header": null,
+							"_postman_previewlanguage": "Text",
+							"header": [],
 							"cookie": [],
-							"body": null
+							"body": ""
 						}
 					]
 				}
@@ -1473,6 +1617,33 @@
 				}
 			},
 			"response": []
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"key": "url",
+			"value": "localhost:8080",
+			"type": "string"
 		}
 	]
 }
