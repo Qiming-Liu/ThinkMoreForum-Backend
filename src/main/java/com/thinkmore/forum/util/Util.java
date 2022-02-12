@@ -8,12 +8,9 @@ import com.sendgrid.helpers.mail.Mail;
 import com.sendgrid.helpers.mail.objects.Content;
 import com.sendgrid.helpers.mail.objects.Email;
 import com.thinkmore.forum.configuration.Config;
-<<<<<<< Updated upstream
 import com.thinkmore.forum.entity.JwtUser;
-=======
 import com.thinkmore.forum.entity.Users;
 import com.thinkmore.forum.exception.InvalidOldPasswordException;
->>>>>>> Stashed changes
 import io.jsonwebtoken.Jwts;
 import io.minio.MinioClient;
 import lombok.extern.slf4j.Slf4j;
