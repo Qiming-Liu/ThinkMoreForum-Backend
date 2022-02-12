@@ -22,7 +22,6 @@ public class Config {
     };
     public final static String JwtSecretKey = "fruue37r7yrfhf87f7876guyggf%$$#$%^&%RTHGhjjkj23456rkkkkdkd";
     public final static String JwtPrefix = "";//Bearer ";
-    public final static LocalDate ExpireTime = LocalDate.now().plusDays(100);
 
     // Role
     public final static String DefaultRole = "unverified_user";
@@ -36,8 +35,9 @@ public class Config {
     public final static String VerifyEmailUrl = "前端url?token=";
     public final static String VerifyEmailContext = "Please click the link to verify your new email:\n";
 
-    // OSS
+    // Oss
     public final static String OssUrl = "http://localhost:9000/";
     public final static String MINIO_ROOT_USER = "minio";
     public final static String MINIO_ROOT_PASSWORD = "development";
+    public final static String BucketName = "image";
 }

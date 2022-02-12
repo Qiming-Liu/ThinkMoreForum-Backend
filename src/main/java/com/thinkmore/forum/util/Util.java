@@ -8,19 +8,17 @@ import com.sendgrid.helpers.mail.Mail;
 import com.sendgrid.helpers.mail.objects.Content;
 import com.sendgrid.helpers.mail.objects.Email;
 import com.thinkmore.forum.configuration.Config;
-import com.thinkmore.forum.configuration.SecurityConfig;
 import com.thinkmore.forum.entity.JwtUser;
 import io.jsonwebtoken.Jwts;
 import io.minio.MinioClient;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.codec.binary.Hex;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.crypto.argon2.Argon2PasswordEncoder;
-import org.springframework.security.crypto.password.PasswordEncoder;
 
 import javax.crypto.Cipher;
 import javax.crypto.spec.SecretKeySpec;
 import java.security.Key;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Date;
 
@@ -36,18 +34,14 @@ public class Util {
         return (ArrayList<String>) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
     }
 
-    public final static PasswordEncoder passwordEncoder = new Argon2PasswordEncoder();
-    public final static MinioClient minioClient = MinioClient.builder().endpoint(Config.OssUrl)
-            .credentials(Config.MINIO_ROOT_USER, Config.MINIO_ROOT_PASSWORD).build();
-
     public static String generateJwt(JwtUser user) {
         return Jwts.builder()
                 .setId(user.getId() + "")
                 .setSubject(user.getRoleName())
                 .setAudience(user.getPermission())
                 .setIssuedAt(new Date())
-                .setExpiration(java.sql.Date.valueOf(Config.ExpireTime))
-                .signWith(SecurityConfig.secretKey)
+                .setExpiration(java.sql.Date.valueOf(LocalDate.now().plusDays(1)))
+                .signWith(Singleton.secretKey)
                 .compact();
     }
 

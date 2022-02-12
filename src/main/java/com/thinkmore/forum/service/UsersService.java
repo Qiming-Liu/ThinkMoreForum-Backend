@@ -7,6 +7,7 @@ import com.thinkmore.forum.exception.InvalidOldPasswordException;
 import com.thinkmore.forum.exception.UserNotFoundException;
 import com.thinkmore.forum.repository.RolesRepository;
 import com.thinkmore.forum.repository.UsersRepository;
+import com.thinkmore.forum.util.Singleton;
 import com.thinkmore.forum.util.Util;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -37,7 +38,7 @@ public class UsersService implements UserDetailsService {
         Users user = new Users();
 
         user.setUsername(username);
-        user.setPassword(Util.passwordEncoder.encode(password));
+        user.setPassword(Singleton.passwordEncoder().encode(password));
         user.setEmail(email);
         user.setProfileImg(null);
         user.setRole(rolesRepository.findByRoleName(Config.DefaultRole).orElseThrow());
@@ -113,11 +114,11 @@ public class UsersService implements UserDetailsService {
         Users user = usersRepository.findById(id)
                 .orElseThrow(() -> new UserNotFoundException("User not found: " + users_id));
 
-        if (!Util.passwordEncoder.matches(oldPassword, user.getPassword())) {
+        if (!Singleton.passwordEncoder().matches(oldPassword, user.getPassword())) {
             throw new InvalidOldPasswordException("Old password is wrong");
         }
 
-        user.setPassword(Util.passwordEncoder.encode(newPassword));
+        user.setPassword(Singleton.passwordEncoder().encode(newPassword));
         usersRepository.save(user);
         return true;
     }
@@ -144,7 +145,7 @@ public class UsersService implements UserDetailsService {
         Users user = usersRepository.findById(id)
                 .orElseThrow(() -> new UserNotFoundException("User not found"));
 
-        user.setPassword(Util.passwordEncoder.encode(password));
+        user.setPassword(Singleton.passwordEncoder().encode(password));
         usersRepository.save(user);
         return true;
     }

@@ -3,8 +3,7 @@ package com.thinkmore.forum.configuration;
 import com.thinkmore.forum.filter.JwtGenerateFilter;
 import com.thinkmore.forum.filter.JwtCheckFilter;
 import com.thinkmore.forum.service.UsersService;
-import com.thinkmore.forum.util.Util;
-import io.jsonwebtoken.security.Keys;
+import com.thinkmore.forum.util.Singleton;
 import lombok.RequiredArgsConstructor;
 import lombok.SneakyThrows;
 import org.springframework.context.annotation.Bean;
@@ -16,16 +15,12 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.config.http.SessionCreationPolicy;
 
-import javax.crypto.SecretKey;
-import java.nio.charset.StandardCharsets;
-
 @Configuration
 @RequiredArgsConstructor
 @EnableWebSecurity
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     private final UsersService usersService;
-    public static final SecretKey secretKey = Keys.hmacShaKeyFor(Config.JwtSecretKey.getBytes(StandardCharsets.UTF_8));
 
     @SneakyThrows
     protected void configure(HttpSecurity http) {
@@ -33,8 +28,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .csrf().disable()
                 .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                 .and()
-                .addFilter(new JwtGenerateFilter(usersService, authenticationManager(), secretKey))
-                .addFilterAfter(new JwtCheckFilter(secretKey), JwtGenerateFilter.class)
+                .addFilter(new JwtGenerateFilter(usersService, authenticationManager()))
+                .addFilterAfter(new JwtCheckFilter(), JwtGenerateFilter.class)
                 .authorizeRequests()
                 .antMatchers(Config.ignoreUrl).permitAll()
                 .anyRequest().authenticated();
@@ -49,7 +44,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     @Bean
     public DaoAuthenticationProvider daoAuthenticationProvider() {
         DaoAuthenticationProvider provider = new DaoAuthenticationProvider();
-        provider.setPasswordEncoder(Util.passwordEncoder);
+        provider.setPasswordEncoder(Singleton.passwordEncoder());
         provider.setUserDetailsService(usersService);
         return provider;
     }

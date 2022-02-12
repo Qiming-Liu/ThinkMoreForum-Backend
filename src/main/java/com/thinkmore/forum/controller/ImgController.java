@@ -40,8 +40,6 @@ public class ImgController {
 
     @PostMapping(path = "/upload")
     public ResponseEntity<Img> upload(@RequestParam MultipartFile file, @RequestParam String md5) throws Exception {
-        byte[] byteArr = file.getBytes();
-        InputStream inputStream = new ByteArrayInputStream(byteArr);
-        return ResponseEntity.ok(imgService.uploadImg(inputStream, md5));
+        return ResponseEntity.ok(imgService.uploadImg(new ByteArrayInputStream(file.getBytes()), md5));
     }
 }

@@ -1,15 +1,11 @@
 package com.thinkmore.forum.service;
 
-import com.thinkmore.forum.dto.post.PostGetDto;
 import com.thinkmore.forum.dto.postComment.PostCommentGetDto;
 import com.thinkmore.forum.dto.postComment.PostCommentPostDto;
 import com.thinkmore.forum.dto.users.UsersMiniGetDto;
-import com.thinkmore.forum.entity.Post;
 import com.thinkmore.forum.entity.PostComment;
-import com.thinkmore.forum.mapper.NotificationMapper;
 import com.thinkmore.forum.mapper.PostCommentMapper;
 import com.thinkmore.forum.mapper.UsersMapper;
-import com.thinkmore.forum.repository.NotificationRepository;
 import com.thinkmore.forum.repository.PostCommentRepository;
 import com.thinkmore.forum.repository.UsersRepository;
 import lombok.RequiredArgsConstructor;
@@ -51,7 +47,7 @@ public class PostCommentService {
 
     public String userPostComment(UUID userId, PostCommentPostDto commentPostDto) {
 
-        UsersMiniGetDto usersMiniGetDto = usersMapper.entityToMiniDto(usersRepo.findById(userId).get());
+        UsersMiniGetDto usersMiniGetDto = usersMapper.entityToMiniDto(usersRepo.findById(userId).orElseThrow());
 
         commentPostDto.setPostUsers(usersMiniGetDto);
         commentPostDto.setVisibility(true);
@@ -60,7 +56,7 @@ public class PostCommentService {
         PostComment postComment = postCommentMapper.toEntity(commentPostDto);
         postCommentRepo.save(postComment);
 
-        return String.format("You've successfully replied the post!");
+        return "You've successfully replied the post!";
     }
 
     @Transactional
