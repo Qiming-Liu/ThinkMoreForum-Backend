@@ -21,4 +21,6 @@ public interface FollowerRepository extends JpaRepository<FollowUser, UUID> {
 
     FollowUser save(FollowUser followUser);
 
+    void deleteByUsersIdAndFollowedUsersId(UUID userId, UUID FollowedUsersId);
+
 }

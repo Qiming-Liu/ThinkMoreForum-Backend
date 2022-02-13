@@ -50,4 +50,8 @@ public class FollowerService {
 
         return followerMapper.fromEntity(followUser);
     }
+
+    public void unfollowUsers(UUID userId, UUID FollowedUsersId) {
+        followerRepository.deleteByUsersIdAndFollowedUsersId(userId, FollowedUsersId);
+    }
 }
