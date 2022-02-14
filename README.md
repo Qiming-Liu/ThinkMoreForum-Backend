@@ -1,6 +1,6 @@
 # ThinkMoreForum-Backend
 
-## Prerequisites
+## Requirements
 
 * Openjdk11  
 * Gradle = gradle-7.3.3-bin
