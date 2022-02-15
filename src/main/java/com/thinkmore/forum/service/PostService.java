@@ -3,6 +3,7 @@ package com.thinkmore.forum.service;
 import com.thinkmore.forum.dto.category.CategoryMiniGetDto;
 import com.thinkmore.forum.dto.post.PostGetDto;
 import com.thinkmore.forum.dto.post.PostPostDto;
+import com.thinkmore.forum.dto.post.PostPutDto;
 import com.thinkmore.forum.dto.users.UsersMiniGetDto;
 import com.thinkmore.forum.entity.Post;
 import com.thinkmore.forum.mapper.CategoryMapper;
@@ -74,5 +75,13 @@ public class PostService {
         postRepo.save(post);
 
         return String.format("You've successfully submitted the post with title %s", postPostDto.getTitle());
+    }
+
+    public String userEditPost(PostPutDto postPutDto) {
+
+        Post oldPost = postRepo.findById(postPutDto.getId()).get();
+        postMapper.copy(postPutDto, oldPost);
+
+        return String.format("You've successfully edited the post with title %s", postPutDto.getTitle());
     }
 }

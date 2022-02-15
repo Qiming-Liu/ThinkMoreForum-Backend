@@ -2,6 +2,7 @@ package com.thinkmore.forum.controller;
 
 import com.thinkmore.forum.dto.post.PostGetDto;
 import com.thinkmore.forum.dto.post.PostPostDto;
+import com.thinkmore.forum.dto.post.PostPutDto;
 import com.thinkmore.forum.service.PostService;
 import com.thinkmore.forum.util.Util;
 import lombok.RequiredArgsConstructor;
@@ -35,6 +36,12 @@ public class PostController {
     public ResponseEntity<String> postPost(@RequestBody PostPostDto postPostDto) {
         UUID userId = UUID.fromString(Util.getJwtContext().get(0));
         String response = postService.userPostPost(userId, postPostDto);
+        return ResponseEntity.ok(response);
+    }
+
+    @PutMapping
+    public ResponseEntity<String> editPost(@RequestBody PostPutDto postPutDto) {
+        String response = postService.userEditPost(postPutDto);
         return ResponseEntity.ok(response);
     }
 }
