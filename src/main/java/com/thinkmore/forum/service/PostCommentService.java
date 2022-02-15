@@ -1,8 +1,11 @@
 package com.thinkmore.forum.service;
 
+import com.thinkmore.forum.dto.post.PostPutDto;
 import com.thinkmore.forum.dto.postComment.PostCommentGetDto;
 import com.thinkmore.forum.dto.postComment.PostCommentPostDto;
+import com.thinkmore.forum.dto.postComment.PostCommentPutDto;
 import com.thinkmore.forum.dto.users.UsersMiniGetDto;
+import com.thinkmore.forum.entity.Post;
 import com.thinkmore.forum.entity.PostComment;
 import com.thinkmore.forum.mapper.PostCommentMapper;
 import com.thinkmore.forum.mapper.UsersMapper;
@@ -62,5 +65,13 @@ public class PostCommentService {
     @Transactional
     public void deleteCommentById(UUID commentId) {
         postCommentRepo.deleteById(commentId);
+    }
+
+    public String userEditComment(PostCommentPutDto commentPutDto) {
+
+        PostComment oldComment = postCommentRepo.findById(commentPutDto.getId()).get();
+        postCommentMapper.copy(commentPutDto, oldComment);
+
+        return "You've successfully edited the comment!";
     }
 }

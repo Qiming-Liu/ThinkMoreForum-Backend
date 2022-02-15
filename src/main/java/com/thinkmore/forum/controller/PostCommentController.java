@@ -1,8 +1,10 @@
 package com.thinkmore.forum.controller;
 
 import com.thinkmore.forum.dto.post.PostGetDto;
+import com.thinkmore.forum.dto.post.PostPutDto;
 import com.thinkmore.forum.dto.postComment.PostCommentGetDto;
 import com.thinkmore.forum.dto.postComment.PostCommentPostDto;
+import com.thinkmore.forum.dto.postComment.PostCommentPutDto;
 import com.thinkmore.forum.service.PostCommentService;
 import com.thinkmore.forum.service.PostService;
 import com.thinkmore.forum.util.Util;
@@ -44,5 +46,11 @@ public class PostCommentController {
         UUID commentId = UUID.fromString(comment_id);
         postCommentService.deleteCommentById(commentId);
         return ResponseEntity.ok(String.format("Successfully deleted the post with id %s", comment_id));
+    }
+
+    @PutMapping
+    public ResponseEntity<String> editComment(@RequestBody PostCommentPutDto commentPutDto) {
+        String response = postCommentService.userEditComment(commentPutDto);
+        return ResponseEntity.ok(response);
     }
 }
