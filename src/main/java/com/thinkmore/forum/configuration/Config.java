@@ -11,7 +11,7 @@ public class Config {
             "/swagger-resources/**",
             "/configuration/ui",
             "/configuration/security",
-            "/swagger-ui.html",
+            "/swagger-ui**",
             "/webjars/**",
             // -- API
             "/v1/users/signup/**",

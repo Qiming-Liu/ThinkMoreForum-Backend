@@ -1,4 +1,5 @@
-CREATE EXTENSION IF NOT EXISTS "uuid-ossp";
+CREATE
+EXTENSION IF NOT EXISTS "uuid-ossp";
 
 CREATE TABLE img
 (
@@ -18,7 +19,7 @@ CREATE TABLE users
 (
     id                   uuid PRIMARY KEY                  DEFAULT uuid_generate_v1mc(),
     username             varchar(20)              NOT NULL UNIQUE,
-    password             text                     NOT NULL,
+    password             text,
     email                varchar(255)             NOT NULL UNIQUE,
     profile_img_id       uuid references img (id),
     role_id              uuid                     NOT NULL references roles (id),
