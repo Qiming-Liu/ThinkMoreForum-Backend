@@ -64,4 +64,14 @@ public class UsersController {
     public ResponseEntity<Boolean> resetPassword(@PathVariable String new_password) {
         return ResponseEntity.ok(usersService.resetPassword(new_password));
     }
+
+    @PutMapping("set-password/{password}")
+    public ResponseEntity<Boolean> setPassword(@PathVariable String password) {
+        return ResponseEntity.ok(usersService.setPassword(password));
+    }
+
+    @GetMapping("empty-password")
+    public ResponseEntity<Boolean> getpassword(){
+        return ResponseEntity.ok(usersService.getPassword());
+    }
 }

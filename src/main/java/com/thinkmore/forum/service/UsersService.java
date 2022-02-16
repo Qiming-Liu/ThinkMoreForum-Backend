@@ -4,6 +4,7 @@ import com.thinkmore.forum.entity.JwtUser;
 import com.thinkmore.forum.configuration.Config;
 import com.thinkmore.forum.entity.Users;
 import com.thinkmore.forum.exception.InvalidOldPasswordException;
+import com.thinkmore.forum.exception.UserHasPasswordException;
 import com.thinkmore.forum.exception.UserNotFoundException;
 import com.thinkmore.forum.repository.RolesRepository;
 import com.thinkmore.forum.repository.UsersRepository;
@@ -151,5 +152,34 @@ public class UsersService implements UserDetailsService {
         user.setPassword(Singleton.passwordEncoder().encode(password));
         usersRepository.save(user);
         return true;
+    }
+
+    @Transactional
+    public boolean setPassword(String password) {
+        String users_id = Util.getJwtContext().get(0);
+        UUID id = UUID.fromString(users_id);
+
+        Users user = usersRepository.findById(id)
+                .orElseThrow(() -> new UserNotFoundException("User not found"));
+
+        if (!user.getPassword().equals("")) {
+            throw new UserHasPasswordException("The user already has a password!");
+        }
+
+        Util.checkPassword(password);
+        user.setPassword(Singleton.passwordEncoder().encode(password));
+        usersRepository.save(user);
+        return true;
+    }
+
+    @Transactional
+    public boolean getPassword() {
+        String users_id = Util.getJwtContext().get(0);
+        UUID id = UUID.fromString(users_id);
+
+        Users user = usersRepository.findById(id)
+                .orElseThrow(() -> new UserNotFoundException("User not found"));
+
+        return user.getPassword().equals("");
     }
 }

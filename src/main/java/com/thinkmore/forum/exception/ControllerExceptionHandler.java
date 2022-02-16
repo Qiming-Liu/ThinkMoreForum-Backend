@@ -36,6 +36,12 @@ public class ControllerExceptionHandler {
                 .body(new ForumErrorDto("INVALID_JWT_TOKEN", "Invalid Jwt Token"));
     }
 
+    public ResponseEntity<ForumErrorDto> handlePasswordExistedException(UserHasPasswordException e) {
+        log.info("User has a password", e);
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST)
+                .body(new ForumErrorDto("USER_HAS_PASSWORD", "User has a password"));
+    }
+
     @ExceptionHandler(Exception.class)
     public ResponseEntity<ForumErrorDto> handleException(Exception exception, WebRequest request){
         log.error("There is Exception occurred",exception);
