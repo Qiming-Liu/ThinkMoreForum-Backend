@@ -1,0 +1,40 @@
+name: Pipeline
+on:
+  push:
+    branches: [ main ]
+jobs:
+  Build:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v2
+    - uses: actions/setup-java@v2
+      with:
+        distribution: temurin
+        java-version: 11
+    - uses: gradle/gradle-build-action@v2
+    - name: Build
+      run: |
+        chmod +x gradlew
+        ./gradlew build
+        mv "./build/libs/forum-0.0.1.jar" "./docker/app.jar"
+      
+    - name: Push
+      uses: JamesIves/github-pages-deploy-action@v4
+      with:
+        branch: build
+        folder: docker
+    - name: Deploy
+      uses: appleboy/ssh-action@master
+      with:
+        host: ${{ secrets.SSH_HOST }}
+        username: centos
+        key: ${{ secrets.SSH_KEY }}
+        port: 22
+        script: |
+          cd ThinkMoreForum-Backend/
+          sudo docker-compose down
+          cd ..
+          rm -rf ThinkMoreForum-Backend
+          git clone -b build https://github.com/Qiming-Liu/ThinkMoreForum-Backend.git
+          cd ThinkMoreForum-Backend/
+          sudo docker-compose up -d
