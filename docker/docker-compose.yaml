@@ -1,4 +1,4 @@
-version: '3.8'
+version: '3.9'
 services:
   db:
     container_name: db
@@ -18,9 +18,10 @@ services:
     command: server --console-address ":9001" /data
     network_mode: "host"
   app:
-    container_name: app
     build:
       context: .
       dockerfile: Dockerfile
+    container_name: app
+    image: app:${DATETIME}
     restart: unless-stopped
     network_mode: "host"

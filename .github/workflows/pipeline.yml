@@ -3,7 +3,7 @@ on:
   push:
     branches: [ main ]
 jobs:
-  Build:
+  Pipeline:
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v2
@@ -22,7 +22,7 @@ jobs:
       uses: JamesIves/github-pages-deploy-action@v4
       with:
         branch: build
-        folder: docker
+        folder: docker 
     - name: Deploy
       uses: appleboy/ssh-action@master
       with:
@@ -37,4 +37,5 @@ jobs:
           rm -rf ThinkMoreForum-Backend
           git clone -b build https://github.com/Qiming-Liu/ThinkMoreForum-Backend.git
           cd ThinkMoreForum-Backend/
+          echo "DATETIME=$(date +'%Y-%m-%d_%H.%M.%S')" > .env
           sudo docker-compose up -d
