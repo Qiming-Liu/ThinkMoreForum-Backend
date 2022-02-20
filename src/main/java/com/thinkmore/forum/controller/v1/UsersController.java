@@ -1,10 +1,13 @@
 package com.thinkmore.forum.controller.v1;
 
+import com.thinkmore.forum.dto.users.UsersGetDto;
 import com.thinkmore.forum.service.UsersService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.UUID;
 
 @RestController
 @RequestMapping(path = "/v1/users")
@@ -28,12 +31,12 @@ public class UsersController {
         return ResponseEntity.ok(usersService.uniqueUsername(username));
     }
 
-//    @GetMapping("/{user_id}")
-//    public ResponseEntity<UsersGetDto> findUserById(@PathVariable("user_id") String user_id) {
-//        UUID userId = UUID.fromString(user_id);
-//        UsersGetDto usersGetDto = usersService.getUserById(userId);
-//        return ResponseEntity.ok(usersGetDto);
-//    }
+    @GetMapping("/{user_id}")
+    public ResponseEntity<UsersGetDto> findUserById(@PathVariable("user_id") String user_id) {
+        UUID userId = UUID.fromString(user_id);
+        UsersGetDto usersGetDto = usersService.getUserById(userId);
+        return ResponseEntity.ok(usersGetDto);
+    }
 
     @PutMapping("/username/{new_username}")
     public ResponseEntity<Boolean> changeUsername(@PathVariable String new_username) {

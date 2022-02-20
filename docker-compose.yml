@@ -3,7 +3,7 @@ services:
   db:
     container_name: db
     image: postgres:14.1
-    restart: always
+    restart: unless-stopped
     environment:
       POSTGRES_USERNAME: postgres
       POSTGRES_PASSWORD: development
@@ -12,7 +12,7 @@ services:
   oss:
     container_name: oss
     image: minio/minio:RELEASE.2022-02-07T08-17-33Z
-    restart: always
+    restart: unless-stopped
     environment:
       MINIO_ROOT_USER: minio
       MINIO_ROOT_PASSWORD: development
@@ -20,3 +20,9 @@ services:
       - "9000:9000"
       - "9001:9001"
     command: server --console-address ":9001" /data
+  imd:
+    container_name: imd
+    image: redis:6.2.6-alpine
+    restart: unless-stopped
+    ports:
+      - "6379:6379"

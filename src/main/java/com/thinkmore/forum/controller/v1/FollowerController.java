@@ -1,4 +1,4 @@
-package com.thinkmore.forum.controller;
+package com.thinkmore.forum.controller.v1;
 
 import com.thinkmore.forum.dto.follower.FollowerGetDto;
 import com.thinkmore.forum.service.FollowerService;
@@ -32,7 +32,7 @@ public class FollowerController {
         return ResponseEntity.ok(followerService.followUsers(target_UserId));
     }
 
-    @DeleteMapping(path = "/follow/{uses_id}")
+    @DeleteMapping(path = "/follow/{user_id}")
     public ResponseEntity<?> unfollow_user(@PathVariable("user_id") UUID target_UserId) {
         UUID userId = UUID.fromString(Util.getJwtContext().get(0));
         try {

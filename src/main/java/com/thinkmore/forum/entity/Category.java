@@ -21,8 +21,11 @@ public class Category {
     private Post pinPost;
 
     @ManyToOne
-    @JoinColumn(name = "profile_img_id")
-    private Img profileImg;
+    @JoinColumn(name = "head_img_id")
+    private Img headImg;
+
+    @Column(name = "type")
+    private Integer type;
 
     @Column(name = "color", nullable = false, length = 7)
     private String color;

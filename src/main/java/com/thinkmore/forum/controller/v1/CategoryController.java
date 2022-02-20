@@ -1,9 +1,8 @@
-package com.thinkmore.forum.controller;
+package com.thinkmore.forum.controller.v1;
 
 import com.thinkmore.forum.dto.category.CategoryGetDto;
 import com.thinkmore.forum.dto.category.CategoryPutDto;
 import com.thinkmore.forum.service.CategoryService;
-import com.thinkmore.forum.util.Util;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;

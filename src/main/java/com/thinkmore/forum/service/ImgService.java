@@ -20,32 +20,32 @@ import java.util.stream.Collectors;
 @Service
 @RequiredArgsConstructor
 public class ImgService {
-    private final ImgRepository imgRepo;
+    private final ImgRepository imgRepository;
     private final ImgMapper imgMapper;
 
     @Transactional
     public List<ImgGetDto> getAllImg() {
-        return imgRepo.findAll().stream()
+        return imgRepository.findAll().stream()
                 .map(imgMapper::fromEntity)
                 .collect(Collectors.toList());
     }
 
     @Transactional
     public ImgGetDto getImgById(UUID id) {
-        return imgMapper.fromEntity(imgRepo.findById(id)
+        return imgMapper.fromEntity(imgRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Img id not found: " + id)));
     }
 
     @Transactional
     public ImgGetDto getImgByHash(String md5) {
-        return imgMapper.fromEntity(imgRepo.findByHash(md5)
+        return imgMapper.fromEntity(imgRepository.findByHash(md5)
                 .orElseThrow(() -> new RuntimeException("Img md5 not found: " + md5)));
     }
 
     @Transactional
     public Img uploadImg(InputStream imgStream, String md5) throws Exception {
         // check
-        Optional<Img> image = imgRepo.findByHash(md5);
+        Optional<Img> image = imgRepository.findByHash(md5);
         if (image.isPresent()) {
             return image.get();
         }
@@ -64,7 +64,7 @@ public class ImgService {
         Img img = new Img();
         img.setUrl(Config.OssUrl + Config.BucketName + "/" + fileName);
         img.setHash(md5);
-        imgRepo.save(img);
+        imgRepository.save(img);
 
         return img;
     }

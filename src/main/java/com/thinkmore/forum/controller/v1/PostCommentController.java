@@ -1,12 +1,9 @@
-package com.thinkmore.forum.controller;
+package com.thinkmore.forum.controller.v1;
 
-import com.thinkmore.forum.dto.post.PostGetDto;
-import com.thinkmore.forum.dto.post.PostPutDto;
 import com.thinkmore.forum.dto.postComment.PostCommentGetDto;
 import com.thinkmore.forum.dto.postComment.PostCommentPostDto;
 import com.thinkmore.forum.dto.postComment.PostCommentPutDto;
 import com.thinkmore.forum.service.PostCommentService;
-import com.thinkmore.forum.service.PostService;
 import com.thinkmore.forum.util.Util;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;

@@ -1,4 +1,4 @@
-package com.thinkmore.forum.controller;
+package com.thinkmore.forum.controller.v1;
 
 import com.thinkmore.forum.dto.followPost.FollowPostGetDto;
 import com.thinkmore.forum.service.FollowPostService;
@@ -17,21 +17,20 @@ public class FollowPostController {
 
     private final FollowPostService followPostService;
 
-    // Get all followpost in db, a function might not be recommended.
-//    @GetMapping
-//    public ResponseEntity<List<FollowPostGetDto>> findAll() {
-//        List<FollowPostGetDto> followPostList = followPostService.getAllFollowPosts();
-//        return ResponseEntity.ok(followPostList);
-//    }
+    @GetMapping(path = "/findAll/{post_id}")
+    public ResponseEntity<List<FollowPostGetDto>> findAll() {
+        List<FollowPostGetDto> followPostList = followPostService.getAllFollowPosts();
+        return ResponseEntity.ok(followPostList);
+    }
 
-    @GetMapping
+    @GetMapping(path = "/findAllByUserId/{post_id}")
     public ResponseEntity<List<FollowPostGetDto>> findAllByUserId() {
         UUID userId = UUID.fromString(Util.getJwtContext().get(0));
         List<FollowPostGetDto> followPostList = followPostService.getAllFollowPostsByUserId(userId);
         return ResponseEntity.ok(followPostList);
     }
 
-    @PostMapping(path = "/{post_id}")
+    @PostMapping(path = "/userFollowPost/{post_id}")
     public ResponseEntity<String> userFollowPost(@PathVariable("post_id") String post_id) {
         UUID postId = UUID.fromString(post_id);
         UUID userId = UUID.fromString(Util.getJwtContext().get(0));
@@ -39,11 +38,10 @@ public class FollowPostController {
         return ResponseEntity.ok(String.format("successfully followed post with id %s", post_id));
     }
 
-    @DeleteMapping(path = "/{post_id}")
+    @DeleteMapping(path = "/userUnfollowPost/{post_id}")
     public ResponseEntity<String> userUnfollowPost(@PathVariable("post_id") String post_id) {
         UUID postId = UUID.fromString(post_id);
         UUID userId = UUID.fromString(Util.getJwtContext().get(0));
         return ResponseEntity.ok(followPostService.userUnfollowPost(postId, userId));
     }
-
 }

@@ -1,5 +1,5 @@
 CREATE
-EXTENSION IF NOT EXISTS "uuid-ossp";
+    EXTENSION IF NOT EXISTS "uuid-ossp";
 
 CREATE TABLE img
 (
@@ -47,14 +47,15 @@ CREATE TABLE notification
 
 CREATE TABLE category
 (
-    id             uuid PRIMARY KEY DEFAULT uuid_generate_v1mc(),
-    pin_post_id    uuid,
-    profile_img_id uuid references img (id),
-    color          varchar(7)  NOT NULL,
-    title          varchar(20) NOT NULL UNIQUE,
-    description    varchar(60),
-    post_count     int         NOT NULL,
-    sort_order     int         NOT NULL UNIQUE
+    id          uuid PRIMARY KEY DEFAULT uuid_generate_v1mc(),
+    pin_post_id uuid,
+    head_img_id uuid references img (id),
+    type        int,
+    color       varchar(7)  NOT NULL,
+    title       varchar(20) NOT NULL UNIQUE,
+    description varchar(60),
+    post_count  int         NOT NULL,
+    sort_order  int         NOT NULL UNIQUE
 );
 
 CREATE TABLE post

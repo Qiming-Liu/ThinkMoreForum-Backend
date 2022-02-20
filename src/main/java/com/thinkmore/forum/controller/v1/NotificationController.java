@@ -1,4 +1,4 @@
-package com.thinkmore.forum.controller;
+package com.thinkmore.forum.controller.v1;
 
 import com.thinkmore.forum.dto.notification.NotificationGetDto;
 import com.thinkmore.forum.service.NotificationService;

@@ -1,4 +1,4 @@
-package com.thinkmore.forum.controller;
+package com.thinkmore.forum.controller.v1;
 
 import com.thinkmore.forum.dto.post.PostGetDto;
 import com.thinkmore.forum.dto.post.PostPostDto;
@@ -9,7 +9,6 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
 import java.util.UUID;
 
 @RestController

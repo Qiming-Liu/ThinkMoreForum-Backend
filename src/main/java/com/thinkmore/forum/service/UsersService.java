@@ -1,11 +1,13 @@
 package com.thinkmore.forum.service;
 
+import com.thinkmore.forum.dto.users.UsersGetDto;
 import com.thinkmore.forum.entity.JwtUser;
 import com.thinkmore.forum.configuration.Config;
 import com.thinkmore.forum.entity.Users;
 import com.thinkmore.forum.exception.InvalidOldPasswordException;
 import com.thinkmore.forum.exception.UserHasPasswordException;
 import com.thinkmore.forum.exception.UserNotFoundException;
+import com.thinkmore.forum.mapper.UsersMapper;
 import com.thinkmore.forum.repository.RolesRepository;
 import com.thinkmore.forum.repository.UsersRepository;
 import com.thinkmore.forum.util.Singleton;
@@ -24,6 +26,7 @@ import java.util.UUID;
 @RequiredArgsConstructor
 public class UsersService implements UserDetailsService {
     private final UsersRepository usersRepository;
+    private final UsersMapper usersMapper;
     private final RolesRepository rolesRepository;
 
     //only for jwt
@@ -67,9 +70,9 @@ public class UsersService implements UserDetailsService {
         return usersRepository.findByUsername(username).isEmpty();
     }
 
-//    public UsersGetDto getUserById(UUID userId) {
-//        return usersMapper.fromEntity(usersRepository.findById(userId).get());
-//    }
+    public UsersGetDto getUserById(UUID userId) {
+        return usersMapper.fromEntity(usersRepository.findById(userId).get());
+    }
 
     @Transactional
     public boolean changeUsername(String newUsername) {

@@ -15,29 +15,29 @@ import java.util.stream.Collectors;
 @RequiredArgsConstructor
 public class NotificationService {
 
-    private final NotificationRepository notificationRepo;
+    private final NotificationRepository notificationRepository;
 
     private final NotificationMapper notificationMapper;
 
     public List<NotificationGetDto> getAllNotifications() {
-        return notificationRepo.findAll().stream()
+        return notificationRepository.findAll().stream()
                 .map(notificationMapper::fromEntity)
                 .collect(Collectors.toList());
     }
 
     public NotificationGetDto getNotificationById(UUID notificationId, UUID userId) {
-        return  notificationMapper.fromEntity(notificationRepo.findByIdAndUsers_Id(notificationId, userId).get());
+        return  notificationMapper.fromEntity(notificationRepository.findByIdAndUsers_Id(notificationId, userId).get());
     }
 
     public List<NotificationGetDto> getNotificationsByUserId(UUID userId) {
-        return notificationRepo.findByUsers_IdOrderByCreateTimestampDesc(userId).stream()
+        return notificationRepository.findByUsers_IdOrderByCreateTimestampDesc(userId).stream()
                 .map(notificationMapper::fromEntity)
                 .collect(Collectors.toList());
     }
 
     @Transactional
     public String userDeleteNotification(UUID notificationId, UUID userId) {
-        return notificationRepo.deleteByIdAndUsers_Id(notificationId, userId) > 0?
+        return notificationRepository.deleteByIdAndUsers_Id(notificationId, userId) > 0?
                 "Successfully deleted!":"Deletion failed!";
     }
 }

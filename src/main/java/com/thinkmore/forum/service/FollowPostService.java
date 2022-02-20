@@ -24,44 +24,44 @@ import java.util.stream.Collectors;
 @RequiredArgsConstructor
 public class FollowPostService {
 
-    private final FollowPostRepository followPostRepo;
+    private final FollowPostRepository followPostRepository;
     private final FollowPostMapper followPostMapper;
 
-    private final UsersRepository usersRepo;
+    private final UsersRepository usersRepository;
     private final UsersMapper usersMapper;
 
-    private final PostRepository postRepo;
+    private final PostRepository postRepository;
     private final PostMapper postMapper;
 
 
     public List<FollowPostGetDto> getAllFollowPosts() {
-        return followPostRepo.findAll().stream()
+        return followPostRepository.findAll().stream()
                 .map(followPostMapper::fromEntity)
                 .collect(Collectors.toList());
     }
 
     public List<FollowPostGetDto> getAllFollowPostsByUserId(UUID userId) {
-        return followPostRepo.findByUsers_IdOrderByCreateTimestampDesc(userId).stream()
+        return followPostRepository.findByUsers_IdOrderByCreateTimestampDesc(userId).stream()
                 .map(followPostMapper::fromEntity)
                 .collect(Collectors.toList());
     }
 
     public void postFollowPostToUser(UUID postId, UUID userId) {
-        UsersMiniGetDto usersMiniGetDto = usersMapper.entityToMiniDto(usersRepo.findById(userId).get());
+        UsersMiniGetDto usersMiniGetDto = usersMapper.entityToMiniDto(usersRepository.findById(userId).get());
 
-        PostMiniGetDto postMiniGetDto = postMapper.entityToMiniDto(postRepo.findById(postId).get());
+        PostMiniGetDto postMiniGetDto = postMapper.entityToMiniDto(postRepository.findById(postId).get());
 
         FollowPostPostDto followPostPostDto = new FollowPostPostDto();
         followPostPostDto.setUsers(usersMiniGetDto);
         followPostPostDto.setPost(postMiniGetDto);
         followPostPostDto.setCreateTimestamp(OffsetDateTime.now());
         FollowPost followPost = followPostMapper.toEntity(followPostPostDto);
-        followPostRepo.save(followPost);
+        followPostRepository.save(followPost);
     }
 
     @Transactional
     public String userUnfollowPost(UUID postId, UUID userId) {
-        return followPostRepo.deleteByUsers_IdAndPost_Id(userId, postId) > 0?
+        return followPostRepository.deleteByUsers_IdAndPost_Id(userId, postId) > 0?
                 "Successfully unfollowed!":"Unfollow failed or you didn't follow this post";
     }
 

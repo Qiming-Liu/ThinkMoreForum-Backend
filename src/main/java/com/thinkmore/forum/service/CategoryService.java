@@ -6,9 +6,7 @@ import com.thinkmore.forum.entity.Category;
 import com.thinkmore.forum.exception.CategoryNotFoundException;
 import com.thinkmore.forum.mapper.CategoryMapper;
 import com.thinkmore.forum.repository.CategoryRepository;
-import com.thinkmore.forum.util.Util;
 import lombok.RequiredArgsConstructor;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
@@ -21,9 +19,7 @@ import java.util.stream.Collectors;
 public class CategoryService {
 
     private final CategoryRepository categoryRepo;
-
     private final CategoryMapper categoryMapper;
-
 
     @Transactional
     public CategoryGetDto addCategory (String title, String description, String color) {
@@ -31,20 +27,15 @@ public class CategoryService {
 
         int nowSortOrder = getAllCategories().size();
 
-
         category.setTitle(title);
         category.setDescription(description);
         category.setColor(color);
-        category.setProfileImg(null);
+        category.setHeadImg(null);
         category.setPostCount(0);
         category.setSortOrder(nowSortOrder);
         category.setPinPost(null);
 
-
-
         categoryRepo.save(category);
-
-
         return categoryMapper.fromEntity(category);
     }
 
