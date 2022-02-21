@@ -29,12 +29,6 @@ dependencies {
     implementation 'org.springframework.boot:spring-boot-starter-web:2.6.3'
     annotationProcessor "org.springframework.boot:spring-boot-configuration-processor:2.6.3"
 
-    implementation 'org.springframework.social:spring-social-facebook:2.0.3.RELEASE'
-    implementation 'org.springframework.social:spring-social-config:1.1.6.RELEASE'
-    implementation 'org.springframework.social:spring-social-security:1.1.6.RELEASE'
-    implementation 'org.springframework.social:spring-social-web:1.1.6.RELEASE'
-    implementation 'org.springframework.social:spring-social-core:1.1.6.RELEASE'
-
     implementation 'org.apache.commons:commons-lang3:3.12.0'
 
     compileOnly 'org.projectlombok:lombok:1.18.22'
@@ -51,6 +45,7 @@ dependencies {
     runtimeOnly 'io.jsonwebtoken:jjwt-jackson:0.11.2'
 
     implementation 'org.bouncycastle:bcprov-jdk15on:1.69'
+    implementation 'com.google.code.gson:gson:2.9.0'
 
     testImplementation 'org.springframework.boot:spring-boot-starter-test:2.6.3'
     testImplementation 'org.springframework.security:spring-security-test:5.6.1'
