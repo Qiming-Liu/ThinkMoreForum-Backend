@@ -1,5 +1,6 @@
 package com.thinkmore.forum.dto.users;
 
+import com.thinkmore.forum.dto.img.ImgGetDto;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -9,5 +10,6 @@ import java.util.UUID;
 @NoArgsConstructor
 public class UsersMiniGetDto {
     private UUID id;
+    private ImgGetDto profileImg;
     private String username;
 }

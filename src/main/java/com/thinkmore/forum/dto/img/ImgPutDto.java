@@ -10,6 +10,6 @@ import java.util.UUID;
 @NoArgsConstructor
 public class ImgPutDto implements Serializable {
     private UUID id;
-    private String imgName;
-    private String imgHash;
+    private String url;
+    private String hash;
 }

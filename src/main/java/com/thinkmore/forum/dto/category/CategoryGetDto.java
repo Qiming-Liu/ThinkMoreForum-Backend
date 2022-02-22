@@ -13,7 +13,8 @@ import java.util.UUID;
 public class CategoryGetDto implements Serializable {
     private UUID id;
     private PostMiniGetDto pinPost;
-    private ImgGetDto profileImg;
+    private ImgGetDto headImg;
+    private Integer type;
     private String color;
     private String title;
     private String description;

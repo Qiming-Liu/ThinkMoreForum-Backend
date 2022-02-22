@@ -1,9 +1,6 @@
 package com.thinkmore.forum.mapper;
 
-import com.thinkmore.forum.dto.category.CategoryGetDto;
-import com.thinkmore.forum.dto.category.CategoryMiniGetDto;
-import com.thinkmore.forum.dto.category.CategoryPostDto;
-import com.thinkmore.forum.dto.category.CategoryPutDto;
+import com.thinkmore.forum.dto.category.*;
 import com.thinkmore.forum.entity.Category;
 import org.mapstruct.*;
 
