@@ -41,5 +41,5 @@ public class Config {
     public final static String BucketName = "image";
 
     // cloud
-    public final static String CloudUrl = "http://3.26.60.225:8080/";
+    public final static String CloudUrl = "http://3.26.60.225:9000/";
 }
