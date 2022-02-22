@@ -13,10 +13,13 @@ VALUES ('unverified_user', '{}');
 INSERT INTO roles (role_name, permission)
 VALUES ('banned_user', '{}');
 
--- 密码统一是123456
+INSERT INTO users (username, password, email, profile_img_id, role_id, last_login_timestamp)
+VALUES ('Alan', '$argon2id$v=19$m=4096,t=3,p=1$gL/kMr7KOOCqFFDDbUwzBg$yav+sp5kn7Y6RB/zLJYAKsDvPzDVnbUZbblCJLee9Yw',
+        'prossliu@gmail.com', null, (SELECT id FROM roles WHERE role_name = 'admin'), now());
+
 INSERT INTO users (username, password, email, profile_img_id, role_id, last_login_timestamp)
 VALUES ('admin', '$argon2id$v=19$m=4096,t=3,p=1$gL/kMr7KOOCqFFDDbUwzBg$yav+sp5kn7Y6RB/zLJYAKsDvPzDVnbUZbblCJLee9Yw',
-        'admin@forum.com', null, (SELECT id FROM roles WHERE role_name = 'admin'), now());
+        'admin@forum', null, (SELECT id FROM roles WHERE role_name = 'admin'), now());
 
 INSERT INTO users (username, password, email, profile_img_id, role_id, last_login_timestamp)
 VALUES ('moderator', '$argon2id$v=19$m=4096,t=3,p=1$gL/kMr7KOOCqFFDDbUwzBg$yav+sp5kn7Y6RB/zLJYAKsDvPzDVnbUZbblCJLee9Yw',
@@ -36,3 +39,6 @@ INSERT INTO users (username, password, email, profile_img_id, role_id, last_logi
 VALUES ('banned_user',
         '$argon2id$v=19$m=4096,t=3,p=1$gL/kMr7KOOCqFFDDbUwzBg$yav+sp5kn7Y6RB/zLJYAKsDvPzDVnbUZbblCJLee9Yw',
         'banned_user@forum.com', null, (SELECT id FROM roles WHERE role_name = 'banned_user'), now());
+
+INSERT INTO img (url, hash)
+VALUES ('https://www.thinkmoreapp.com/logo.png', 'f5a379af58f34f549c22f508a60ba04f');

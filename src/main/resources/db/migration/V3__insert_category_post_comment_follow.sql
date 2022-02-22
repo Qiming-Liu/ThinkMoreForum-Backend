@@ -1,8 +1,11 @@
-INSERT INTO category (color, title, post_count, sort_order)
-VALUES ('#000000', 'Default Category', 1, 0);
+INSERT INTO category (type, color, title, post_count, sort_order)
+VALUES (0, '#5048E5', 'Default Category', 1, 0);
+
+INSERT INTO category (type, color, title, post_count, sort_order)
+VALUES (1, '#111827', 'Second Category', 2, 1);
 
 INSERT INTO category (color, title, post_count, sort_order)
-VALUES ('#FFFFFF', 'Second Category', 2, 1);
+VALUES ('#5048E5', 'Third Category', 0, 2);
 
 INSERT INTO post (post_users_id, category_id, title, context, view_count, follow_count, comment_count, visibility)
 VALUES ((SELECT id FROM users WHERE username = 'admin'),
