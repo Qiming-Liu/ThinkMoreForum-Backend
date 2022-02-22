@@ -20,7 +20,7 @@ VALUES ('admin', '$argon2id$v=19$m=4096,t=3,p=1$gL/kMr7KOOCqFFDDbUwzBg$yav+sp5kn
 
 INSERT INTO users (username, password, email, profile_img_id, role_id, last_login_timestamp)
 VALUES ('moderator', '$argon2id$v=19$m=4096,t=3,p=1$gL/kMr7KOOCqFFDDbUwzBg$yav+sp5kn7Y6RB/zLJYAKsDvPzDVnbUZbblCJLee9Yw',
-        'moderator@forum.com', null, (SELECT id FROM roles WHERE role_name = 'moderator'), now());
+        'alfred.minjiang@gmail.com', null, (SELECT id FROM roles WHERE role_name = 'moderator'), now());
 
 INSERT INTO users (username, password, email, profile_img_id, role_id, last_login_timestamp)
 VALUES ('verified_user',
