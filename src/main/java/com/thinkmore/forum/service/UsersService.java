@@ -20,6 +20,7 @@ import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
 import java.time.OffsetDateTime;
+import java.util.Optional;
 import java.util.UUID;
 
 @Service
@@ -131,14 +132,15 @@ public class UsersService implements UserDetailsService {
 
     @Transactional
     public boolean sendResetPasswordEmail(String email) throws Exception {
-        Users user = usersRepository.findByEmail(email)
-                .orElseThrow(() -> new UserNotFoundException("Email address not found: " + email));
+        Optional<Users> user = usersRepository.findByEmail(email);
 
-        Util.createMail(
-                Config.fromEmail,
-                email,
-                "Reset password",
-                Config.ResetPasswordContext + Config.ResetPasswordUrl + Util.generateJwt(new JwtUser(user)));
+        if (user.isPresent()) {
+            Util.createMail(
+                    Config.fromEmail,
+                    email,
+                    "Reset password",
+                    Config.ResetPasswordContext + Config.ResetPasswordUrl + Util.generateJwt(new JwtUser(user.get())));
+        }
 
         return true;
     }
