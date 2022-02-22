@@ -62,7 +62,7 @@ public class ImgService {
 
         // set
         Img img = new Img();
-        img.setUrl(Config.OssUrl + Config.BucketName + "/" + fileName);
+        img.setUrl(Config.CloudUrl + Config.BucketName + "/" + fileName);
         img.setHash(md5);
         imgRepository.save(img);
 

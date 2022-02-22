@@ -16,6 +16,7 @@ public class Config {
             "/v1/users/unique-email/**",
             "/v1/users/unique-username/**",
             "/v1/users/reset-password/**",
+            "/v1/category/**",
             "/v1/img/upload",
     };
     public final static String JwtSecretKey = "fruue37r7yrfhf87f7876guyggf%$$#$%^&%RTHGhjjkj23456rkkkkdkd";
@@ -38,4 +39,7 @@ public class Config {
     public final static String MINIO_ROOT_USER = "minio";
     public final static String MINIO_ROOT_PASSWORD = "development";
     public final static String BucketName = "image";
+
+    // cloud
+    public final static String CloudUrl = "http://3.26.60.225:8080/";
 }
