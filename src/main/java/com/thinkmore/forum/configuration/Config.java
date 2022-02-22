@@ -18,6 +18,7 @@ public class Config {
             "/v1/users/reset-password/**",
             "/v1/category/**",
             "/v1/img/upload",
+            "/v1/category/**"
     };
     public final static String JwtSecretKey = "fruue37r7yrfhf87f7876guyggf%$$#$%^&%RTHGhjjkj23456rkkkkdkd";
     public final static String JwtPrefix = "Bearer ";

@@ -13,7 +13,8 @@ import java.util.UUID;
 public class CategoryPutDto implements Serializable {
     private UUID id;
     private PostPutDto pinPost;
-    private ImgPutDto profileImg;
+    private ImgPutDto headImg;
+    private Integer type;
     private String color;
     private String title;
     private String description;
