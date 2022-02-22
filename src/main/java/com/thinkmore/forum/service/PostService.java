@@ -12,6 +12,7 @@ import com.thinkmore.forum.repository.CategoryRepository;
 import com.thinkmore.forum.repository.PostRepository;
 import com.thinkmore.forum.repository.UsersRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -81,5 +82,15 @@ public class PostService {
         postMapper.copy(postPutDto, oldPost);
 
         return String.format("You've successfully edited the post with title %s", postPutDto.getTitle());
+    }
+
+    public List<PostGetDto> getPostsByCategoryTitle(String category_title, Pageable pageable) {
+        return postRepository.findByCategory_TitleOrderByCreateTimestampDesc(category_title, pageable).stream()
+                .map(postMapper::fromEntity)
+                .collect(Collectors.toList());
+    }
+
+    public long getCountOfPostsByCategoryTitle(String category_title) {
+        return postRepository.countByCategory_Title(category_title);
     }
 }
