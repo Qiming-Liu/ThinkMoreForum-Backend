@@ -74,7 +74,7 @@ public class UsersController {
     }
 
     @GetMapping("empty-password")
-    public ResponseEntity<Boolean> getpassword(){
+    public ResponseEntity<Boolean> getPassword(){
         return ResponseEntity.ok(usersService.getPassword());
     }
 }
