@@ -18,4 +18,7 @@ public interface CategoryRepository extends JpaRepository<Category, UUID>, JpaSp
 
     @Override
     void deleteById(UUID uuid);
+
+    Optional<Category> findByTitle(String title);
+
 }
