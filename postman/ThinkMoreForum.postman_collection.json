@@ -1,6 +1,6 @@
 {
 	"info": {
-		"_postman_id": "7c4c1c38-c56d-46b4-8140-65540831e3d0",
+		"_postman_id": "f34fdee7-5485-45d7-a1c2-436808b0afe4",
 		"name": "ThinkMoreForum",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
 	},
@@ -588,7 +588,7 @@
 							"raw": ""
 						},
 						"url": {
-							"raw": "{{url}}/v1/users/followed/:user_id/:followed_users_id",
+							"raw": "{{url}}/v1/users/followed/:user_id/:username",
 							"host": [
 								"{{url}}"
 							],
@@ -597,7 +597,7 @@
 								"users",
 								"followed",
 								":user_id",
-								":followed_users_id"
+								":username"
 							],
 							"variable": [
 								{
@@ -605,7 +605,7 @@
 									"value": null
 								},
 								{
-									"key": "followed_users_id",
+									"key": "username",
 									"value": null
 								}
 							]
@@ -660,7 +660,7 @@
 							"raw": ""
 						},
 						"url": {
-							"raw": "{{url}}/v1/users/follower/:user_id/:followed_users_id",
+							"raw": "{{url}}/v1/users/follower/:user_id/:username",
 							"host": [
 								"{{url}}"
 							],
@@ -669,7 +669,7 @@
 								"users",
 								"follower",
 								":user_id",
-								":followed_users_id"
+								":username"
 							],
 							"variable": [
 								{
@@ -677,7 +677,7 @@
 									"value": null
 								},
 								{
-									"key": "followed_users_id",
+									"key": "username",
 									"value": null
 								}
 							]
@@ -736,7 +736,7 @@
 							"raw": ""
 						},
 						"url": {
-							"raw": "{{url}}/v1/users/follow/:uses_id",
+							"raw": "{{url}}/v1/users/follow/:username",
 							"host": [
 								"{{url}}"
 							],
@@ -744,11 +744,11 @@
 								"v1",
 								"users",
 								"follow",
-								":uses_id"
+								":username"
 							],
 							"variable": [
 								{
-									"key": "uses_id",
+									"key": "username",
 									"value": null
 								}
 							]
@@ -812,7 +812,7 @@
 							"raw": ""
 						},
 						"url": {
-							"raw": "{{url}}/v1/users/follow/:uses_id",
+							"raw": "{{url}}/v1/users/follow/:username",
 							"host": [
 								"{{url}}"
 							],
@@ -820,11 +820,11 @@
 								"v1",
 								"users",
 								"follow",
-								":uses_id"
+								":username"
 							],
 							"variable": [
 								{
-									"key": "uses_id",
+									"key": "username",
 									"value": null
 								}
 							]
@@ -1520,10 +1520,10 @@
 									]
 								}
 							},
-							"_postman_previewlanguage": null,
-							"header": null,
+							"_postman_previewlanguage": "Text",
+							"header": [],
 							"cookie": [],
-							"body": null
+							"body": ""
 						}
 					]
 				}
