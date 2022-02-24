@@ -41,13 +41,6 @@ public class UsersController {
         return ResponseEntity.ok(usersService.uniqueUsername(username));
     }
 
-    @GetMapping("/{user_id}")
-    public ResponseEntity<UsersGetDto> findUserById(@PathVariable("user_id") String user_id) {
-        UUID userId = UUID.fromString(user_id);
-        UsersGetDto usersGetDto = usersService.getUserById(userId);
-        return ResponseEntity.ok(usersGetDto);
-    }
-
     @GetMapping("/get-user/{open_id}")
     public ResponseEntity<OauthGetDto> findUserByOpenId(@PathVariable("open_id") String open_id) {
         OauthGetDto oauthGetDto = usersService.getUserByOpenId(open_id);
