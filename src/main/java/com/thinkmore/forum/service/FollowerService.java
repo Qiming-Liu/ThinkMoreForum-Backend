@@ -23,22 +23,28 @@ public class FollowerService {
     private final UsersRepository usersRepository;
     private final FollowerMapper followerMapper;
 
-    public List<FollowerGetDto> getFollowersById(UUID Id) {
-        return followerRepository.findAllByUsersId(Id).stream().map(followerMapper::fromEntity).collect(Collectors.toList());
+    public List<FollowerGetDto> getFollowersByUsername(String username) {
+        Users user = usersRepository.findByUsername(username)
+                .orElseThrow(() -> new UserNotFoundException("Invalid UserName"));
+        return followerRepository.findAllByUsersId(user.getId()).stream().map(followerMapper::fromEntity).collect(Collectors.toList());
     }
 
-    public List<FollowerGetDto> getFriendsById(UUID Id) {
-        return followerRepository.findAllByFollowedUsersId(Id).stream().map(followerMapper::fromEntity).collect(Collectors.toList());
+    public List<FollowerGetDto> getFriendsByUsername(String username) {
+        Users user = usersRepository.findByUsername(username)
+                .orElseThrow(() -> new UserNotFoundException("Invalid UserName"));
+        return followerRepository.findAllByFollowedUsersId(user.getId()).stream().map(followerMapper::fromEntity).collect(Collectors.toList());
     }
 
-    public FollowerGetDto followUsers(UUID Id) {
+    public FollowerGetDto followUsers(String username) {
+        Users tampUser = usersRepository.findByUsername(username)
+                .orElseThrow(() -> new UserNotFoundException("Invalid UserName"));
         FollowUser followUser = new FollowUser();
         UUID currentId = UUID.fromString(Util.getJwtContext().get(0));
         Users user = usersRepository.findById(currentId)
                 .orElseThrow(() -> new UserNotFoundException("Invalid UserID"));
-        Users followedUser = usersRepository.findById(Id)
+        Users followedUser = usersRepository.findById(tampUser.getId())
                 .orElseThrow(() -> new UserNotFoundException("Invalid UserID"));
-        if (followerRepository.findByUsersIdAndFollowedUsersId(Id, currentId).isEmpty()) {
+        if (followerRepository.findByUsersIdAndFollowedUsersId(tampUser.getId(), currentId).isEmpty()) {
             followUser.setUsers(user);
             followUser.setFollowedUsers(followedUser);
             followUser.setCreateTimestamp(OffsetDateTime.now());
@@ -51,7 +57,11 @@ public class FollowerService {
         return followerMapper.fromEntity(followUser);
     }
 
-    public void unfollowUsers(UUID userId, UUID FollowedUsersId) {
-        followerRepository.deleteByUsersIdAndFollowedUsersId(userId, FollowedUsersId);
+    public void unfollowUsers(String username, String followedUsername) {
+        Users user = usersRepository.findByUsername(username)
+                .orElseThrow(() -> new UserNotFoundException("Invalid UserName"));
+        Users followedUser = usersRepository.findByUsername(followedUsername)
+                .orElseThrow(() -> new UserNotFoundException("Invalid UserName"));
+        followerRepository.deleteByUsersIdAndFollowedUsersId(user.getId(), followedUser.getId());
     }
 }

@@ -17,26 +17,26 @@ public class FollowerController {
     private final FollowerService followerService;
 
 //  view fans
-    @GetMapping(path = "/follower/{user_id}/{followed_users_id}")
-    public ResponseEntity<List<FollowerGetDto>> view_follower(@PathVariable("user_id") UUID current_UserId, @PathVariable("followed_users_id") UUID target_UserId) {
-        return ResponseEntity.ok(followerService.getFollowersById(target_UserId));
+    @GetMapping(path = "/follower/{user_id}/{username}")
+    public ResponseEntity<List<FollowerGetDto>> view_follower(@PathVariable("user_id") UUID current_UserId, @PathVariable("username") String target_username) {
+    return ResponseEntity.ok(followerService.getFollowersByUsername(target_username));
+}
+
+    @GetMapping(path = "/followed/{user_id}/{username}")
+    public ResponseEntity<List<FollowerGetDto>> view_followed_user(@PathVariable("user_id") UUID current_UserId, @PathVariable("username") String target_username) {
+        return ResponseEntity.ok(followerService.getFriendsByUsername(target_username));
     }
 
-    @GetMapping(path = "/followed/{user_id}/{followed_users_id}")
-    public ResponseEntity<List<FollowerGetDto>> view_followed_user(@PathVariable("user_id") UUID current_UserId, @PathVariable("followed_users_id") UUID target_UserId) {
-        return ResponseEntity.ok(followerService.getFriendsById(target_UserId));
+    @PostMapping(path = "/follow/{username}")
+    public ResponseEntity<FollowerGetDto> follow_user(@PathVariable("username") String username) {
+        return ResponseEntity.ok(followerService.followUsers(username));
     }
 
-    @PostMapping(path = "/follow/{user_id}")
-    public ResponseEntity<FollowerGetDto> follow_user(@PathVariable("user_id") UUID target_UserId) {
-        return ResponseEntity.ok(followerService.followUsers(target_UserId));
-    }
-
-    @DeleteMapping(path = "/follow/{user_id}")
-    public ResponseEntity<?> unfollow_user(@PathVariable("user_id") UUID target_UserId) {
-        UUID userId = UUID.fromString(Util.getJwtContext().get(0));
+    @DeleteMapping(path = "/follow/{username}")
+    public ResponseEntity<?> unfollow_user(@PathVariable("username") String target_username) {
+        String username = Util.getJwtContext().get(1);
         try {
-            followerService.unfollowUsers(userId, target_UserId);
+            followerService.unfollowUsers(username, target_username);
             return ResponseEntity.ok().body("Deleted");
         } catch (Exception e) {
             return ResponseEntity.status(404).body("Not found");
