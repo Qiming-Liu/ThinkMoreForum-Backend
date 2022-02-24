@@ -1,13 +1,18 @@
 package com.thinkmore.forum.service;
 
+import com.thinkmore.forum.dto.oauth.OauthGetDto;
 import com.thinkmore.forum.dto.users.UsersGetDto;
+import com.thinkmore.forum.dto.users.UsersMiniGetDto;
 import com.thinkmore.forum.entity.JwtUser;
 import com.thinkmore.forum.configuration.Config;
+import com.thinkmore.forum.entity.Oauth;
 import com.thinkmore.forum.entity.Users;
 import com.thinkmore.forum.exception.InvalidOldPasswordException;
 import com.thinkmore.forum.exception.UserHasPasswordException;
 import com.thinkmore.forum.exception.UserNotFoundException;
+import com.thinkmore.forum.mapper.OauthMapper;
 import com.thinkmore.forum.mapper.UsersMapper;
+import com.thinkmore.forum.repository.OauthRepository;
 import com.thinkmore.forum.repository.RolesRepository;
 import com.thinkmore.forum.repository.UsersRepository;
 import com.thinkmore.forum.util.Singleton;
@@ -27,7 +32,9 @@ import java.util.UUID;
 @RequiredArgsConstructor
 public class UsersService implements UserDetailsService {
     private final UsersRepository usersRepository;
+    private final OauthRepository oauthRepository;
     private final UsersMapper usersMapper;
+    private final OauthMapper oauthMapper;
     private final RolesRepository rolesRepository;
 
     //only for jwt
@@ -56,6 +63,36 @@ public class UsersService implements UserDetailsService {
     }
 
     @Transactional
+    public Boolean thirdPartyLogin(String email, String username) {
+        Users user = new Users();
+
+        user.setUsername(username);
+        user.setPassword(null);
+        user.setEmail(email);
+        user.setProfileImg(null);
+        user.setRole(rolesRepository.findByRoleName(Config.DefaultRole).orElseThrow());
+        user.setLastLoginTimestamp(OffsetDateTime.now());
+        user.setCreateTimestamp(OffsetDateTime.now());
+
+        usersRepository.save(user);
+
+        return true;
+    }
+
+    @Transactional
+    public Boolean thirdPartyLoginOauth(String username, String oauthType, String openid) {
+        Oauth oauth = new Oauth();
+
+        oauth.setUsers(usersRepository.findByUsername(username).get());
+        oauth.setOauthType(oauthType);
+        oauth.setOpenid(openid);
+
+        oauthRepository.save(oauth);
+
+        return true;
+    }
+
+    @Transactional
     public void updateLastLoginTimestamp(String username) {
         Users user = usersRepository.findByUsername(username).orElseThrow(() ->
                 new UsernameNotFoundException(String.format("Username %s not found", username)));
@@ -73,6 +110,10 @@ public class UsersService implements UserDetailsService {
 
     public UsersGetDto getUserById(UUID userId) {
         return usersMapper.fromEntity(usersRepository.findById(userId).get());
+    }
+
+    public OauthGetDto getUserByOpenId(String openid) {
+        return oauthMapper.fromEntity(oauthRepository.findByOpenid(openid).get());
     }
 
     @Transactional

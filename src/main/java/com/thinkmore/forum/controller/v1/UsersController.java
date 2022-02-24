@@ -1,5 +1,6 @@
 package com.thinkmore.forum.controller.v1;
 
+import com.thinkmore.forum.dto.oauth.OauthGetDto;
 import com.thinkmore.forum.dto.users.UsersGetDto;
 import com.thinkmore.forum.service.UsersService;
 import lombok.RequiredArgsConstructor;
@@ -21,6 +22,15 @@ public class UsersController {
         return ResponseEntity.ok(usersService.signup(email, username, password));
     }
 
+    @PostMapping(path = "/third-party-login/{email}/{username}")
+    public ResponseEntity<Boolean> thirdPartyLogin(@PathVariable String email, @PathVariable String username) {
+        return ResponseEntity.ok(usersService.thirdPartyLogin(email, username));
+    }
+
+    @PostMapping(path = "/third-party-login/{username}/{oauthType}/{openid}")
+    public ResponseEntity<Boolean> thirdPartyLoginOauth(@PathVariable String username, @PathVariable String oauthType, @PathVariable String openid) {
+        return ResponseEntity.ok(usersService.thirdPartyLoginOauth(username, oauthType, openid));
+    }
     @GetMapping(path = "/unique-email/{email}")
     public ResponseEntity<Boolean> uniqueEmail(@PathVariable String email) {
         return ResponseEntity.ok(usersService.uniqueEmail(email));
@@ -36,6 +46,12 @@ public class UsersController {
         UUID userId = UUID.fromString(user_id);
         UsersGetDto usersGetDto = usersService.getUserById(userId);
         return ResponseEntity.ok(usersGetDto);
+    }
+
+    @GetMapping("/get-user/{open_id}")
+    public ResponseEntity<OauthGetDto> findUserByOpenId(@PathVariable("open_id") String open_id) {
+        OauthGetDto oauthGetDto = usersService.getUserByOpenId(open_id);
+        return ResponseEntity.ok(oauthGetDto);
     }
 
     @PutMapping("/username/{new_username}")
