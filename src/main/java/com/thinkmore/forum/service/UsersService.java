@@ -139,7 +139,7 @@ public class UsersService implements UserDetailsService {
                     Config.fromEmail,
                     email,
                     "Reset password",
-                    Config.ResetPasswordContext + Config.ResetPasswordUrl + Util.generateJwt(new JwtUser(user.get())));
+                    Config.ResetPasswordContext + Config.ResetPasswordUrl + Config.JwtPrefix + Util.generateJwt(new JwtUser(user.get())));
         }
 
         return true;

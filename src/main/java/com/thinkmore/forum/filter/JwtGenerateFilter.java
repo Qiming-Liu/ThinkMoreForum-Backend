@@ -51,8 +51,7 @@ public class JwtGenerateFilter extends UsernamePasswordAuthenticationFilter {
 
         //generate jwt
         JwtUser jwtUser = (JwtUser) authResult.getPrincipal();
-        String jwtToken = Util.generateJwt(jwtUser);
 
-        response.addHeader(HttpHeaders.AUTHORIZATION, Config.JwtPrefix + jwtToken);
+        response.addHeader(HttpHeaders.AUTHORIZATION, Config.JwtPrefix + Util.generateJwt(jwtUser));
     }
 }

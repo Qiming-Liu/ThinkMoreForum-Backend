@@ -12,7 +12,7 @@ public class Config {
             "/swagger-ui.html",
             "/webjars/**",
             // -- API
-            "/v1/users/signup/**",
+            "/v1/users/register/**",
             "/v1/users/unique-email/**",
             "/v1/users/unique-username/**",
             "/v1/users/reset-password/**",
@@ -30,9 +30,9 @@ public class Config {
     public final static String DecodedKey = "1a53d4469f513e1ae3856fc2c603b8d6";
     public final static String Apikey = "bf7429164ac97e5dae68b01c9b5f4db2fdf172b5e843d2c2d8f3f829e9b785c02cd38bda9be56537804f8e5626eeca116989564aa0d603c40355d037f4713c55c2638ef376ce12e5455e4dbfd5cd49cc";
     public final static String fromEmail = "jiangjianglovezhou@gmail.com";
-    public final static String ResetPasswordUrl = "https://thinkmoreforum.vercel.app/password-reset?token=";
+    public final static String ResetPasswordUrl = "https://www.thinkmoreapp.com/password-reset?token=";
     public final static String ResetPasswordContext = "Please click the link to reset your new password:\n";
-    public final static String VerifyEmailUrl = "https://thinkmoreforum.vercel.app/verify-email?token=";
+    public final static String VerifyEmailUrl = "https://www.thinkmoreapp.com/verify-email?token=";
     public final static String VerifyEmailContext = "Please click the link to verify your new email:\n";
 
     // Oss
