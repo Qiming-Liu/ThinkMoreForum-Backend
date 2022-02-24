@@ -17,7 +17,7 @@ import java.util.UUID;
 public class UsersController {
     private final UsersService usersService;
 
-    @PostMapping(path = "/signup/{email}/{username}/{password}")
+    @PostMapping(path = "/register/{email}/{username}/{password}")
     public ResponseEntity<Boolean> signup(@PathVariable String email, @PathVariable String username, @PathVariable String password) {
         return ResponseEntity.ok(usersService.signup(email, username, password));
     }
@@ -79,7 +79,7 @@ public class UsersController {
         return ResponseEntity.ok(usersService.sendResetPasswordEmail(email));
     }
 
-    @PutMapping("/reset-password/{new_password}")
+    @PutMapping("/password-reset/{new_password}")
     public ResponseEntity<Boolean> resetPassword(@PathVariable String new_password) {
         return ResponseEntity.ok(usersService.resetPassword(new_password));
     }
