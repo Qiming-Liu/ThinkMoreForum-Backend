@@ -12,7 +12,8 @@ public class Config {
             "/swagger-ui.html",
             "/webjars/**",
             // -- API
-            "/v1/users/signup/**",
+            "/v1/users/get-user/**",
+            "/v1/users/third-party-login/**",
             "/v1/users/unique-email/**",
             "/v1/users/unique-username/**",
             "/v1/users/reset-password/**",
