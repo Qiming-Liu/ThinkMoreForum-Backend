@@ -1,6 +1,6 @@
 {
 	"info": {
-		"_postman_id": "4d4c50c7-b0f0-4fd1-8fea-f80ee73148c3",
+		"_postman_id": "7c4c1c38-c56d-46b4-8140-65540831e3d0",
 		"name": "ThinkMoreForum",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
 	},
@@ -88,7 +88,7 @@
 							"variable": [
 								{
 									"key": "email",
-									"value": null
+									"value": "admin@forum.com"
 								}
 							]
 						}
@@ -381,12 +381,12 @@
 							"query": [
 								{
 									"key": "oldPassword",
-									"value": null,
+									"value": "",
 									"disabled": true
 								},
 								{
 									"key": "newPassword",
-									"value": null,
+									"value": "",
 									"disabled": true
 								}
 							],
@@ -469,7 +469,7 @@
 							"query": [
 								{
 									"key": "email",
-									"value": null,
+									"value": "",
 									"disabled": true
 								}
 							],
@@ -513,7 +513,7 @@
 							"query": [
 								{
 									"key": "password",
-									"value": null,
+									"value": "",
 									"disabled": true
 								}
 							],
@@ -865,6 +865,51 @@
 							"body": ""
 						}
 					]
+				},
+				{
+					"name": "empty password",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{url}}/v1/users/empty-password",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"v1",
+								"users",
+								"empty-password"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "third party user set password",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"url": {
+							"raw": "{{url}}/v1/users/set-password/:password",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"v1",
+								"users",
+								"set-password",
+								":password"
+							],
+							"variable": [
+								{
+									"key": "password",
+									"value": "123"
+								}
+							]
+						}
+					},
+					"response": []
 				}
 			]
 		},
@@ -1421,11 +1466,11 @@
 								{
 									"key": "file",
 									"type": "file",
-									"src": []
+									"src": "/C:/Users/alan/Desktop/ThinkMoreForum-Frontend/public/logo.png"
 								},
 								{
 									"key": "md5",
-									"value": "be00b93b972c577de11bb7d37268fe",
+									"value": "f5a379af58f34f549c22f508a60ba04f",
 									"type": "text"
 								}
 							]
@@ -1475,10 +1520,10 @@
 									]
 								}
 							},
-							"_postman_previewlanguage": "Text",
-							"header": [],
+							"_postman_previewlanguage": null,
+							"header": null,
 							"cookie": [],
-							"body": ""
+							"body": null
 						}
 					]
 				}
@@ -1491,48 +1536,15 @@
 					"name": "New Request",
 					"request": {
 						"method": "GET",
-						"header": [
-							{
-								"key": "Authorization",
-								"value": "eyJhbGciOiJIUzM4NCJ9.eyJqdGkiOiJmZWY4NmExYy04YTU5LTExZWMtOWUxZi01ZmIyZTk3OWUxMmQiLCJzdWIiOiJhZG1pbiIsImF1ZCI6Int9IiwiaWF0IjoxNjQ0NTg3ODAyLCJleHAiOjE2NTMyMjgwMDB9.SD02hRxDZVWlJbNMu6MxrYtpJcdf9BUR7c3j7FfyrET12HDEwf3CcMxeDmP5brYM",
-								"type": "text"
-							}
-						],
+						"header": [],
 						"url": {
-							"raw": "localhost:8080/v1/category",
+							"raw": "{{url}}/v1/category/:title/:description/:color",
 							"host": [
-								"localhost"
+								"{{url}}"
 							],
-							"port": "8080",
-							"path": [
-								"v1",
-								"category"
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "New Request",
-					"request": {
-						"method": "POST",
-						"header": [
-							{
-								"key": "Authorization",
-								"value": "eyJhbGciOiJIUzM4NCJ9.eyJqdGkiOiJmZWY4NmExYy04YTU5LTExZWMtOWUxZi01ZmIyZTk3OWUxMmQiLCJzdWIiOiJhZG1pbiIsImF1ZCI6Int9IiwiaWF0IjoxNjQ0NTg5NjAzLCJleHAiOjE2NTMyMjgwMDB9.w8LMJnLsihpP1wrfEUqvIaPYcjbvdepny3eHT9tnPws8DxEDUAqB_pDKmzbZ_CAu",
-								"type": "text"
-							}
-						],
-						"url": {
-							"raw": "localhost:8080/v1/category/addCategory/:title/:description/:color",
-							"host": [
-								"localhost"
-							],
-							"port": "8080",
 							"path": [
 								"v1",
 								"category",
-								"addCategory",
 								":title",
 								":description",
 								":color"
@@ -1540,121 +1552,20 @@
 							"variable": [
 								{
 									"key": "title",
-									"value": "adf"
+									"value": null
 								},
 								{
 									"key": "description",
-									"value": "adfadsf"
+									"value": null
 								},
 								{
 									"key": "color",
-									"value": "FFFF"
+									"value": null
 								}
 							]
 						}
 					},
 					"response": []
-				},
-				{
-					"name": "New Request",
-					"request": {
-						"method": "GET",
-						"header": []
-					},
-					"response": []
-				},
-				{
-					"name": "New Request",
-					"request": {
-						"method": "PUT",
-						"header": [
-							{
-								"key": "Authorization",
-								"value": "eyJhbGciOiJIUzM4NCJ9.eyJqdGkiOiJmZWY4NmExYy04YTU5LTExZWMtOWUxZi01ZmIyZTk3OWUxMmQiLCJzdWIiOiJhZG1pbiIsImF1ZCI6Int9IiwiaWF0IjoxNjQ0NTkwMjg2LCJleHAiOjE2NTMyMjgwMDB9.wrgikVphxJS1yroAoPxy4GMuPy0_g4cU3mrMUwGs_04cp88aA81hQZsRerH3Jja1",
-								"type": "text"
-							}
-						],
-						"body": {
-							"mode": "raw",
-							"raw": "{\n    \"id\": \"93fe63f3-5bb1-4119-8a6d-5503a79ec340\",\n    \"pinPost\": null,\n    \"profileImg\": null,\n    \"color\": \"uuususus\",\n    \"title\": \"adf\",\n    \"description\": \"jvavavava\",\n    \"postCount\": 0,\n    \"sortOrder\": 2\n}",
-							"options": {
-								"raw": {
-									"language": "json"
-								}
-							}
-						},
-						"url": {
-							"raw": "localhost:8080/v1/category",
-							"host": [
-								"localhost"
-							],
-							"port": "8080",
-							"path": [
-								"v1",
-								"category"
-							]
-						}
-					},
-					"response": []
-				}
-			]
-		},
-		{
-			"name": "test",
-			"item": [
-				{
-					"name": "jwt-context",
-					"request": {
-						"method": "GET",
-						"header": [
-							{
-								"key": "Authorization",
-								"value": "eyJhbGciOiJIUzM4NCJ9.eyJqdGkiOiI5MDg1ODMyMC04ODA3LTExZWMtYTRhYy0xZmZkMTA3ODQxYWUiLCJzdWIiOiJhZG1pbiIsImF1ZCI6Int9IiwiaWF0IjoxNjQ0MjMzMDExLCJleHAiOjE2NDQyNDA2MDB9.p2ghzhXYjPvIHys26VQyqFFkdTztaKJMYAQ1CJ0jgGR795BnfAxuwAd5N5IXMqpF",
-								"type": "text"
-							}
-						],
-						"url": {
-							"raw": "{{url}}/v1/test/jwt-context",
-							"host": [
-								"{{url}}"
-							],
-							"path": [
-								"v1",
-								"test",
-								"jwt-context"
-							]
-						}
-					},
-					"response": [
-						{
-							"name": "JWT",
-							"originalRequest": {
-								"method": "GET",
-								"header": [
-									{
-										"key": "Authorization",
-										"value": "eyJhbGciOiJIUzM4NCJ9.eyJqdGkiOiI5MDg1ODMyMC04ODA3LTExZWMtYTRhYy0xZmZkMTA3ODQxYWUiLCJzdWIiOiJhZG1pbiIsImF1ZCI6Int9IiwiaWF0IjoxNjQ0MjMzMDExLCJleHAiOjE2NDQyNDA2MDB9.p2ghzhXYjPvIHys26VQyqFFkdTztaKJMYAQ1CJ0jgGR795BnfAxuwAd5N5IXMqpF",
-										"type": "text"
-									}
-								],
-								"url": {
-									"raw": "{{url}}/v1/test/jwt-context",
-									"host": [
-										"{{url}}"
-									],
-									"path": [
-										"v1",
-										"test",
-										"jwt-context"
-									]
-								}
-							},
-							"_postman_previewlanguage": "Text",
-							"header": [],
-							"cookie": [],
-							"body": ""
-						}
-					]
 				}
 			]
 		},
@@ -1669,25 +1580,23 @@
 						"type": "text"
 					}
 				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"email\": \"prossliu@gmail.com\",\r\n    \"password\": \"123456\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
 				"url": {
-					"raw": "http://localhost:8080/login?username=admin&password=123456",
-					"protocol": "http",
+					"raw": "localhost:443/login",
 					"host": [
 						"localhost"
 					],
-					"port": "8080",
+					"port": "443",
 					"path": [
 						"login"
-					],
-					"query": [
-						{
-							"key": "username",
-							"value": "admin"
-						},
-						{
-							"key": "password",
-							"value": "123456"
-						}
 					]
 				}
 			},

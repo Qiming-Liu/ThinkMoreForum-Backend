@@ -1,6 +1,7 @@
 package com.thinkmore.forum.service;
 
 import com.thinkmore.forum.dto.post.PostGetDto;
+import com.thinkmore.forum.dto.post.PostMiniGetDto;
 import com.thinkmore.forum.dto.post.PostPostDto;
 import com.thinkmore.forum.dto.post.PostPutDto;
 import com.thinkmore.forum.dto.users.UsersMiniGetDto;
@@ -92,5 +93,12 @@ public class PostService {
 
     public long getCountOfPostsByCategoryTitle(String category_title) {
         return postRepository.countByCategory_Title(category_title);
+    }
+
+    public List<PostMiniGetDto> getAllPostsCoreInfo() {
+
+        return postRepository.findAll().stream()
+                .map(postMapper::entityToMiniDto)
+                .collect(Collectors.toList());
     }
 }

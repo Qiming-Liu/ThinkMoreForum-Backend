@@ -60,9 +60,10 @@ public class Util {
         log.info(response.toString());
     }
     public static void checkPassword (String password){
-        String pattern = "(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=.*[@#$^&+=])(?=\\S+$).{8,}";
-        if (!password.matches(pattern)){
-            throw new InvalidOldPasswordException("Invalid Password!" );
-        }
+        //TODO fix here
+//        String pattern = "(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=.*[@#$^&+=])(?=\\S+$).{6,16}";
+//        if (!password.matches(pattern)){
+//            throw new InvalidOldPasswordException("Invalid Password!" );
+//        }
     }
 }

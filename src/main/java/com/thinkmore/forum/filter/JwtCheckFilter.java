@@ -61,9 +61,7 @@ public class JwtCheckFilter extends OncePerRequestFilter {
             //update jwt
             JwtUser jwtUser = new JwtUser(principal);
 
-            String jwtToken = Util.generateJwt(jwtUser);
-
-            response.addHeader(HttpHeaders.AUTHORIZATION, Config.JwtPrefix + jwtToken);
+            response.addHeader(HttpHeaders.AUTHORIZATION, Config.JwtPrefix + Util.generateJwt(jwtUser));
 
         } catch (JwtException e) {
             throw new InvalidJwtException(String.format("Token invalid: %s", token));

@@ -1,6 +1,7 @@
 package com.thinkmore.forum.controller.v1;
 
 import com.thinkmore.forum.dto.category.CategoryGetDto;
+import com.thinkmore.forum.dto.category.CategoryMiniGetDto;
 import com.thinkmore.forum.dto.category.CategoryPutDto;
 import com.thinkmore.forum.dto.post.PostGetDto;
 import com.thinkmore.forum.service.CategoryService;
@@ -28,12 +29,23 @@ public class CategoryController {
         return ResponseEntity.ok(categoryService.getAllCategories());
     }
 
+    @GetMapping(path="/mini")
+    public ResponseEntity<List<CategoryMiniGetDto>> findAllCoreInfo() {
+        return ResponseEntity.ok(categoryService.getAllCategoriesCoreInfo());
+    }
+
+    @GetMapping(path = "/{category_title}")
+    public ResponseEntity<CategoryGetDto> findCategoryByCategoryTitle(@PathVariable("category_title") String category_title) throws Exception {
+
+        return ResponseEntity.ok(categoryService.getCategoryByCategoryTitle(category_title));
+    }
+
     @GetMapping(path = "/{category_title}/count")
     public ResponseEntity<Long> findNumOfPostsInThisCategory(@PathVariable("category_title") String category_title) {
         return ResponseEntity.ok(postService.getCountOfPostsByCategoryTitle(category_title));
     }
 
-    @GetMapping(path = "/{category_title}")
+    @GetMapping(path = "/{category_title}/post")
     public ResponseEntity<List<PostGetDto>> findPostsByCategoryTitle(@PathVariable("category_title") String category_title, @PageableDefault(page = 0, value = 10, sort = {"createTimestamp"}, direction = Sort.Direction.DESC) Pageable pageable) throws Exception {
 
         return ResponseEntity.ok(postService.getPostsByCategoryTitle(category_title, pageable));
