@@ -1,7 +1,6 @@
 package com.thinkmore.forum.controller.v1;
 
 import com.thinkmore.forum.dto.category.CategoryGetDto;
-import com.thinkmore.forum.dto.category.CategoryMiniGetDto;
 import com.thinkmore.forum.dto.category.CategoryPutDto;
 import com.thinkmore.forum.dto.post.PostGetDto;
 import com.thinkmore.forum.service.CategoryService;
@@ -27,11 +26,6 @@ public class CategoryController {
     @GetMapping
     public ResponseEntity<List<CategoryGetDto>> findAll() {
         return ResponseEntity.ok(categoryService.getAllCategories());
-    }
-
-    @GetMapping(path="/mini")
-    public ResponseEntity<List<CategoryMiniGetDto>> findAllCoreInfo() {
-        return ResponseEntity.ok(categoryService.getAllCategoriesCoreInfo());
     }
 
     @GetMapping(path = "/{category_title}")
@@ -62,7 +56,7 @@ public class CategoryController {
     }
 
     @DeleteMapping
-    public void deleteCategory(@RequestParam String category_id){
+    public void deleteCategory(@RequestParam String category_id) {
         UUID uuid = UUID.fromString(category_id);
         categoryService.deleteCategory(uuid);
     }

@@ -1,8 +1,6 @@
 package com.thinkmore.forum.service;
 
 import com.thinkmore.forum.dto.oauth.OauthGetDto;
-import com.thinkmore.forum.dto.users.UsersGetDto;
-import com.thinkmore.forum.dto.users.UsersMiniGetDto;
 import com.thinkmore.forum.entity.JwtUser;
 import com.thinkmore.forum.configuration.Config;
 import com.thinkmore.forum.entity.Oauth;
@@ -46,7 +44,8 @@ public class UsersService implements UserDetailsService {
     }
 
     @Transactional
-    public Boolean signup(String email, String username, String password) {
+    public Boolean register(String email, String username, String password) {
+        Util.checkPassword(password);
         Users user = new Users();
 
         user.setUsername(username);
@@ -63,32 +62,25 @@ public class UsersService implements UserDetailsService {
     }
 
     @Transactional
-    public Boolean thirdPartyLogin(String email, String username) {
+    public Boolean thirdPartyLogin(String email, String username, String oauthType, String openid) {
         Users user = new Users();
 
-        user.setUsername(username);
-        user.setPassword(null);
         user.setEmail(email);
-        user.setProfileImg(null);
+        user.setUsername(username);
+        user.setPassword(Singleton.passwordEncoder().encode(openid));
         user.setRole(rolesRepository.findByRoleName(Config.DefaultRole).orElseThrow());
         user.setLastLoginTimestamp(OffsetDateTime.now());
         user.setCreateTimestamp(OffsetDateTime.now());
 
         usersRepository.save(user);
 
-        return true;
-    }
-
-    @Transactional
-    public Boolean thirdPartyLoginOauth(String username, String oauthType, String openid) {
         Oauth oauth = new Oauth();
 
-        oauth.setUsers(usersRepository.findByUsername(username).get());
+        oauth.setUsers(user);
         oauth.setOauthType(oauthType);
         oauth.setOpenid(openid);
 
         oauthRepository.save(oauth);
-
         return true;
     }
 
@@ -106,10 +98,6 @@ public class UsersService implements UserDetailsService {
 
     public boolean uniqueUsername(String username) {
         return usersRepository.findByUsername(username).isEmpty();
-    }
-
-    public UsersGetDto getUserById(UUID userId) {
-        return usersMapper.fromEntity(usersRepository.findById(userId).get());
     }
 
     public OauthGetDto getUserByOpenId(String openid) {
@@ -180,7 +168,10 @@ public class UsersService implements UserDetailsService {
                     Config.fromEmail,
                     email,
                     "Reset password",
-                    Config.ResetPasswordContext + Config.ResetPasswordUrl + Config.JwtPrefix + Util.generateJwt(new JwtUser(user.get())));
+                    Config.ResetPasswordContext +
+                            Util.UrlEncoder(Config.ResetPasswordUrl +
+                                    Config.JwtPrefix +
+                                    Util.generateJwt(new JwtUser(user.get()))));
         }
 
         return true;
@@ -216,16 +207,5 @@ public class UsersService implements UserDetailsService {
         user.setPassword(Singleton.passwordEncoder().encode(password));
         usersRepository.save(user);
         return true;
-    }
-
-    @Transactional
-    public boolean getPassword() {
-        String users_id = Util.getJwtContext().get(0);
-        UUID id = UUID.fromString(users_id);
-
-        Users user = usersRepository.findById(id)
-                .orElseThrow(() -> new UserNotFoundException("User not found"));
-
-        return user.getPassword().equals("");
     }
 }

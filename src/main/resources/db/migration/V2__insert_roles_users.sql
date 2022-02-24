@@ -18,12 +18,40 @@ VALUES ('Alan', '$argon2id$v=19$m=4096,t=3,p=1$gL/kMr7KOOCqFFDDbUwzBg$yav+sp5kn7
         'prossliu@gmail.com', null, (SELECT id FROM roles WHERE role_name = 'admin'), now());
 
 INSERT INTO users (username, password, email, profile_img_id, role_id, last_login_timestamp)
+VALUES ('Gabriel', '$argon2id$v=19$m=4096,t=3,p=1$gL/kMr7KOOCqFFDDbUwzBg$yav+sp5kn7Y6RB/zLJYAKsDvPzDVnbUZbblCJLee9Yw',
+        'jyftdj1112@gmail.com', null, (SELECT id FROM roles WHERE role_name = 'admin'), now());
+
+INSERT INTO users (username, password, email, profile_img_id, role_id, last_login_timestamp)
+VALUES ('melissatzt', '$argon2id$v=19$m=4096,t=3,p=1$gL/kMr7KOOCqFFDDbUwzBg$yav+sp5kn7Y6RB/zLJYAKsDvPzDVnbUZbblCJLee9Yw',
+        'melissatzt24@gmail.com', null, (SELECT id FROM roles WHERE role_name = 'admin'), now());
+
+INSERT INTO users (username, password, email, profile_img_id, role_id, last_login_timestamp)
+VALUES ('Shelton', '$argon2id$v=19$m=4096,t=3,p=1$gL/kMr7KOOCqFFDDbUwzBg$yav+sp5kn7Y6RB/zLJYAKsDvPzDVnbUZbblCJLee9Yw',
+        'damwcs@gmail.com', null, (SELECT id FROM roles WHERE role_name = 'admin'), now());
+
+INSERT INTO users (username, password, email, profile_img_id, role_id, last_login_timestamp)
+VALUES ('Will', '$argon2id$v=19$m=4096,t=3,p=1$gL/kMr7KOOCqFFDDbUwzBg$yav+sp5kn7Y6RB/zLJYAKsDvPzDVnbUZbblCJLee9Yw',
+        'wglssm.wls@gmail.com', null, (SELECT id FROM roles WHERE role_name = 'admin'), now());
+
+INSERT INTO users (username, password, email, profile_img_id, role_id, last_login_timestamp)
+VALUES ('zzyang', '$argon2id$v=19$m=4096,t=3,p=1$gL/kMr7KOOCqFFDDbUwzBg$yav+sp5kn7Y6RB/zLJYAKsDvPzDVnbUZbblCJLee9Yw',
+        'yangzhanzhao1994@gmail.com', null, (SELECT id FROM roles WHERE role_name = 'admin'), now());
+
+INSERT INTO users (username, password, email, profile_img_id, role_id, last_login_timestamp)
+VALUES ('zhenhaodd', '$argon2id$v=19$m=4096,t=3,p=1$gL/kMr7KOOCqFFDDbUwzBg$yav+sp5kn7Y6RB/zLJYAKsDvPzDVnbUZbblCJLee9Yw',
+        'zhenhao.d.pro@gmail.com', null, (SELECT id FROM roles WHERE role_name = 'admin'), now());
+
+INSERT INTO users (username, password, email, profile_img_id, role_id, last_login_timestamp)
+VALUES ('min', '$argon2id$v=19$m=4096,t=3,p=1$gL/kMr7KOOCqFFDDbUwzBg$yav+sp5kn7Y6RB/zLJYAKsDvPzDVnbUZbblCJLee9Yw',
+        'alfred.minjiang@gmail.com', null, (SELECT id FROM roles WHERE role_name = 'admin'), now());
+
+INSERT INTO users (username, password, email, profile_img_id, role_id, last_login_timestamp)
 VALUES ('admin', '$argon2id$v=19$m=4096,t=3,p=1$gL/kMr7KOOCqFFDDbUwzBg$yav+sp5kn7Y6RB/zLJYAKsDvPzDVnbUZbblCJLee9Yw',
         'admin@forum.com', null, (SELECT id FROM roles WHERE role_name = 'admin'), now());
 
 INSERT INTO users (username, password, email, profile_img_id, role_id, last_login_timestamp)
 VALUES ('moderator', '$argon2id$v=19$m=4096,t=3,p=1$gL/kMr7KOOCqFFDDbUwzBg$yav+sp5kn7Y6RB/zLJYAKsDvPzDVnbUZbblCJLee9Yw',
-        'alfred.minjiang@gmail.com', null, (SELECT id FROM roles WHERE role_name = 'moderator'), now());
+        'moderator@forum.com', null, (SELECT id FROM roles WHERE role_name = 'moderator'), now());
 
 INSERT INTO users (username, password, email, profile_img_id, role_id, last_login_timestamp)
 VALUES ('verified_user',

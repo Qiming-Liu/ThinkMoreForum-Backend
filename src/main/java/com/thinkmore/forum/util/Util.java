@@ -9,7 +9,6 @@ import com.sendgrid.helpers.mail.objects.Content;
 import com.sendgrid.helpers.mail.objects.Email;
 import com.thinkmore.forum.configuration.Config;
 import com.thinkmore.forum.entity.JwtUser;
-import com.thinkmore.forum.exception.InvalidOldPasswordException;
 import io.jsonwebtoken.Jwts;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.codec.binary.Hex;
@@ -17,6 +16,9 @@ import org.springframework.security.core.context.SecurityContextHolder;
 
 import javax.crypto.Cipher;
 import javax.crypto.spec.SecretKeySpec;
+import java.io.UnsupportedEncodingException;
+import java.net.URLDecoder;
+import java.nio.charset.StandardCharsets;
 import java.security.Key;
 import java.time.LocalDate;
 import java.util.ArrayList;
@@ -66,4 +68,9 @@ public class Util {
 //            throw new InvalidOldPasswordException("Invalid Password!" );
 //        }
     }
+
+    public static String UrlEncoder(String url) throws UnsupportedEncodingException {
+        return URLDecoder.decode(url, StandardCharsets.UTF_8.toString());
+    }
 }
+
