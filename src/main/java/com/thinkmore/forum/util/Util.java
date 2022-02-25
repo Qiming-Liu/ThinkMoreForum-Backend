@@ -17,7 +17,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import javax.crypto.Cipher;
 import javax.crypto.spec.SecretKeySpec;
 import java.io.UnsupportedEncodingException;
-import java.net.URLDecoder;
+import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
 import java.security.Key;
 import java.time.LocalDate;
@@ -70,7 +70,7 @@ public class Util {
     }
 
     public static String UrlEncoder(String url) throws UnsupportedEncodingException {
-        return URLDecoder.decode(url, StandardCharsets.UTF_8.toString());
+        return URLEncoder.encode(url, StandardCharsets.UTF_8.toString());
     }
 }
 

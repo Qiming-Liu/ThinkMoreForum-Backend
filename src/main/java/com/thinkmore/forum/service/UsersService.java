@@ -164,14 +164,16 @@ public class UsersService implements UserDetailsService {
         Optional<Users> user = usersRepository.findByEmail(email);
 
         if (user.isPresent()) {
+
+            String encode = Util.UrlEncoder(Config.JwtPrefix + Util.generateJwt(new JwtUser(user.get())));
+
             Util.createMail(
                     Config.fromEmail,
                     email,
                     "Reset password",
                     Config.ResetPasswordContext +
-                            Util.UrlEncoder(Config.ResetPasswordUrl +
-                                    Config.JwtPrefix +
-                                    Util.generateJwt(new JwtUser(user.get()))));
+                            Config.ResetPasswordUrl + encode);
+            ;
         }
 
         return true;

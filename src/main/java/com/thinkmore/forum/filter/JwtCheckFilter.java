@@ -2,17 +2,14 @@ package com.thinkmore.forum.filter;
 
 import com.thinkmore.forum.configuration.Config;
 import com.thinkmore.forum.entity.JwtUser;
-import com.thinkmore.forum.exception.InvalidJwtException;
 import com.thinkmore.forum.util.Singleton;
 import com.thinkmore.forum.util.Util;
-import io.jsonwebtoken.Claims;
-import io.jsonwebtoken.Jws;
-import io.jsonwebtoken.JwtException;
-import io.jsonwebtoken.Jwts;
+import io.jsonwebtoken.*;
 import lombok.RequiredArgsConstructor;
-
+import lombok.extern.slf4j.Slf4j;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -25,6 +22,7 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.ArrayList;
 
+@Slf4j
 @RequiredArgsConstructor
 public class JwtCheckFilter extends OncePerRequestFilter {
 
@@ -63,8 +61,11 @@ public class JwtCheckFilter extends OncePerRequestFilter {
 
             response.addHeader(HttpHeaders.AUTHORIZATION, Config.JwtPrefix + Util.generateJwt(jwtUser));
 
-        } catch (JwtException e) {
-            throw new InvalidJwtException(String.format("Token invalid: %s", token));
+
+        } catch (ExpiredJwtException e) {
+            response.setStatus(HttpStatus.UNAUTHORIZED.value());
+            log.info(String.valueOf(e));
+            return;
         }
 
         filterChain.doFilter(request, response);
