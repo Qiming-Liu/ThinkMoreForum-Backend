@@ -86,7 +86,7 @@ public class PostService {
     }
 
     public List<PostGetDto> getPostsByCategoryTitle(String category_title, Pageable pageable) {
-        return postRepository.findByCategory_TitleOrderByCreateTimestampDesc(category_title, pageable).stream()
+        return postRepository.findByCategory_Title(category_title, pageable).stream()
                 .map(postMapper::fromEntity)
                 .collect(Collectors.toList());
     }

@@ -37,8 +37,8 @@ dependencies {
     implementation 'org.mapstruct:mapstruct:1.4.2.Final'
     annotationProcessor 'org.mapstruct:mapstruct-processor:1.4.2.Final'
 
-    implementation 'org.flywaydb:flyway-core:8.4.3'
-    runtimeOnly 'org.postgresql:postgresql:42.3.1'
+    implementation 'org.flywaydb:flyway-core:8.5.0'
+    runtimeOnly 'org.postgresql:postgresql:42.3.2'
 
     implementation 'io.jsonwebtoken:jjwt-api:0.11.2'
     runtimeOnly 'io.jsonwebtoken:jjwt-impl:0.11.2'
@@ -50,7 +50,7 @@ dependencies {
     testImplementation 'org.springframework.boot:spring-boot-starter-test:2.6.3'
     testImplementation 'org.springframework.security:spring-security-test:5.6.1'
 
-    implementation 'com.sendgrid:sendgrid-java:4.8.2'
+    implementation 'com.sendgrid:sendgrid-java:4.8.3'
     implementation 'io.minio:minio:8.3.6'
     implementation 'com.squareup.okhttp3:okhttp:4.9.3'
 }
