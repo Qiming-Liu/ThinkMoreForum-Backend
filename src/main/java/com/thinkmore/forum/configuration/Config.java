@@ -1,7 +1,6 @@
 package com.thinkmore.forum.configuration;
 
 public class Config {
-    // Jwt
     public final static String[] ignoreUrl = new String[]{
             // -- Swagger UI v2
             "/v2/api-docs",
@@ -22,6 +21,8 @@ public class Config {
             "/v1/post/**",
             "/v1/img/upload"
     };
+
+    // JWT
     public final static String JwtSecretKey = "fruue37r7yrfhf87f7876guyggf%$$#$%^&%RTHGhjjkj23456rkkkkdkd";
     public final static String JwtPrefix = "Bearer ";
 
