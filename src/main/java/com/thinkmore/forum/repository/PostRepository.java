@@ -13,7 +13,8 @@ public interface PostRepository extends JpaRepository<Post, UUID>, JpaSpecificat
     @Override
     void deleteById(UUID uuid);
 
-    List<Post> findByCategory_TitleOrderByCreateTimestampDesc(String title, Pageable pageable);
+    List<Post> findByCategory_Title(String title, Pageable pageable);
+
 
     long countByCategory_Title(String title);
 

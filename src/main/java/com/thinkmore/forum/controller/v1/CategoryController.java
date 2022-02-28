@@ -12,6 +12,7 @@ import org.springframework.data.web.PageableDefault;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
@@ -40,8 +41,7 @@ public class CategoryController {
     }
 
     @GetMapping(path = "/{category_title}/post")
-    public ResponseEntity<List<PostGetDto>> findPostsByCategoryTitle(@PathVariable("category_title") String category_title, @PageableDefault(page = 0, value = 10, sort = {"createTimestamp"}, direction = Sort.Direction.DESC) Pageable pageable) throws Exception {
-
+    public ResponseEntity<List<PostGetDto>> findPostsByCategoryTitle(@PathVariable("category_title") String category_title, @PageableDefault(page = 0, size = 10, sort = {"createTimestamp"}, direction = Sort.Direction.DESC) Pageable pageable) throws Exception {
         return ResponseEntity.ok(postService.getPostsByCategoryTitle(category_title, pageable));
     }
 
