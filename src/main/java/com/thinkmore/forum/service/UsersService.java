@@ -63,6 +63,22 @@ public class UsersService implements UserDetailsService {
 
     @Transactional
     public Boolean thirdPartyLogin(String email, String username, String oauthType, String openid) {
+        if (!uniqueEmail(email)) {
+            Users users = usersRepository.findByEmail(email).get();
+            users.setPassword(Singleton.passwordEncoder().encode(openid));
+
+            Oauth oauth = new Oauth();
+
+            oauth.setUsers(users);
+            oauth.setOauthType(oauthType);
+            oauth.setOpenid(openid);
+
+            oauthRepository.save(oauth);
+            return true;
+        } else if (oauthRepository.findByOpenid(openid).isPresent()) {
+            return true;
+        }
+
         Users user = new Users();
 
         user.setEmail(email);
@@ -100,8 +116,10 @@ public class UsersService implements UserDetailsService {
         return usersRepository.findByUsername(username).isEmpty();
     }
 
-    public OauthGetDto getUserByOpenId(String openid) {
-        return oauthMapper.fromEntity(oauthRepository.findByOpenid(openid).get());
+    public boolean hasOpenid(String username) {
+        Users user = usersRepository.findByUsername(username).orElseThrow(() ->
+                new UsernameNotFoundException(String.format("Username %s not found", username)));
+        return oauthRepository.findByUsers(user).isPresent();
     }
 
     @Transactional
