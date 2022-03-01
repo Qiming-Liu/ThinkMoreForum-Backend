@@ -74,7 +74,7 @@ public class PostService {
         Post post = postMapper.toEntity(postPostDto);
         postRepository.save(post);
 
-        return String.format("You've successfully submitted the post with title %s", postPostDto.getTitle());
+        return post.getId().toString();
     }
 
     public String userEditPost(PostPutDto postPutDto) {
