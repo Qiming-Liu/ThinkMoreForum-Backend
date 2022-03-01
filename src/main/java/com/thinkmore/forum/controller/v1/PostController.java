@@ -32,6 +32,11 @@ public class PostController {
         return ResponseEntity.ok(postService.getAllPostsCoreInfo());
     }
 
+    @GetMapping(path="/user/{username}")
+    public ResponseEntity<List<PostGetDto>> findPostByPostUsersId(@PathVariable("username") String username) {
+        return ResponseEntity.ok(postService.getPostsByPostUsersName(username));
+    }
+
     @DeleteMapping(path = "/{post_id}")
     public ResponseEntity<String> deletePostById(@PathVariable("post_id") String post_id){
         UUID postId = UUID.fromString(post_id);

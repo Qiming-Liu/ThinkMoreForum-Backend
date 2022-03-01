@@ -15,6 +15,8 @@ public interface PostRepository extends JpaRepository<Post, UUID>, JpaSpecificat
 
     List<Post> findByCategory_Title(String title, Pageable pageable);
 
+    List<Post> findByPostUsersId(UUID Id);
+
 
     long countByCategory_Title(String title);
 
