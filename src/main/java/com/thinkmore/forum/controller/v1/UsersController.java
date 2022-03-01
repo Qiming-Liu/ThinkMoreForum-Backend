@@ -24,10 +24,9 @@ public class UsersController {
         return ResponseEntity.ok(usersService.thirdPartyLogin(email, username, oauthType, openid));
     }
 
-    @GetMapping("/get-openid/{open_id}")
-    public ResponseEntity<OauthGetDto> findUserByOpenId(@PathVariable("open_id") String open_id) {
-        OauthGetDto oauthGetDto = usersService.getUserByOpenId(open_id);
-        return ResponseEntity.ok(oauthGetDto);
+    @GetMapping("/get-openid/{username}")
+    public ResponseEntity<Boolean> hasOpenid(@PathVariable String username) {
+        return ResponseEntity.ok(usersService.hasOpenid(username));
     }
 
     @GetMapping(path = "/unique-email/{email}")

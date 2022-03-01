@@ -6,6 +6,8 @@ import com.thinkmore.forum.dto.post.PostPostDto;
 import com.thinkmore.forum.dto.post.PostPutDto;
 import com.thinkmore.forum.dto.users.UsersMiniGetDto;
 import com.thinkmore.forum.entity.Post;
+import com.thinkmore.forum.entity.Users;
+import com.thinkmore.forum.exception.UserNotFoundException;
 import com.thinkmore.forum.mapper.CategoryMapper;
 import com.thinkmore.forum.mapper.PostMapper;
 import com.thinkmore.forum.mapper.UsersMapper;
@@ -99,6 +101,14 @@ public class PostService {
 
         return postRepository.findAll().stream()
                 .map(postMapper::entityToMiniDto)
+                .collect(Collectors.toList());
+    }
+
+    public List<PostGetDto> getPostsByPostUsersName(String username) {
+        Users user = usersRepository.findByUsername(username)
+                .orElseThrow(() -> new UserNotFoundException("Invalid UserName"));
+        return postRepository.findByPostUsersId(user.getId()).stream()
+                .map(postMapper::fromEntity)
                 .collect(Collectors.toList());
     }
 }
