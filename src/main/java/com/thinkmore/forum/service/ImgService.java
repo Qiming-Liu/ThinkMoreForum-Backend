@@ -10,8 +10,10 @@ import io.minio.*;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.transaction.Transactional;
+import java.io.ByteArrayInputStream;
 import java.io.InputStream;
 import java.util.*;
 import java.util.stream.Collectors;
@@ -43,7 +45,7 @@ public class ImgService {
     }
 
     @Transactional
-    public Img uploadImg(InputStream imgStream, String md5) throws Exception {
+    public Img uploadImg(MultipartFile file, String md5) throws Exception {
         // check
         Optional<Img> image = imgRepository.findByHash(md5);
         if (image.isPresent()) {
@@ -51,13 +53,16 @@ public class ImgService {
         }
 
         // put
-        String fileName = md5 + ".png";
+        String fileName = file.getOriginalFilename();
+        if (fileName == null || !fileName.endsWith(".png") || !fileName.endsWith(".jpg")) {
+            throw new RuntimeException();
+        }
         Singleton.minioClient().putObject(
                 PutObjectArgs.builder()
                         .bucket(Config.BucketName)
                         .object(fileName)
-                        .stream(imgStream, -1, 5 * 1024 * 1024)
-                        .contentType("image/png")
+                        .stream(new ByteArrayInputStream(file.getBytes()), -1, 5 * 1024 * 1024)
+                        .contentType(fileName.endsWith(".png") ? "image/png" : "image/jpeg")
                         .build());
 
         // set

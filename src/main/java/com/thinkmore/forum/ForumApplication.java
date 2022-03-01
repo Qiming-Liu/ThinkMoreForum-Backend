@@ -19,7 +19,7 @@ public class ForumApplication{
         String path = env.getProperty("server.servlet.context-path");
         path = path == null ? "" : path;
         log.info("\n----------------------------------------------------------\n\t" +
-                "Application Demo is running! Access URLs:\n\t" +
+                "ThinkMoreForum Backend is running! Access URLs:\n\t" +
                 "Local:   \thttp://localhost:" + port + path + "/\n\t" +
                 "Swagger: \thttp://localhost:" + port + path + "/swagger-ui/\n\t" +
 //                "H2:      \thttp://localhost:" + port + path + "/h2-console/\n" +

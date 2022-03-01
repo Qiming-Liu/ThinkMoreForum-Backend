@@ -17,7 +17,6 @@ public interface PostRepository extends JpaRepository<Post, UUID>, JpaSpecificat
 
     List<Post> findByPostUsersId(UUID Id);
 
-
     long countByCategory_Title(String title);
 
 }
