@@ -17,12 +17,12 @@ public class FollowerController {
     private final FollowerService followerService;
 
 //  view fans
-    @GetMapping(path = "/follower/{user_id}/{username}")
+    @GetMapping(path = "/follower/{username}")
     public ResponseEntity<List<FollowerGetDto>> view_follower(@PathVariable("user_id") UUID current_UserId, @PathVariable("username") String target_username) {
     return ResponseEntity.ok(followerService.getFollowersByUsername(target_username));
 }
 
-    @GetMapping(path = "/followed/{user_id}/{username}")
+    @GetMapping(path = "/followed/{username}")
     public ResponseEntity<List<FollowerGetDto>> view_followed_user(@PathVariable("user_id") UUID current_UserId, @PathVariable("username") String target_username) {
         return ResponseEntity.ok(followerService.getFriendsByUsername(target_username));
     }

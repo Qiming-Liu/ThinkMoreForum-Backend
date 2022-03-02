@@ -30,6 +30,11 @@ public class FollowPostController {
         return ResponseEntity.ok(followPostList);
     }
 
+    @GetMapping(path = "/findAllByUsername/{username}")
+    public ResponseEntity<List<FollowPostGetDto>> getFollowPostByUsername(@PathVariable("username") String username) {
+        return ResponseEntity.ok(followPostService.getAllFollowPostsByUsername(username));
+    }
+
     @PostMapping(path = "/userFollowPost/{post_id}")
     public ResponseEntity<String> userFollowPost(@PathVariable("post_id") String post_id) {
         UUID postId = UUID.fromString(post_id);
