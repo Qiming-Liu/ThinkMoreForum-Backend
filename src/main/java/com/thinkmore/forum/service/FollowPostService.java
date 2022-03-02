@@ -5,6 +5,8 @@ import com.thinkmore.forum.dto.followPost.FollowPostPostDto;
 import com.thinkmore.forum.dto.post.PostMiniGetDto;
 import com.thinkmore.forum.dto.users.UsersMiniGetDto;
 import com.thinkmore.forum.entity.FollowPost;
+import com.thinkmore.forum.entity.Users;
+import com.thinkmore.forum.exception.UserNotFoundException;
 import com.thinkmore.forum.mapper.FollowPostMapper;
 import com.thinkmore.forum.mapper.PostMapper;
 import com.thinkmore.forum.mapper.UsersMapper;
@@ -42,6 +44,14 @@ public class FollowPostService {
 
     public List<FollowPostGetDto> getAllFollowPostsByUserId(UUID userId) {
         return followPostRepository.findByUsers_IdOrderByCreateTimestampDesc(userId).stream()
+                .map(followPostMapper::fromEntity)
+                .collect(Collectors.toList());
+    }
+
+    public List<FollowPostGetDto> getAllFollowPostsByUsername(String username) {
+        Users user = usersRepository.findByUsername(username)
+                .orElseThrow(() -> new UserNotFoundException("Invalid UserName"));
+        return followPostRepository.findByUsers_IdOrderByCreateTimestampDesc(user.getId()).stream()
                 .map(followPostMapper::fromEntity)
                 .collect(Collectors.toList());
     }
