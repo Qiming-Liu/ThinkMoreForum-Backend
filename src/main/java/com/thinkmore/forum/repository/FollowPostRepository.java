@@ -7,6 +7,7 @@ import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.UUID;
 
 @Repository
@@ -16,6 +17,8 @@ public interface FollowPostRepository extends JpaRepository<FollowPost, UUID>, J
     long deleteByUsers_IdAndPost_Id(UUID id, UUID id1);
 
     List<FollowPost> findByUsers_IdOrderByCreateTimestampDesc(UUID id);
+
+    Optional<FollowPost> findByPost_IdAndUsers_Id(UUID id, UUID id1);
 
 
 }
