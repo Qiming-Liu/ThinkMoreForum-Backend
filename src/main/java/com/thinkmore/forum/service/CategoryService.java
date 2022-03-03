@@ -67,7 +67,7 @@ public class CategoryService {
     }
     public List<CategoryGetDto> getAllCategories() {
 
-        return categoryRepo.findAll().stream()
+        return categoryRepo.findByOrderBySortOrderAsc().stream()
                 .map(categoryMapper::fromEntity)
                 .collect(Collectors.toList());
     }

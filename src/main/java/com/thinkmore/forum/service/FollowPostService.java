@@ -19,6 +19,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.time.OffsetDateTime;
 import java.util.List;
+import java.util.Optional;
 import java.util.UUID;
 import java.util.stream.Collectors;
 
@@ -54,6 +55,15 @@ public class FollowPostService {
         return followPostRepository.findByUsers_IdOrderByCreateTimestampDesc(user.getId()).stream()
                 .map(followPostMapper::fromEntity)
                 .collect(Collectors.toList());
+    }
+
+    public Boolean checkUserFollowingState(UUID postId, UUID userId) {
+        Optional<FollowPost> targetFollowPost = followPostRepository.findByPost_IdAndUsers_Id(postId, userId);
+        if (targetFollowPost.isPresent()) {
+            return true;
+        } else {
+            return false;
+        }
     }
 
     public void postFollowPostToUser(UUID postId, UUID userId) {

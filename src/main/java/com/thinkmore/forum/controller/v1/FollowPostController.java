@@ -35,6 +35,14 @@ public class FollowPostController {
         return ResponseEntity.ok(followPostService.getAllFollowPostsByUsername(username));
     }
 
+    @GetMapping(path="/checkUserFollowingState/{post_id}")
+    public ResponseEntity<Boolean> checkUserFollowingState(@PathVariable("post_id") String post_id) {
+        UUID userId = UUID.fromString(Util.getJwtContext().get(0));
+        UUID postId = UUID.fromString(post_id);
+        Boolean userIsFollowingPost = followPostService.checkUserFollowingState(postId, userId);
+        return ResponseEntity.ok(userIsFollowingPost);
+    }
+
     @PostMapping(path = "/userFollowPost/{post_id}")
     public ResponseEntity<String> userFollowPost(@PathVariable("post_id") String post_id) {
         UUID postId = UUID.fromString(post_id);
