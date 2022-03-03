@@ -1,11 +1,14 @@
 package com.thinkmore.forum.controller.v1;
 
-import com.thinkmore.forum.dto.oauth.OauthGetDto;
+import com.thinkmore.forum.dto.users.UsersGetDto;
 import com.thinkmore.forum.service.UsersService;
+import com.thinkmore.forum.util.Util;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.UUID;
 
 @RestController
 @RequestMapping(path = "/v1/users")
@@ -72,5 +75,11 @@ public class UsersController {
     @PutMapping("/set-password/{password}")
     public ResponseEntity<Boolean> setPassword(@PathVariable String password) {
         return ResponseEntity.ok(usersService.setPassword(password));
+    }
+
+    @GetMapping(path = "/user-details")
+    public ResponseEntity<UsersGetDto> findUserByUserId() throws Exception {
+        UUID userId = UUID.fromString(Util.getJwtContext().get(0));
+        return ResponseEntity.ok(usersService.getUsersById(userId));
     }
 }
