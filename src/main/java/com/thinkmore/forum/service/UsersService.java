@@ -1,6 +1,6 @@
 package com.thinkmore.forum.service;
 
-import com.thinkmore.forum.dto.oauth.OauthGetDto;
+import com.thinkmore.forum.dto.users.UsersGetDto;
 import com.thinkmore.forum.entity.JwtUser;
 import com.thinkmore.forum.configuration.Config;
 import com.thinkmore.forum.entity.Oauth;
@@ -8,7 +8,6 @@ import com.thinkmore.forum.entity.Users;
 import com.thinkmore.forum.exception.InvalidOldPasswordException;
 import com.thinkmore.forum.exception.UserHasPasswordException;
 import com.thinkmore.forum.exception.UserNotFoundException;
-import com.thinkmore.forum.mapper.OauthMapper;
 import com.thinkmore.forum.mapper.UsersMapper;
 import com.thinkmore.forum.repository.OauthRepository;
 import com.thinkmore.forum.repository.RolesRepository;
@@ -32,7 +31,6 @@ public class UsersService implements UserDetailsService {
     private final UsersRepository usersRepository;
     private final OauthRepository oauthRepository;
     private final UsersMapper usersMapper;
-    private final OauthMapper oauthMapper;
     private final RolesRepository rolesRepository;
 
     //only for jwt
@@ -191,7 +189,6 @@ public class UsersService implements UserDetailsService {
                     "Reset password",
                     Config.ResetPasswordContext +
                             Config.ResetPasswordUrl + encode);
-            ;
         }
 
         return true;
@@ -227,5 +224,16 @@ public class UsersService implements UserDetailsService {
         user.setPassword(Singleton.passwordEncoder().encode(password));
         usersRepository.save(user);
         return true;
+    }
+
+    public UsersGetDto getUsersById(UUID userId) throws Exception {
+        Optional<Users> targetUsers = usersRepository.findById(userId);
+        UsersGetDto targetUsersGetDto;
+        if (targetUsers.isPresent()) {
+            targetUsersGetDto = usersMapper.fromEntity(targetUsers.get());
+        } else {
+            throw new Exception("Couldn't find the post with provided ID");
+        }
+        return targetUsersGetDto;
     }
 }
