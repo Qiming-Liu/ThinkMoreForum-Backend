@@ -1,11 +1,14 @@
 package com.thinkmore.forum.service;
 
 import com.thinkmore.forum.dto.notification.NotificationGetDto;
+import com.thinkmore.forum.dto.notification.NotificationPostDto;
+import com.thinkmore.forum.entity.Notification;
 import com.thinkmore.forum.mapper.NotificationMapper;
 import com.thinkmore.forum.repository.NotificationRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import javax.transaction.Transactional;
 import java.util.List;
 import java.util.UUID;
 import java.util.stream.Collectors;
@@ -43,6 +46,12 @@ public class NotificationService {
                     notificationRepository.save(notification);
                 });
 
+        return true;
+    }
+    @Transactional
+    public boolean createNewNotification(NotificationPostDto notificationPostDto) {
+        Notification notification = notificationMapper.toEntity(notificationPostDto);
+        notificationRepository.save(notification);
         return true;
     }
 }

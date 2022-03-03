@@ -11,7 +11,6 @@ import java.util.UUID;
 @Data
 @NoArgsConstructor
 public class NotificationPostDto implements Serializable {
-    private UUID id;
     private UsersPostDto users;
     private String icon;
     private String context;

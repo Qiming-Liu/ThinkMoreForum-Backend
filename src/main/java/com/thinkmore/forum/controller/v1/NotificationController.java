@@ -1,6 +1,7 @@
 package com.thinkmore.forum.controller.v1;
 
 import com.thinkmore.forum.dto.notification.NotificationGetDto;
+import com.thinkmore.forum.dto.notification.NotificationPostDto;
 import com.thinkmore.forum.service.NotificationService;
 import com.thinkmore.forum.util.Util;
 import lombok.RequiredArgsConstructor;
@@ -33,5 +34,10 @@ public class NotificationController {
     public ResponseEntity<Boolean> viewNotification() {
         UUID userId = UUID.fromString(Util.getJwtContext().get(0));
         return ResponseEntity.ok(notificationService.markAllAsViewed(userId));
+    }
+
+    @PostMapping(path = "/new-notification")
+    public ResponseEntity<Boolean> newNotification(@RequestBody NotificationPostDto notificationPostDto) {
+        return ResponseEntity.ok(notificationService.createNewNotification(notificationPostDto));
     }
 }
