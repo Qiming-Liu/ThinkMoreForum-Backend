@@ -51,10 +51,9 @@ public class ImgService {
         if (image.isPresent()) {
             return image.get();
         }
-
         // put
         String fileName = file.getOriginalFilename();
-        if (fileName == null || !fileName.endsWith(".png") || !fileName.endsWith(".jpg")) {
+        if (fileName == null ||( !fileName.endsWith(".png") && !fileName.endsWith(".jpeg"))) {
             throw new RuntimeException();
         }
         Singleton.minioClient().putObject(
