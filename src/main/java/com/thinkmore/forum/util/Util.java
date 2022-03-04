@@ -8,6 +8,7 @@ import com.sendgrid.helpers.mail.Mail;
 import com.sendgrid.helpers.mail.objects.Content;
 import com.sendgrid.helpers.mail.objects.Email;
 import com.thinkmore.forum.configuration.Config;
+import com.thinkmore.forum.configuration.Singleton;
 import com.thinkmore.forum.entity.JwtUser;
 import io.jsonwebtoken.Jwts;
 import lombok.extern.slf4j.Slf4j;

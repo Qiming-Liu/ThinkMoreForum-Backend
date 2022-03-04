@@ -2,7 +2,7 @@ package com.thinkmore.forum.filter;
 
 import com.thinkmore.forum.configuration.Config;
 import com.thinkmore.forum.entity.JwtUser;
-import com.thinkmore.forum.util.Singleton;
+import com.thinkmore.forum.configuration.Singleton;
 import com.thinkmore.forum.util.Util;
 import io.jsonwebtoken.*;
 import lombok.RequiredArgsConstructor;

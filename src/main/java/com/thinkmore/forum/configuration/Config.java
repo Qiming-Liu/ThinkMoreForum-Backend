@@ -19,12 +19,8 @@ public class Config {
             "/v1/users/reset-password/**",
             "/v1/category/**",
             "/v1/post/**",
-            "/v1/img/upload"
+            "/v1/comment/**",
     };
-
-    // JWT
-    public final static String JwtSecretKey = "fruue37r7yrfhf87f7876guyggf%$$#$%^&%RTHGhjjkj23456rkkkkdkd";
-    public final static String JwtPrefix = "Bearer ";
 
     // Role
     public final static String DefaultRole = "unverified_user";
@@ -39,11 +35,8 @@ public class Config {
     public final static String VerifyEmailContext = "Please click the link to verify your new email:\n";
 
     // Oss
-    public final static String OssUrl = "http://localhost:9000/";
-    public final static String MINIO_ROOT_USER = "minio";
-    public final static String MINIO_ROOT_PASSWORD = "development";
     public final static String BucketName = "image";
-
-    // cloud
-    public final static String CloudUrl = "http://3.26.60.225:9000/";
+    // JWT
+    public final static String JwtSecretKey = "fruue37r7yrfhf87f7876guyggf%$$#$%^&%RTHGhjjkj23456rkkkkdkd";
+    public final static String JwtPrefix = "Bearer ";
 }

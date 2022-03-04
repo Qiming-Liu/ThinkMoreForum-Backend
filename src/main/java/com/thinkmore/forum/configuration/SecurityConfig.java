@@ -3,7 +3,6 @@ package com.thinkmore.forum.configuration;
 import com.thinkmore.forum.filter.JwtGenerateFilter;
 import com.thinkmore.forum.filter.JwtCheckFilter;
 import com.thinkmore.forum.service.UsersService;
-import com.thinkmore.forum.util.Singleton;
 import lombok.RequiredArgsConstructor;
 import lombok.SneakyThrows;
 import org.springframework.context.annotation.Bean;

@@ -12,7 +12,7 @@ import com.thinkmore.forum.mapper.UsersMapper;
 import com.thinkmore.forum.repository.OauthRepository;
 import com.thinkmore.forum.repository.RolesRepository;
 import com.thinkmore.forum.repository.UsersRepository;
-import com.thinkmore.forum.util.Singleton;
+import com.thinkmore.forum.configuration.Singleton;
 import com.thinkmore.forum.util.Util;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.userdetails.UserDetails;

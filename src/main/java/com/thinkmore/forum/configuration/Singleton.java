@@ -1,11 +1,11 @@
-package com.thinkmore.forum.util;
+package com.thinkmore.forum.configuration;
 
-import com.thinkmore.forum.configuration.Config;
 import io.jsonwebtoken.security.Keys;
 import io.minio.BucketExistsArgs;
 import io.minio.MakeBucketArgs;
 import io.minio.MinioClient;
 import io.minio.SetBucketPolicyArgs;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.crypto.argon2.Argon2PasswordEncoder;
@@ -17,6 +17,15 @@ import java.nio.charset.StandardCharsets;
 @Configuration
 public class Singleton {
 
+    @Value("${minio.username}")
+    private String minioUsername;
+
+    @Value("${minio.password}")
+    private String minioPassword;
+
+    @Value("${minio.url}")
+    private String minioUrl;
+
     @Bean
     public static PasswordEncoder passwordEncoder() {
         return new Argon2PasswordEncoder();
@@ -25,9 +34,9 @@ public class Singleton {
     public final static SecretKey secretKey = Keys.hmacShaKeyFor(Config.JwtSecretKey.getBytes(StandardCharsets.UTF_8));
 
     @Bean
-    public static MinioClient minioClient() throws Exception {
-        MinioClient minioClient = MinioClient.builder().endpoint(Config.OssUrl)
-                .credentials(Config.MINIO_ROOT_USER, Config.MINIO_ROOT_PASSWORD).build();
+    public MinioClient minioClient() throws Exception {
+        MinioClient minioClient = MinioClient.builder().endpoint(minioUrl)
+                .credentials(minioUsername, minioPassword).build();
 
         boolean found = minioClient.bucketExists(BucketExistsArgs.builder().bucket(Config.BucketName).build());
         if (!found) {

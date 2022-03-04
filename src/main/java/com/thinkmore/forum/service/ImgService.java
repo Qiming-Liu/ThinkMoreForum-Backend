@@ -5,16 +5,15 @@ import com.thinkmore.forum.dto.img.ImgGetDto;
 import com.thinkmore.forum.entity.Img;
 import com.thinkmore.forum.mapper.ImgMapper;
 import com.thinkmore.forum.repository.ImgRepository;
-import com.thinkmore.forum.util.Singleton;
 import io.minio.*;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.transaction.Transactional;
 import java.io.ByteArrayInputStream;
-import java.io.InputStream;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -24,6 +23,10 @@ import java.util.stream.Collectors;
 public class ImgService {
     private final ImgRepository imgRepository;
     private final ImgMapper imgMapper;
+    private final MinioClient minioClient;
+
+    @Value("${minio.url}")
+    private String minioUrl;
 
     @Transactional
     public List<ImgGetDto> getAllImg() {
@@ -57,7 +60,7 @@ public class ImgService {
         if (fileName == null || !(fileName.endsWith(".png") || fileName.endsWith(".jpg") || fileName.endsWith(".jpeg"))) {
             throw new RuntimeException();
         }
-        Singleton.minioClient().putObject(
+        minioClient.putObject(
                 PutObjectArgs.builder()
                         .bucket(Config.BucketName)
                         .object(fileName)
@@ -67,7 +70,7 @@ public class ImgService {
 
         // set
         Img img = new Img();
-        img.setUrl(Config.CloudUrl + Config.BucketName + "/" + fileName);
+        img.setUrl(minioUrl + "/" + Config.BucketName + "/" + fileName);
         img.setHash(md5);
         imgRepository.save(img);
 
