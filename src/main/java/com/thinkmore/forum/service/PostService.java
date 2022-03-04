@@ -111,4 +111,25 @@ public class PostService {
                 .map(postMapper::fromEntity)
                 .collect(Collectors.toList());
     }
+
+    public long getCountOfVisiblePostsByCategoryTitle(String category_title) {
+        return postRepository.countByCategory_TitleAndVisibilityIsTrue(category_title);
+    }
+
+    public List<PostGetDto> getVisiblePostsByCategoryTitle(String category_title, Pageable pageable) {
+        return postRepository.findByCategory_TitleAndVisibilityIsTrue(category_title, pageable).stream()
+                .map(postMapper::fromEntity)
+                .collect(Collectors.toList());
+    }
+
+    @Transactional
+    public Boolean changePostVisibility(UUID postId, UUID userId) {
+        Post oldPost = postRepository.findById(postId).get();
+        if (oldPost.getPostUsers().getId() != userId) {
+            return false;
+        }
+        oldPost.setVisibility(!oldPost.getVisibility());
+        postRepository.save(oldPost);
+        return true;
+    }
 }
