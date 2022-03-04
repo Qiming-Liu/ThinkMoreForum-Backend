@@ -20,9 +20,9 @@ services:
       - "9000:9000"
       - "9001:9001"
     command: server --console-address ":9001" /data
-  imd:
-    container_name: imd
-    image: redis:6.2.6-alpine
-    restart: unless-stopped
-    ports:
-      - "6379:6379"
+  # imd:
+  #   container_name: imd
+  #   image: redis:6.2.6-alpine
+  #   restart: unless-stopped
+  #   ports:
+  #     - "6379:6379"

@@ -23,5 +23,7 @@ services:
       dockerfile: Dockerfile
     container_name: app
     image: app:${DATETIME}
+    environment:
+      SSL_ENABLE: true
     restart: unless-stopped
     network_mode: "host"
