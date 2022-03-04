@@ -52,7 +52,6 @@ public class FollowerService {
             followerRepository.save(followUser);
         } else {
             System.out.println("You have already followed this user");
-            return null;
         }
 
         return followerMapper.fromEntity(followUser);
