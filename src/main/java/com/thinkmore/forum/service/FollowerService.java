@@ -44,7 +44,7 @@ public class FollowerService {
                 .orElseThrow(() -> new UserNotFoundException("Invalid UserID"));
         Users followedUser = usersRepository.findById(tampUser.getId())
                 .orElseThrow(() -> new UserNotFoundException("Invalid UserID"));
-        if (followerRepository.findByUsersIdAndFollowedUsersId(tampUser.getId(), currentId).isEmpty()) {
+        if (followerRepository.findByUsersIdAndFollowedUsersId(currentId, tampUser.getId()).isEmpty()) {
             followUser.setUsers(user);
             followUser.setFollowedUsers(followedUser);
             followUser.setCreateTimestamp(OffsetDateTime.now());
@@ -52,6 +52,7 @@ public class FollowerService {
             followerRepository.save(followUser);
         } else {
             System.out.println("You have already followed this user");
+            return null;
         }
 
         return followerMapper.fromEntity(followUser);
@@ -63,5 +64,18 @@ public class FollowerService {
         Users followedUser = usersRepository.findByUsername(followedUsername)
                 .orElseThrow(() -> new UserNotFoundException("Invalid UserName"));
         followerRepository.deleteByUsersIdAndFollowedUsersId(user.getId(), followedUser.getId());
+    }
+
+    public boolean followStatus(String username) {
+        Users tampUser = usersRepository.findByUsername(username)
+                .orElseThrow(() -> new UserNotFoundException("Invalid UserName"));
+        UUID currentId = UUID.fromString(Util.getJwtContext().get(0));
+        boolean status;
+        if (followerRepository.findByUsersIdAndFollowedUsersId(currentId, tampUser.getId()).isEmpty()) {
+            status = false;
+        } else {
+            status = true;
+        }
+        return status;
     }
 }
