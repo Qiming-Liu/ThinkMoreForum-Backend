@@ -1,5 +1,6 @@
 package com.thinkmore.forum;
 
+import com.thinkmore.forum.configuration.Config;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -21,10 +22,9 @@ public class ForumApplication{
         log.info("\n----------------------------------------------------------\n\t" +
                 "ThinkMoreForum Backend is running! Access URLs:\n\t" +
                 "Local:   \thttp://localhost:" + port + path + "/\n\t" +
-                "Swagger: \thttp://localhost:" + port + path + "/swagger-ui/\n\t" +
+                "Swagger: \thttp://localhost:" + port + path + "/swagger-ui.html\n\t" +
 //                "H2:      \thttp://localhost:" + port + path + "/h2-console/\n" +
                 "----------------------------------------------------------");
-
     }
 
 }

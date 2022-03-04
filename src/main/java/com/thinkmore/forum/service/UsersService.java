@@ -15,6 +15,7 @@ import com.thinkmore.forum.repository.UsersRepository;
 import com.thinkmore.forum.configuration.Singleton;
 import com.thinkmore.forum.util.Util;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -28,6 +29,10 @@ import java.util.UUID;
 @Service
 @RequiredArgsConstructor
 public class UsersService implements UserDetailsService {
+
+    @Value("${domain.name}")
+    public String domainName;
+
     private final UsersRepository usersRepository;
     private final OauthRepository oauthRepository;
     private final UsersMapper usersMapper;
@@ -139,7 +144,7 @@ public class UsersService implements UserDetailsService {
                 Config.fromEmail,
                 newEmail,
                 "Verify Email",
-                Config.VerifyEmailContext + Config.VerifyEmailUrl + newEmail);
+                Config.VerifyEmailContext + domainName + Config.VerifyEmailUrl + newEmail);
 
         return true;
     }
@@ -188,7 +193,7 @@ public class UsersService implements UserDetailsService {
                     email,
                     "Reset password",
                     Config.ResetPasswordContext +
-                            Config.ResetPasswordUrl + encode);
+                            domainName + Config.ResetPasswordUrl + encode);
         }
 
         return true;

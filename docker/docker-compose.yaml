@@ -33,7 +33,11 @@ services:
       MINIO_HOST: 3.26.60.225
       MINIO_ROOT_USER: minio
       MINIO_ROOT_PASSWORD: development
+      DOMAIN_NAME: https://www.thinkmoreapp.com
+      SSL_ENABLE: 'true'
+      ENABLE_SWAGGER: 'true'
     restart: unless-stopped
+    network_mode: "host"
     depends_on:
       - db
       - oss

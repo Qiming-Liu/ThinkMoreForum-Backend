@@ -1,6 +1,6 @@
 {
 	"info": {
-		"_postman_id": "f34fdee7-5485-45d7-a1c2-436808b0afe4",
+		"_postman_id": "c8888d11-5e26-4f62-ac17-db5ec567fe73",
 		"name": "ThinkMoreForum",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
 	},
@@ -1355,6 +1355,25 @@
 						}
 					},
 					"response": []
+				},
+				{
+					"name": "new notification",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"url": {
+							"raw": "{{url}}/v1/notification/new-notification",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"v1",
+								"notification",
+								"new-notification"
+							]
+						}
+					},
+					"response": []
 				}
 			]
 		},
@@ -1459,27 +1478,34 @@
 					],
 					"request": {
 						"method": "POST",
-						"header": [],
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer eyJhbGciOiJIUzM4NCJ9.eyJqdGkiOiI4M2FhZjUzYS05YmM3LTExZWMtYmQxZS1mNzdmYWY5MjUyOWEiLCJzdWIiOiJhZG1pbiIsImF1ZCI6Int9IiwiaWF0IjoxNjQ2NDA0MjMwLCJleHAiOjE2NDY0ODcwMDB9.RdR06Soel8e6BlXdha8v0bu2NdMcJ1daf5RaeFI-vMDuSrj05KdpjZWq4fv9eIle",
+								"type": "text"
+							}
+						],
 						"body": {
 							"mode": "formdata",
 							"formdata": [
 								{
 									"key": "file",
 									"type": "file",
-									"src": "/C:/Users/alan/Desktop/ThinkMoreForum-Frontend/public/logo.png"
+									"src": "/C:/Users/alan/Desktop/join.png"
 								},
 								{
 									"key": "md5",
-									"value": "f5a379af58f34f549c22f508a60ba04f",
+									"value": "f5a379af58f34f549c22f508a60ba0",
 									"type": "text"
 								}
 							]
 						},
 						"url": {
-							"raw": "{{url}}/v1/img/upload",
+							"raw": "localhost:443/v1/img/upload",
 							"host": [
-								"{{url}}"
+								"localhost"
 							],
+							"port": "443",
 							"path": [
 								"v1",
 								"img",
