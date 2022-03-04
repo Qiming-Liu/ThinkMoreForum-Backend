@@ -36,13 +36,22 @@ public class CategoryController {
     }
 
     @GetMapping(path = "/{category_title}/count")
-    public ResponseEntity<Long> findNumOfPostsInThisCategory(@PathVariable("category_title") String category_title) {
+    public ResponseEntity<Long> findNumOfPostsInCategory(@PathVariable("category_title") String category_title) {
         return ResponseEntity.ok(postService.getCountOfPostsByCategoryTitle(category_title));
+    }
+    @GetMapping(path = "/{category_title}/visible-count")
+    public ResponseEntity<Long> findNumOfVisiblePostsInCategory(@PathVariable("category_title") String category_title) {
+        return ResponseEntity.ok(postService.getCountOfVisiblePostsByCategoryTitle(category_title));
     }
 
     @GetMapping(path = "/{category_title}/post")
     public ResponseEntity<List<PostGetDto>> findPostsByCategoryTitle(@PathVariable("category_title") String category_title, @PageableDefault(page = 0, size = 10, sort = {"createTimestamp"}, direction = Sort.Direction.DESC) Pageable pageable) throws Exception {
         return ResponseEntity.ok(postService.getPostsByCategoryTitle(category_title, pageable));
+    }
+
+    @GetMapping(path = "/{category_title}/visible-post")
+    public ResponseEntity<List<PostGetDto>> findVisiblePostsByCategoryTitle(@PathVariable("category_title") String category_title, @PageableDefault(page = 0, size = 10, sort = {"createTimestamp"}, direction = Sort.Direction.DESC) Pageable pageable) throws Exception {
+        return ResponseEntity.ok(postService.getVisiblePostsByCategoryTitle(category_title, pageable));
     }
 
     @PostMapping(path = "/addCategory/{title}/{description}/{color}")

@@ -56,4 +56,12 @@ public class PostController {
         String response = postService.userEditPost(postPutDto);
         return ResponseEntity.ok(response);
     }
+
+    @PutMapping(path = "/{post_id}/visibility")
+    public ResponseEntity<Boolean> changePostVisibility(@PathVariable("post_id") String post_id) {
+        UUID postId = UUID.fromString(post_id);
+        UUID userId = UUID.fromString(Util.getJwtContext().get(0));
+        Boolean response = postService.changePostVisibility(postId, userId);
+        return ResponseEntity.ok(response);
+    }
 }
