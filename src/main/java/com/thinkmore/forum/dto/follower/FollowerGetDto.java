@@ -14,7 +14,7 @@ public class FollowerGetDto {
 
     private UsersGetDto users;
 
-    private UsersGetDto followers;
+    private UsersGetDto followedUsers;
 
     private OffsetDateTime createTimestamp;
 }

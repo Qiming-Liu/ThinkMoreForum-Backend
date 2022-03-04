@@ -27,6 +27,11 @@ public class FollowerController {
         return ResponseEntity.ok(followerService.getFriendsByUsername(target_username));
     }
 
+    @GetMapping(path = "/followedStatus/{username}")
+    public ResponseEntity<Boolean> checkFollowedStatus(@PathVariable("username") String username) {
+        return ResponseEntity.ok(followerService.followStatus(username));
+    }
+
     @PostMapping(path = "/follow/{username}")
     public ResponseEntity<FollowerGetDto> follow_user(@PathVariable("username") String username) {
         return ResponseEntity.ok(followerService.followUsers(username));
