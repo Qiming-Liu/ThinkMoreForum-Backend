@@ -82,4 +82,10 @@ public class UsersController {
         UUID userId = UUID.fromString(Util.getJwtContext().get(0));
         return ResponseEntity.ok(usersService.getUsersById(userId));
     }
+
+    @GetMapping(path = "/user-details/{usersId}")
+    public ResponseEntity<UsersGetDto> findUserById(@PathVariable String usersId) throws Exception {
+        UUID userId = UUID.fromString(usersId);
+        return ResponseEntity.ok(usersService.getUsersById(userId));
+    }
 }

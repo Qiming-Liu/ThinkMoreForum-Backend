@@ -11,7 +11,7 @@ import java.util.UUID;
 @NoArgsConstructor
 public class NotificationGetDto implements Serializable {
     private UUID id;
-    private String icon;
+    private String imgUrl;
     private String context;
     private Boolean viewed;
     private OffsetDateTime createTimestamp;

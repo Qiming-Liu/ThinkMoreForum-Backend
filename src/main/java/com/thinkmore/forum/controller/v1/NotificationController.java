@@ -36,8 +36,8 @@ public class NotificationController {
         return ResponseEntity.ok(notificationService.markAllAsViewed(userId));
     }
 
-    @PostMapping(path = "/new-notification")
-    public ResponseEntity<Boolean> newNotification(@RequestBody NotificationPostDto notificationPostDto) {
-        return ResponseEntity.ok(notificationService.createNewNotification(notificationPostDto));
+    @PostMapping(path = "/new-notification/{type}")
+    public ResponseEntity<Boolean> newNotification(@RequestBody NotificationPostDto notificationPostDto, @PathVariable String type) {
+        return ResponseEntity.ok(notificationService.createNewNotification(notificationPostDto, type));
     }
 }

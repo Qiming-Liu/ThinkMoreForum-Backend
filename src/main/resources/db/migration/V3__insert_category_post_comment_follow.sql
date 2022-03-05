@@ -41,13 +41,3 @@ VALUES ((SELECT id FROM users WHERE username = 'admin'),
 INSERT INTO follow_user (users_id, followed_users_id)
 VALUES ((SELECT id FROM users WHERE username = 'admin'),
         (SELECT id FROM users WHERE username = 'verified_user'));
-
-INSERT INTO notification (users_id, icon, context, viewed)
-VALUES ((SELECT id FROM users WHERE username = 'admin'), 'post',
-        'User verified_user sent a post_comment to your post.',
-        false);
-
-INSERT INTO notification (users_id, icon, context, viewed)
-VALUES ((SELECT id FROM users WHERE username = 'admin'), 'post',
-        'User verified_user sent a post_comment to a post_comment.',
-        false);

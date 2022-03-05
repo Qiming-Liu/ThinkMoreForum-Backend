@@ -13,7 +13,7 @@ import java.util.UUID;
 public class NotificationPutDto implements Serializable {
     private UUID id;
     private UsersPutDto users;
-    private String icon;
+    private String imgUrl;
     private String context;
     private Boolean viewed;
     private OffsetDateTime createTimestamp;
