@@ -21,8 +21,8 @@ public class Notification {
     @JoinColumn(name = "users_id", nullable = false)
     private Users users;
 
-    @Column(name = "icon", nullable = false, length = 20)
-    private String icon;
+    @Column(name = "img_url", nullable = false)
+    private String imgUrl;
 
     @Column(name = "context", nullable = false)
     private String context;

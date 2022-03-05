@@ -57,7 +57,7 @@ public class ImgService {
 
         // put
         String fileName = file.getOriginalFilename();
-        if (fileName == null || !(fileName.endsWith(".png") || fileName.endsWith(".jpg") || fileName.endsWith(".jpeg"))) {
+        if (fileName == null || (!(fileName.endsWith(".png") && fileName.endsWith(".jpg") && fileName.endsWith(".jpeg")))) {
             throw new RuntimeException();
         }
         minioClient.putObject(

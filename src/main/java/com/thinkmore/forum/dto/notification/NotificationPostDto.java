@@ -12,8 +12,6 @@ import java.util.UUID;
 @NoArgsConstructor
 public class NotificationPostDto implements Serializable {
     private UsersPostDto users;
-    private String icon;
-    private String context;
     private Boolean viewed;
     private OffsetDateTime createTimestamp;
 }

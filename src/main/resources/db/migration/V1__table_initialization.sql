@@ -39,7 +39,7 @@ CREATE TABLE notification
 (
     id               uuid PRIMARY KEY                  DEFAULT uuid_generate_v1mc(),
     users_id         uuid                     NOT NULL references users (id),
-    icon             varchar(20)              NOT NULL,
+    img_url          text                     NOT NULL,
     context          text                     NOT NULL,
     viewed           boolean                  NOT NULL,
     create_timestamp timestamp with time zone NOT NULL DEFAULT now()
