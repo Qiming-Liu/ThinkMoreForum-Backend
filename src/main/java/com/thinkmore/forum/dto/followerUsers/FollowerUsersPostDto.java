@@ -1,4 +1,4 @@
-package com.thinkmore.forum.dto.follower;
+package com.thinkmore.forum.dto.followerUsers;
 
 import com.thinkmore.forum.dto.users.UsersPostDto;
 import lombok.Data;
@@ -9,7 +9,7 @@ import java.util.UUID;
 
 @Data
 @NoArgsConstructor
-public class FollowerPostDto {
+public class FollowerUsersPostDto {
     private UUID id;
 
     private UsersPostDto usersPostDto;

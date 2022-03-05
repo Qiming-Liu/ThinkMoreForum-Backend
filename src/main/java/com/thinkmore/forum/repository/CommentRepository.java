@@ -1,15 +1,15 @@
 package com.thinkmore.forum.repository;
 
-import com.thinkmore.forum.entity.PostComment;
+import com.thinkmore.forum.entity.Comment;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 
 import java.util.List;
 import java.util.UUID;
 
-public interface PostCommentRepository extends JpaRepository<PostComment, UUID>, JpaSpecificationExecutor<PostComment> {
+public interface CommentRepository extends JpaRepository<Comment, UUID>, JpaSpecificationExecutor<Comment> {
 
-    List<PostComment> findByPost_IdOrderByCreateTimestampAsc(UUID id);
+    List<Comment> findByPost_IdOrderByCreateTimestampAsc(UUID id);
 
     @Override
     void deleteById(UUID uuid);

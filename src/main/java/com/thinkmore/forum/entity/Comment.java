@@ -11,7 +11,7 @@ import java.util.UUID;
 @Getter
 @Setter
 @Table(name = "post_comment")
-public class PostComment {
+public class Comment {
     @Id
     @GeneratedValue
     @Column(name = "id", nullable = false)
@@ -27,7 +27,7 @@ public class PostComment {
 
     @ManyToOne
     @JoinColumn(name = "parent_comment_id")
-    private PostComment parentComment;
+    private Comment parentComment;
 
     @Column(name = "context", length = 65535, nullable = false)
     private String context;

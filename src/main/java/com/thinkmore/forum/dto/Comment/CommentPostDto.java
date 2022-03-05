@@ -1,4 +1,4 @@
-package com.thinkmore.forum.dto.postComment;
+package com.thinkmore.forum.dto.Comment;
 
 import com.thinkmore.forum.dto.post.PostMiniGetDto;
 import com.thinkmore.forum.dto.users.UsersMiniGetDto;
@@ -11,11 +11,11 @@ import java.util.UUID;
 
 @Data
 @NoArgsConstructor
-public class PostCommentPutDto implements Serializable {
+public class CommentPostDto implements Serializable {
     private UUID id;
     private UsersMiniGetDto postUsers;
     private PostMiniGetDto post;
-    private PostCommentMiniGetDto parentComment;
+    private CommentMiniGetDto parentComment;
     private String context;
     private Boolean visibility;
     private OffsetDateTime createTimestamp;

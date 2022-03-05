@@ -8,7 +8,7 @@ import java.util.List;
 import java.util.UUID;
 
 @Repository
-public interface FollowerRepository extends JpaRepository<FollowUser, UUID> {
+public interface FollowerUsersRepository extends JpaRepository<FollowUser, UUID> {
 
     List<FollowUser> findAllByUsersId(UUID userId);
 
