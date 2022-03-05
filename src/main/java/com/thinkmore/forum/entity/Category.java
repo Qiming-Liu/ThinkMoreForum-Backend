@@ -20,9 +20,8 @@ public class Category {
     @JoinColumn(name = "pin_post_id")
     private Post pinPost;
 
-    @ManyToOne
-    @JoinColumn(name = "head_img_id")
-    private Img headImg;
+    @Column(name = "head_img_url")
+    private String headImgUrl;
 
     @Column(name = "type")
     private Integer type;

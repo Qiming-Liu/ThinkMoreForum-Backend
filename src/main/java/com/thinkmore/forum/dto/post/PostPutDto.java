@@ -17,7 +17,7 @@ public class PostPutDto implements Serializable {
     private UUID id;
     private UsersPutDto postUsers;
     private CategoryPutDto category;
-    private ImgPutDto headImg;
+    private String headImgUrl;
     private String title;
     private String context;
     private Integer viewCount;

@@ -14,9 +14,8 @@ import java.util.UUID;
 public class UsersPostDto implements Serializable {
     private UUID id;
     private String username;
-    private String password;
     private String email;
-    private ImgPostDto profileImg;
+    private String profileImgUrl;
     private RolesPostDto role;
     private OffsetDateTime lastLoginTimestamp;
     private OffsetDateTime createTimestamp;

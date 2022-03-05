@@ -25,9 +25,8 @@ public class Post {
     @JoinColumn(name = "category_id", nullable = false)
     private Category category;
 
-    @ManyToOne
-    @JoinColumn(name = "head_img_id")
-    private Img headImg;
+    @Column(name = "head_img_url")
+    private String headImgUrl;
 
     @Column(name = "title", nullable = false, length = 60)
     private String title;

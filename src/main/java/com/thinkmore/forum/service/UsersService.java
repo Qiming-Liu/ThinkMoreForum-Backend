@@ -54,7 +54,6 @@ public class UsersService implements UserDetailsService {
         user.setUsername(username);
         user.setPassword(Singleton.passwordEncoder().encode(password));
         user.setEmail(email);
-        user.setProfileImg(null);
         user.setRole(rolesRepository.findByRoleName(Config.DefaultRole).orElseThrow());
         user.setLastLoginTimestamp(OffsetDateTime.now());
         user.setCreateTimestamp(OffsetDateTime.now());

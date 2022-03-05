@@ -21,7 +21,7 @@ CREATE TABLE users
     username             varchar(20)              NOT NULL UNIQUE,
     password             text,
     email                varchar(255)             NOT NULL UNIQUE,
-    profile_img_id       uuid references img (id),
+    profile_img_url      text                              DEFAULT '/logo.png',
     role_id              uuid                     NOT NULL references roles (id),
     last_login_timestamp timestamp with time zone NOT NULL,
     create_timestamp     timestamp with time zone NOT NULL DEFAULT now()
@@ -39,7 +39,7 @@ CREATE TABLE notification
 (
     id               uuid PRIMARY KEY                  DEFAULT uuid_generate_v1mc(),
     users_id         uuid                     NOT NULL references users (id),
-    img_url          text                     NOT NULL,
+    img_url          text                              DEFAULT '/logo.png',
     context          text                     NOT NULL,
     viewed           boolean                  NOT NULL,
     create_timestamp timestamp with time zone NOT NULL DEFAULT now()
@@ -47,15 +47,15 @@ CREATE TABLE notification
 
 CREATE TABLE category
 (
-    id          uuid PRIMARY KEY DEFAULT uuid_generate_v1mc(),
-    pin_post_id uuid,
-    head_img_id uuid references img (id),
-    type        int,
-    color       varchar(7)  NOT NULL,
-    title       varchar(20) NOT NULL UNIQUE,
-    description varchar(60),
-    post_count  int         NOT NULL,
-    sort_order  int         NOT NULL UNIQUE
+    id           uuid PRIMARY KEY DEFAULT uuid_generate_v1mc(),
+    pin_post_id  uuid,
+    head_img_url text             DEFAULT '/logo.png',
+    type         int,
+    color        varchar(7)  NOT NULL,
+    title        varchar(20) NOT NULL UNIQUE,
+    description  varchar(60),
+    post_count   int         NOT NULL,
+    sort_order   int         NOT NULL UNIQUE
 );
 
 CREATE TABLE post
@@ -63,7 +63,7 @@ CREATE TABLE post
     id               uuid PRIMARY KEY                  DEFAULT uuid_generate_v1mc(),
     post_users_id    uuid                     NOT NULL references users (id),
     category_id      uuid                     NOT NULL references category (id),
-    head_img_id      uuid references img (id),
+    head_img_url     text                              DEFAULT '/logo.png',
     title            varchar(60)              NOT NULL,
     context          varchar(65535)           NOT NULL,
     view_count       int                      NOT NULL,

@@ -16,7 +16,7 @@ public class PostGetDto implements Serializable {
     private UUID id;
     private UsersMiniGetDto postUsers;
     private CategoryMiniGetDto category;
-    private ImgGetDto headImg;
+    private String headImgUrl;
     private String title;
     private String context;
     private Integer viewCount;

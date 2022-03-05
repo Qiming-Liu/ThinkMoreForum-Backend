@@ -1,5 +1,6 @@
 package com.thinkmore.forum.configuration;
 
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import springfox.documentation.builders.ApiInfoBuilder;
@@ -19,9 +20,14 @@ import java.util.List;
 @Configuration
 @EnableSwagger2
 public class SwaggerConfig {
+
+    @Value("${swagger}")
+    private boolean swagger;
+
     @Bean
     public Docket api() {
         return new Docket(DocumentationType.SWAGGER_2)
+                .enable(swagger)
                 .apiInfo(apiInfo())
                 .globalOperationParameters(jwt())
                 .select()

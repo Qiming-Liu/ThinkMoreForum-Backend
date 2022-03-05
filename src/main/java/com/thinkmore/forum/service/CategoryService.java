@@ -32,7 +32,6 @@ public class CategoryService {
         category.setTitle(title);
         category.setDescription(description);
         category.setColor(color);
-        category.setHeadImg(null);
         category.setPostCount(0);
         category.setSortOrder(nowSortOrder);
         category.setPinPost(null);

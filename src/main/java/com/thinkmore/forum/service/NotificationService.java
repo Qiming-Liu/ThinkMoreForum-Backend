@@ -68,8 +68,7 @@ public class NotificationService {
         contextMap.put("reply_comment", " replied your comment.");
         Notification notification = notificationMapper.toEntity(notificationPostDto);
         notification.setContext(user.getUsername() + contextMap.get(type));
-        notification.setImgUrl("http:not_data_so_just_test");
-//        notification.setImgUrl(user.getProfileImg().getUrl());
+        notification.setImgUrl(user.getProfileImgUrl());
         notificationRepository.save(notification);
         return true;
     }

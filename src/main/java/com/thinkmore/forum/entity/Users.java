@@ -26,9 +26,8 @@ public class Users {
     @Column(name = "email", nullable = false)
     private String email;
 
-    @ManyToOne
-    @JoinColumn(name = "profile_img_id")
-    private Img profileImg;
+    @Column(name = "profile_img_url")
+    private String profileImgUrl;
 
     @ManyToOne(optional = false)
     @JoinColumn(name = "role_id", nullable = false)
