@@ -22,16 +22,16 @@ VALUES ((SELECT id FROM users WHERE username = 'verified_user'),
         (SELECT id FROM category WHERE title = 'Second Category'),
         'verified_user post title', '<p>verified_user post context</p>', 0, 0, 0, true);
 
-INSERT INTO post_comment (post_users_id, post_id, parent_comment_id, context, visibility)
+INSERT INTO comment (comment_users_id, post_id, parent_comment_id, context, visibility)
 VALUES ((SELECT id FROM users WHERE username = 'verified_user'),
         (SELECT id FROM post WHERE title = 'admin post title'),
         null,
         '<p>verified_user post_comment context</p>', true);
 
-INSERT INTO post_comment (post_users_id, post_id, parent_comment_id, context, visibility)
+INSERT INTO comment (comment_users_id, post_id, parent_comment_id, context, visibility)
 VALUES ((SELECT id FROM users WHERE username = 'verified_user'),
         (SELECT id FROM post WHERE title = 'admin post title'),
-        (SELECT id FROM post_comment WHERE context = '<p>verified_user post_comment context</p>'),
+        (SELECT id FROM comment WHERE context = '<p>verified_user post_comment context</p>'),
         '<p>verified_user embedded post_comment context</p>', true);
 
 INSERT INTO follow_post (users_id, post_id)

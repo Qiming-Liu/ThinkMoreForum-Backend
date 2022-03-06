@@ -13,7 +13,7 @@ import java.util.UUID;
 @NoArgsConstructor
 public class CommentPutDto implements Serializable {
     private UUID id;
-    private UsersMiniGetDto postUsers;
+    private UsersMiniGetDto commentUsers;
     private PostMiniGetDto post;
     private CommentMiniGetDto parentComment;
     private String context;

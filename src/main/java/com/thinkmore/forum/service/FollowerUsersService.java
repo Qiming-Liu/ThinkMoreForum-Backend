@@ -21,6 +21,7 @@ public class FollowerUsersService {
     private final FollowerUsersRepository followerUsersRepository;
     private final UsersRepository usersRepository;
     private final FollowerUsersMapper followerUsersMapper;
+    private final NotificationService notificationService;
 
     public List<FollowerUsersGetDto> getFollowersByUsername(String username) {
         Users user = usersRepository.findByUsername(username)
@@ -34,24 +35,17 @@ public class FollowerUsersService {
         return followerUsersRepository.findAllByFollowedUsersId(user.getId()).stream().map(followerUsersMapper::fromEntity).collect(Collectors.toList());
     }
 
-    public FollowerUsersGetDto followUsers(String username, UUID usersId) {
-        Users tampUser = usersRepository.findByUsername(username)
-                .orElseThrow(() -> new UserNotFoundException("Invalid UserName"));
+    public FollowerUsersGetDto followUsers(UUID myUsersId, String hisUsername) {
+        Users myUser = usersRepository.findById(myUsersId)
+                .orElseThrow(() -> new UserNotFoundException("Invalid UserID"));
+        Users hisUser = usersRepository.findByUsername(hisUsername)
+                .orElseThrow(() -> new UserNotFoundException("Invalid UserID"));
+
         FollowUser followUser = new FollowUser();
-
-        Users user = usersRepository.findById(usersId)
-                .orElseThrow(() -> new UserNotFoundException("Invalid UserID"));
-        Users followedUser = usersRepository.findById(tampUser.getId())
-                .orElseThrow(() -> new UserNotFoundException("Invalid UserID"));
-        if (followerUsersRepository.findByUsersIdAndFollowedUsersId(usersId, tampUser.getId()).isEmpty()) {
-            followUser.setUsers(user);
-            followUser.setFollowedUsers(followedUser);
-            followUser.setCreateTimestamp(OffsetDateTime.now());
-
-            followerUsersRepository.save(followUser);
-        } else {
-            System.out.println("You have already followed this user");
-        }
+        followUser.setUsers(myUser);
+        followUser.setFollowedUsers(hisUser);
+        followerUsersRepository.save(followUser);
+        notificationService.postNotification(hisUser, myUser, " followed you.");
 
         return followerUsersMapper.fromEntity(followUser);
     }

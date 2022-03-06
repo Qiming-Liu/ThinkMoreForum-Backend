@@ -5,6 +5,7 @@ import com.thinkmore.forum.dto.followPost.FollowPostPostDto;
 import com.thinkmore.forum.dto.post.PostMiniGetDto;
 import com.thinkmore.forum.dto.users.UsersMiniGetDto;
 import com.thinkmore.forum.entity.FollowPost;
+import com.thinkmore.forum.entity.Post;
 import com.thinkmore.forum.entity.Users;
 import com.thinkmore.forum.exception.UserNotFoundException;
 import com.thinkmore.forum.mapper.FollowPostMapper;
@@ -35,6 +36,8 @@ public class FollowPostService {
 
     private final PostRepository postRepository;
     private final PostMapper postMapper;
+
+    private final NotificationService notificationService;
 
 
     public List<FollowPostGetDto> getAllFollowPosts() {
@@ -67,9 +70,10 @@ public class FollowPostService {
     }
 
     public void postFollowPostToUser(UUID postId, UUID userId) {
-        UsersMiniGetDto usersMiniGetDto = usersMapper.entityToMiniDto(usersRepository.findById(userId).get());
-
-        PostMiniGetDto postMiniGetDto = postMapper.entityToMiniDto(postRepository.findById(postId).get());
+        Users users = usersRepository.findById(userId).get();
+        UsersMiniGetDto usersMiniGetDto = usersMapper.entityToMiniDto(users);
+        Post post = postRepository.findById(postId).get();
+        PostMiniGetDto postMiniGetDto = postMapper.entityToMiniDto(post);
 
         FollowPostPostDto followPostPostDto = new FollowPostPostDto();
         followPostPostDto.setUsers(usersMiniGetDto);
@@ -77,12 +81,14 @@ public class FollowPostService {
         followPostPostDto.setCreateTimestamp(OffsetDateTime.now());
         FollowPost followPost = followPostMapper.toEntity(followPostPostDto);
         followPostRepository.save(followPost);
+
+        notificationService.postNotification(post.getPostUsers(), users, " followed your post.");
     }
 
     @Transactional
     public String userUnfollowPost(UUID postId, UUID userId) {
-        return followPostRepository.deleteByUsers_IdAndPost_Id(userId, postId) > 0?
-                "Successfully unfollowed!":"Unfollow failed or you didn't follow this post";
+        return followPostRepository.deleteByUsers_IdAndPost_Id(userId, postId) > 0 ?
+                "Successfully unfollowed!" : "Unfollow failed or you didn't follow this post";
     }
 
 }

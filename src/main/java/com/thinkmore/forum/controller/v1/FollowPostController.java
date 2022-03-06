@@ -17,13 +17,13 @@ public class FollowPostController {
 
     private final FollowPostService followPostService;
 
-    @GetMapping(path = "/findAll/{post_id}")
+    @GetMapping(path = "/findAll")
     public ResponseEntity<List<FollowPostGetDto>> findAll() {
         List<FollowPostGetDto> followPostList = followPostService.getAllFollowPosts();
         return ResponseEntity.ok(followPostList);
     }
 
-    @GetMapping(path = "/findAllByUserId/{post_id}")
+    @GetMapping(path = "/findAllByUserId")
     public ResponseEntity<List<FollowPostGetDto>> findAllByUserId() {
         UUID userId = UUID.fromString(Util.getJwtContext().get(0));
         List<FollowPostGetDto> followPostList = followPostService.getAllFollowPostsByUserId(userId);
@@ -31,12 +31,12 @@ public class FollowPostController {
     }
 
     @GetMapping(path = "/findAllByUsername/{username}")
-    public ResponseEntity<List<FollowPostGetDto>> getFollowPostByUsername(@PathVariable("username") String username) {
+    public ResponseEntity<List<FollowPostGetDto>> getFollowPostByUsername(@PathVariable String username) {
         return ResponseEntity.ok(followPostService.getAllFollowPostsByUsername(username));
     }
 
     @GetMapping(path="/checkUserFollowingState/{post_id}")
-    public ResponseEntity<Boolean> checkUserFollowingState(@PathVariable("post_id") String post_id) {
+    public ResponseEntity<Boolean> checkUserFollowingState(@PathVariable String post_id) {
         UUID userId = UUID.fromString(Util.getJwtContext().get(0));
         UUID postId = UUID.fromString(post_id);
         Boolean userIsFollowingPost = followPostService.checkUserFollowingState(postId, userId);
@@ -44,7 +44,7 @@ public class FollowPostController {
     }
 
     @PostMapping(path = "/userFollowPost/{post_id}")
-    public ResponseEntity<String> userFollowPost(@PathVariable("post_id") String post_id) {
+    public ResponseEntity<String> userFollowPost(@PathVariable String post_id) {
         UUID postId = UUID.fromString(post_id);
         UUID userId = UUID.fromString(Util.getJwtContext().get(0));
         followPostService.postFollowPostToUser(postId, userId);
@@ -52,7 +52,7 @@ public class FollowPostController {
     }
 
     @DeleteMapping(path = "/userUnfollowPost/{post_id}")
-    public ResponseEntity<String> userUnfollowPost(@PathVariable("post_id") String post_id) {
+    public ResponseEntity<String> userUnfollowPost(@PathVariable String post_id) {
         UUID postId = UUID.fromString(post_id);
         UUID userId = UUID.fromString(Util.getJwtContext().get(0));
         return ResponseEntity.ok(followPostService.userUnfollowPost(postId, userId));

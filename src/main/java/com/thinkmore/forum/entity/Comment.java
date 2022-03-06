@@ -10,7 +10,7 @@ import java.util.UUID;
 @Entity
 @Getter
 @Setter
-@Table(name = "post_comment")
+@Table(name = "comment")
 public class Comment {
     @Id
     @GeneratedValue
@@ -18,8 +18,8 @@ public class Comment {
     private UUID id;
 
     @ManyToOne(optional = false)
-    @JoinColumn(name = "post_users_id", nullable = false)
-    private Users postUsers;
+    @JoinColumn(name = "comment_users_id", nullable = false)
+    private Users commentUsers;
 
     @ManyToOne(optional = false)
     @JoinColumn(name = "post_id", nullable = false)

@@ -89,12 +89,12 @@ CREATE TABLE follow_user
     create_timestamp  timestamp with time zone NOT NULL DEFAULT now()
 );
 
-CREATE TABLE post_comment
+CREATE TABLE comment
 (
     id                uuid PRIMARY KEY                  DEFAULT gen_random_uuid(),
-    post_users_id     uuid                     NOT NULL references users (id),
+    comment_users_id  uuid                     NOT NULL references users (id),
     post_id           uuid                     NOT NULL references post (id),
-    parent_comment_id uuid references post_comment (id),
+    parent_comment_id uuid references comment (id),
     context           varchar(65535)           NOT NULL,
     visibility        boolean                  NOT NULL,
     create_timestamp  timestamp with time zone NOT NULL DEFAULT now()

@@ -36,7 +36,7 @@ public class FollowerUsersController {
     @PostMapping(path = "/follow/{username}")
     public ResponseEntity<FollowerUsersGetDto> follow_user(@PathVariable("username") String username) {
         UUID usersId = UUID.fromString(Util.getJwtContext().get(0));
-        return ResponseEntity.ok(followerUsersService.followUsers(username, usersId));
+        return ResponseEntity.ok(followerUsersService.followUsers(usersId, username));
     }
 
     @DeleteMapping(path = "/follow/{username}")
