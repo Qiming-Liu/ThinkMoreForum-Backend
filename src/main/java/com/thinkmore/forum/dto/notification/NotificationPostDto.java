@@ -13,5 +13,4 @@ import java.util.UUID;
 public class NotificationPostDto implements Serializable {
     private UsersPostDto users;
     private Boolean viewed;
-    private OffsetDateTime createTimestamp;
 }

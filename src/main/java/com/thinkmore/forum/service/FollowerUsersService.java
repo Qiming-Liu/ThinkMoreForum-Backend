@@ -7,7 +7,6 @@ import com.thinkmore.forum.exception.UserNotFoundException;
 import com.thinkmore.forum.mapper.FollowerUsersMapper;
 import com.thinkmore.forum.repository.FollowerUsersRepository;
 import com.thinkmore.forum.repository.UsersRepository;
-import com.thinkmore.forum.util.Util;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -35,16 +34,16 @@ public class FollowerUsersService {
         return followerUsersRepository.findAllByFollowedUsersId(user.getId()).stream().map(followerUsersMapper::fromEntity).collect(Collectors.toList());
     }
 
-    public FollowerUsersGetDto followUsers(String username) {
+    public FollowerUsersGetDto followUsers(String username, UUID usersId) {
         Users tampUser = usersRepository.findByUsername(username)
                 .orElseThrow(() -> new UserNotFoundException("Invalid UserName"));
         FollowUser followUser = new FollowUser();
-        UUID currentId = UUID.fromString(Util.getJwtContext().get(0));
-        Users user = usersRepository.findById(currentId)
+
+        Users user = usersRepository.findById(usersId)
                 .orElseThrow(() -> new UserNotFoundException("Invalid UserID"));
         Users followedUser = usersRepository.findById(tampUser.getId())
                 .orElseThrow(() -> new UserNotFoundException("Invalid UserID"));
-        if (followerUsersRepository.findByUsersIdAndFollowedUsersId(currentId, tampUser.getId()).isEmpty()) {
+        if (followerUsersRepository.findByUsersIdAndFollowedUsersId(usersId, tampUser.getId()).isEmpty()) {
             followUser.setUsers(user);
             followUser.setFollowedUsers(followedUser);
             followUser.setCreateTimestamp(OffsetDateTime.now());
@@ -65,16 +64,12 @@ public class FollowerUsersService {
         followerUsersRepository.deleteByUsersIdAndFollowedUsersId(user.getId(), followedUser.getId());
     }
 
-    public boolean followStatus(String username) {
+    public boolean followStatus(String username, UUID usersId) {
         Users tampUser = usersRepository.findByUsername(username)
                 .orElseThrow(() -> new UserNotFoundException("Invalid UserName"));
-        UUID currentId = UUID.fromString(Util.getJwtContext().get(0));
+
         boolean status;
-        if (followerUsersRepository.findByUsersIdAndFollowedUsersId(currentId, tampUser.getId()).isEmpty()) {
-            status = false;
-        } else {
-            status = true;
-        }
+        status = !followerUsersRepository.findByUsersIdAndFollowedUsersId(usersId, tampUser.getId()).isEmpty();
         return status;
     }
 }

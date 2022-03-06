@@ -15,7 +15,7 @@ public class ImgController {
     private final ImgService imgService;
 
     @PostMapping(path = "/upload")
-    public ResponseEntity<Img> upload(@RequestBody MultipartFile img) throws Exception {
+    public ResponseEntity<Img> upload(@RequestParam MultipartFile img) throws Exception {
         return ResponseEntity.ok(imgService.upload(img));
     }
 }

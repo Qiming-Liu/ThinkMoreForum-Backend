@@ -8,6 +8,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.UUID;
 
 @RestController
 @RequestMapping(path = "/v1/users")
@@ -28,12 +29,14 @@ public class FollowerUsersController {
 
     @GetMapping(path = "/followedStatus/{username}")
     public ResponseEntity<Boolean> checkFollowedStatus(@PathVariable("username") String username) {
-        return ResponseEntity.ok(followerUsersService.followStatus(username));
+        UUID usersId = UUID.fromString(Util.getJwtContext().get(0));
+        return ResponseEntity.ok(followerUsersService.followStatus(username, usersId));
     }
 
     @PostMapping(path = "/follow/{username}")
     public ResponseEntity<FollowerUsersGetDto> follow_user(@PathVariable("username") String username) {
-        return ResponseEntity.ok(followerUsersService.followUsers(username));
+        UUID usersId = UUID.fromString(Util.getJwtContext().get(0));
+        return ResponseEntity.ok(followerUsersService.followUsers(username, usersId));
     }
 
     @DeleteMapping(path = "/follow/{username}")
