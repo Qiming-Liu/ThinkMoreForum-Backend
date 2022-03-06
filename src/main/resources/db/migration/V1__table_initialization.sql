@@ -1,23 +1,23 @@
 CREATE
-    EXTENSION IF NOT EXISTS "uuid-ossp";
+    EXTENSION IF NOT EXISTS pgcrypto;
 
 CREATE TABLE img
 (
-    id   uuid PRIMARY KEY DEFAULT uuid_generate_v1mc(),
-    url  text NOT NULL UNIQUE,
-    hash text NOT NULL UNIQUE
+    id  uuid PRIMARY KEY DEFAULT gen_random_uuid(),
+    url text NOT NULL UNIQUE,
+    md5 text NOT NULL UNIQUE
 );
 
 CREATE TABLE roles
 (
-    id         uuid PRIMARY KEY DEFAULT uuid_generate_v1mc(),
+    id         uuid PRIMARY KEY DEFAULT gen_random_uuid(),
     role_name  varchar(20) NOT NULL UNIQUE,
     permission text        NOT NULL
 );
 
 CREATE TABLE users
 (
-    id                   uuid PRIMARY KEY                  DEFAULT uuid_generate_v1mc(),
+    id                   uuid PRIMARY KEY                  DEFAULT gen_random_uuid(),
     username             varchar(20)              NOT NULL UNIQUE,
     password             text,
     email                varchar(255)             NOT NULL UNIQUE,
@@ -29,7 +29,7 @@ CREATE TABLE users
 
 CREATE TABLE oauth
 (
-    id         uuid PRIMARY KEY DEFAULT uuid_generate_v1mc(),
+    id         uuid PRIMARY KEY DEFAULT gen_random_uuid(),
     users_id   uuid        NOT NULL references users (id),
     oauth_type varchar(20) NOT NULL,
     openid     text        NOT NULL
@@ -37,7 +37,7 @@ CREATE TABLE oauth
 
 CREATE TABLE notification
 (
-    id               uuid PRIMARY KEY                  DEFAULT uuid_generate_v1mc(),
+    id               uuid PRIMARY KEY                  DEFAULT gen_random_uuid(),
     users_id         uuid                     NOT NULL references users (id),
     img_url          text                              DEFAULT '/logo.png',
     context          text                     NOT NULL,
@@ -47,7 +47,7 @@ CREATE TABLE notification
 
 CREATE TABLE category
 (
-    id           uuid PRIMARY KEY DEFAULT uuid_generate_v1mc(),
+    id           uuid PRIMARY KEY DEFAULT gen_random_uuid(),
     pin_post_id  uuid,
     head_img_url text             DEFAULT '/logo.png',
     type         int,
@@ -60,7 +60,7 @@ CREATE TABLE category
 
 CREATE TABLE post
 (
-    id               uuid PRIMARY KEY                  DEFAULT uuid_generate_v1mc(),
+    id               uuid PRIMARY KEY                  DEFAULT gen_random_uuid(),
     post_users_id    uuid                     NOT NULL references users (id),
     category_id      uuid                     NOT NULL references category (id),
     head_img_url     text                              DEFAULT '/logo.png',
@@ -75,7 +75,7 @@ CREATE TABLE post
 
 CREATE TABLE follow_post
 (
-    id               uuid PRIMARY KEY                  DEFAULT uuid_generate_v1mc(),
+    id               uuid PRIMARY KEY                  DEFAULT gen_random_uuid(),
     users_id         uuid                     NOT NULL references users (id),
     post_id          uuid                     NOT NULL references post (id),
     create_timestamp timestamp with time zone NOT NULL DEFAULT now()
@@ -83,7 +83,7 @@ CREATE TABLE follow_post
 
 CREATE TABLE follow_user
 (
-    id                uuid PRIMARY KEY                  DEFAULT uuid_generate_v1mc(),
+    id                uuid PRIMARY KEY                  DEFAULT gen_random_uuid(),
     users_id          uuid                     NOT NULL references users (id),
     followed_users_id uuid                     NOT NULL references users (id),
     create_timestamp  timestamp with time zone NOT NULL DEFAULT now()
@@ -91,7 +91,7 @@ CREATE TABLE follow_user
 
 CREATE TABLE post_comment
 (
-    id                uuid PRIMARY KEY                  DEFAULT uuid_generate_v1mc(),
+    id                uuid PRIMARY KEY                  DEFAULT gen_random_uuid(),
     post_users_id     uuid                     NOT NULL references users (id),
     post_id           uuid                     NOT NULL references post (id),
     parent_comment_id uuid references post_comment (id),

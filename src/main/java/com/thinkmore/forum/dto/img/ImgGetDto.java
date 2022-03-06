@@ -11,5 +11,5 @@ import java.util.UUID;
 public class ImgGetDto implements Serializable {
     private UUID id;
     private String url;
-    private String hash;
+    private String md5;
 }

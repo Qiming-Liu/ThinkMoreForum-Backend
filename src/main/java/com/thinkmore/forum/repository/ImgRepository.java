@@ -7,5 +7,5 @@ import java.util.Optional;
 import java.util.UUID;
 
 public interface ImgRepository extends JpaRepository<Img, UUID> {
-    Optional<Img> findByHash(String hash);
+    Optional<Img> findByMd5(String hash);
 }

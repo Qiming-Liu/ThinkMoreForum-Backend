@@ -19,6 +19,6 @@ public class Img {
     @Column(name = "url", nullable = false, length = 260)
     private String url;
 
-    @Column(name = "hash", nullable = false)
-    private String hash;
+    @Column(name = "md5", nullable = false)
+    private String md5;
 }

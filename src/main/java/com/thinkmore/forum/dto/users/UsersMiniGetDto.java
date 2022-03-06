@@ -1,6 +1,5 @@
 package com.thinkmore.forum.dto.users;
 
-import com.thinkmore.forum.dto.img.ImgGetDto;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 

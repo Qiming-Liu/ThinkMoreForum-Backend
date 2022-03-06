@@ -47,14 +47,9 @@ public class UsersController {
         return ResponseEntity.ok(usersService.sendResetPasswordEmail(email));
     }
 
-    @PutMapping("/password-reset/{new_password}")
-    public ResponseEntity<Boolean> resetPassword(@PathVariable String new_password) {
+    @PutMapping("/password-reset")
+    public ResponseEntity<Boolean> resetPassword(@RequestBody String new_password) {
         return ResponseEntity.ok(usersService.resetPassword(new_password));
-    }
-
-    @PutMapping("/set-password/{password}")
-    public ResponseEntity<Boolean> setPassword(@PathVariable String password) {
-        return ResponseEntity.ok(usersService.setPassword(password));
     }
 
     @GetMapping(path = "/my-details")
@@ -84,8 +79,8 @@ public class UsersController {
         return ResponseEntity.ok(usersService.changeEmail(new_email));
     }
 
-    @PutMapping("/password/{old_password}/{new_password}")
-    public ResponseEntity<Boolean> changePassword(@PathVariable String old_password, @PathVariable String new_password) {
+    @PutMapping("/password")
+    public ResponseEntity<Boolean> changePassword(@RequestBody String old_password, @RequestBody String new_password) {
         return ResponseEntity.ok(usersService.changePassword(old_password, new_password));
     }
 }

@@ -1,9 +1,7 @@
 package com.thinkmore.forum.dto.followPost;
 
 import com.thinkmore.forum.dto.post.PostMiniGetDto;
-import com.thinkmore.forum.dto.post.PostPostDto;
 import com.thinkmore.forum.dto.users.UsersMiniGetDto;
-import com.thinkmore.forum.dto.users.UsersPostDto;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 

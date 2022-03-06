@@ -1,6 +1,5 @@
 package com.thinkmore.forum.dto.category;
 
-import com.thinkmore.forum.dto.img.ImgPutDto;
 import com.thinkmore.forum.dto.post.PostPutDto;
 import lombok.Data;
 import lombok.NoArgsConstructor;
