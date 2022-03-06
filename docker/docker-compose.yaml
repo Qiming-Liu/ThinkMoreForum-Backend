@@ -30,7 +30,7 @@ services:
       POSTGRES_HOST: 3.26.60.225
       POSTGRES_USERNAME: postgres
       POSTGRES_PASSWORD: development
-      MINIO_HOST: 3.26.60.225
+      MINIO_URL: http://3.26.60.225:9000
       MINIO_ROOT_USER: minio
       MINIO_ROOT_PASSWORD: development
       DOMAIN_NAME: https://www.thinkmoreapp.com

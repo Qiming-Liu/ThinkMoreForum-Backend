@@ -2,6 +2,10 @@ package com.thinkmore.forum.entity;
 
 import lombok.Getter;
 import lombok.Setter;
+import org.hibernate.annotations.DynamicInsert;
+import org.hibernate.annotations.DynamicUpdate;
+import org.springframework.data.annotation.CreatedDate;
+import org.springframework.data.jpa.repository.config.EnableJpaAuditing;
 
 import javax.persistence.*;
 import java.time.OffsetDateTime;
@@ -10,6 +14,8 @@ import java.util.UUID;
 @Entity
 @Getter
 @Setter
+@DynamicUpdate
+@DynamicInsert
 @Table(name = "follow_post")
 public class FollowPost {
     @Id
@@ -25,6 +31,6 @@ public class FollowPost {
     @JoinColumn(name = "post_id", nullable = false)
     private Post post;
 
-    @Column(name = "create_timestamp", nullable = false)
+    @Column(name = "create_timestamp")
     private OffsetDateTime createTimestamp;
 }

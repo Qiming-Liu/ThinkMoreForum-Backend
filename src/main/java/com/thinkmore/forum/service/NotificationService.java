@@ -6,9 +6,11 @@ import com.thinkmore.forum.entity.Users;
 import com.thinkmore.forum.mapper.NotificationMapper;
 import com.thinkmore.forum.repository.NotificationRepository;
 import lombok.RequiredArgsConstructor;
+import org.hibernate.type.OffsetDateTimeType;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
+import java.time.OffsetDateTime;
 import java.util.List;
 import java.util.UUID;
 import java.util.stream.Collectors;
@@ -55,15 +57,6 @@ public class NotificationService {
 
     @Transactional
     public void postNotification(Users notifyUser, Users triggerUser, String context) {
-
-//            case "reply": {
-//                context = "";
-//                break;
-//            }
-//            case "reply_comment": {
-//                context = "";
-//                break;
-//            }
 
         Notification notification = new Notification();
         notification.setUsers(notifyUser);

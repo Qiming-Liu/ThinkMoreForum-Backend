@@ -2,6 +2,8 @@ package com.thinkmore.forum.entity;
 
 import lombok.Getter;
 import lombok.Setter;
+import org.hibernate.annotations.DynamicInsert;
+import org.hibernate.annotations.DynamicUpdate;
 
 import javax.persistence.*;
 import java.time.OffsetDateTime;
@@ -10,6 +12,8 @@ import java.util.UUID;
 @Entity
 @Getter
 @Setter
+@DynamicUpdate
+@DynamicInsert
 @Table(name = "users")
 public class Users {
     @Id
@@ -33,9 +37,9 @@ public class Users {
     @JoinColumn(name = "role_id", nullable = false)
     private Roles role;
 
-    @Column(name = "last_login_timestamp", nullable = false)
+    @Column(name = "last_login_timestamp")
     private OffsetDateTime lastLoginTimestamp;
 
-    @Column(name = "create_timestamp", nullable = false)
+    @Column(name = "create_timestamp")
     private OffsetDateTime createTimestamp;
 }
