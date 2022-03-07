@@ -62,7 +62,7 @@ CREATE TABLE post
 (
     id               uuid PRIMARY KEY         DEFAULT gen_random_uuid(),
     post_users_id    uuid           NOT NULL references users (id),
-    category_id      uuid           NOT NULL references category (id),
+    category_id      uuid references category (id),
     head_img_url     text                     DEFAULT '/logo.png',
     title            varchar(60)    NOT NULL,
     context          varchar(65535) NOT NULL,

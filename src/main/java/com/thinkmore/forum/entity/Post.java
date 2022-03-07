@@ -17,7 +17,7 @@ import java.util.UUID;
 @Table(name = "post")
 public class Post {
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "id", nullable = false)
     private UUID id;
 
@@ -26,7 +26,7 @@ public class Post {
     private Users postUsers;
 
     @ManyToOne(optional = false)
-    @JoinColumn(name = "category_id", nullable = false)
+    @JoinColumn(name = "category_id")
     private Category category;
 
     @Column(name = "head_img_url")

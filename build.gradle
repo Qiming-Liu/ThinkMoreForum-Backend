@@ -24,10 +24,10 @@ dependencies {
     implementation 'io.springfox:springfox-swagger2:2.9.2'
     implementation 'io.springfox:springfox-swagger-ui:2.9.2'
 
-    implementation 'org.springframework.boot:spring-boot-starter-data-jpa:2.6.3'
-    implementation 'org.springframework.boot:spring-boot-starter-security:2.6.3'
-    implementation 'org.springframework.boot:spring-boot-starter-web:2.6.3'
-    annotationProcessor "org.springframework.boot:spring-boot-configuration-processor:2.6.3"
+    implementation 'org.springframework.boot:spring-boot-starter-data-jpa:2.6.4'
+    implementation 'org.springframework.boot:spring-boot-starter-security:2.6.4'
+    implementation 'org.springframework.boot:spring-boot-starter-web:2.6.4'
+    annotationProcessor 'org.springframework.boot:spring-boot-configuration-processor:2.6.4'
 
     implementation 'org.apache.commons:commons-lang3:3.12.0'
 
@@ -37,8 +37,8 @@ dependencies {
     implementation 'org.mapstruct:mapstruct:1.4.2.Final'
     annotationProcessor 'org.mapstruct:mapstruct-processor:1.4.2.Final'
 
-    implementation 'org.flywaydb:flyway-core:8.5.0'
-    runtimeOnly 'org.postgresql:postgresql:42.3.2'
+    implementation 'org.flywaydb:flyway-core:8.5.1'
+    runtimeOnly 'org.postgresql:postgresql:42.3.3'
 
     implementation 'io.jsonwebtoken:jjwt-api:0.11.2'
     runtimeOnly 'io.jsonwebtoken:jjwt-impl:0.11.2'
@@ -47,12 +47,13 @@ dependencies {
     implementation 'org.bouncycastle:bcprov-jdk15on:1.69'
     implementation 'com.google.code.gson:gson:2.9.0'
 
-    testImplementation 'org.springframework.boot:spring-boot-starter-test:2.6.3'
-    testImplementation 'org.springframework.security:spring-security-test:5.6.1'
+    testImplementation 'org.springframework.boot:spring-boot-starter-test:2.6.4'
+    testImplementation 'org.springframework.security:spring-security-test:5.6.2'
 
     implementation 'com.sendgrid:sendgrid-java:4.8.3'
     implementation 'io.minio:minio:8.3.6'
     implementation 'com.squareup.okhttp3:okhttp:4.9.3'
+    implementation 'io.socket:socket.io-server:4.0.0'
 }
 
 tasks.named('test') {

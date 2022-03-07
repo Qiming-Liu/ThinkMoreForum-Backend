@@ -40,7 +40,6 @@ public class CommentService {
 
         commentPostDto.setCommentUsers(usersMiniGetDto);
         commentPostDto.setVisibility(true);
-        commentPostDto.setCreateTimestamp(OffsetDateTime.now());
         Comment comment = commentMapper.toEntity(commentPostDto);
         commentRepository.save(comment);
 

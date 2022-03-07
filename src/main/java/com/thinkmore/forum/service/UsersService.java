@@ -54,8 +54,6 @@ public class UsersService implements UserDetailsService {
         user.setPassword(Singleton.passwordEncoder().encode(password));
         user.setEmail(email);
         user.setRole(rolesRepository.findByRoleName(Config.DefaultRole).orElseThrow());
-        user.setLastLoginTimestamp(OffsetDateTime.now());
-        user.setCreateTimestamp(OffsetDateTime.now());
 
         usersRepository.save(user);
 
@@ -86,8 +84,6 @@ public class UsersService implements UserDetailsService {
         user.setUsername(username);
         user.setPassword(Singleton.passwordEncoder().encode(openid));
         user.setRole(rolesRepository.findByRoleName(Config.DefaultRole).orElseThrow());
-        user.setLastLoginTimestamp(OffsetDateTime.now());
-        user.setCreateTimestamp(OffsetDateTime.now());
 
         usersRepository.save(user);
 
