@@ -1,4 +1,4 @@
-package com.thinkmore.forum.dto.Comment;
+package com.thinkmore.forum.dto.comment;
 
 import com.thinkmore.forum.dto.post.PostMiniGetDto;
 import com.thinkmore.forum.dto.users.UsersMiniGetDto;

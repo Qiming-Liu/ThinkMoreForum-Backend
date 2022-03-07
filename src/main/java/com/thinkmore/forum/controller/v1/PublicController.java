@@ -1,6 +1,6 @@
 package com.thinkmore.forum.controller.v1;
 
-import com.thinkmore.forum.dto.Comment.CommentGetDto;
+import com.thinkmore.forum.dto.comment.CommentGetDto;
 import com.thinkmore.forum.dto.category.CategoryGetDto;
 import com.thinkmore.forum.dto.post.PostGetDto;
 import com.thinkmore.forum.service.CategoryService;

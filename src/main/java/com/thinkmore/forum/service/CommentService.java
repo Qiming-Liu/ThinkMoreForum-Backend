@@ -1,7 +1,7 @@
 package com.thinkmore.forum.service;
 
-import com.thinkmore.forum.dto.Comment.CommentGetDto;
-import com.thinkmore.forum.dto.Comment.CommentPostDto;
+import com.thinkmore.forum.dto.comment.CommentGetDto;
+import com.thinkmore.forum.dto.comment.CommentPostDto;
 import com.thinkmore.forum.dto.users.UsersMiniGetDto;
 import com.thinkmore.forum.entity.Comment;
 import com.thinkmore.forum.entity.Users;

@@ -1,6 +1,6 @@
 package com.thinkmore.forum.controller.v1;
 
-import com.thinkmore.forum.dto.Comment.CommentPostDto;
+import com.thinkmore.forum.dto.comment.CommentPostDto;
 import com.thinkmore.forum.service.CommentService;
 import com.thinkmore.forum.util.Util;
 import lombok.RequiredArgsConstructor;

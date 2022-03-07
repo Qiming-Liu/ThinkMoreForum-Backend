@@ -1,4 +1,4 @@
-package com.thinkmore.forum.dto.Comment;
+package com.thinkmore.forum.dto.comment;
 
 import lombok.Data;
 import lombok.NoArgsConstructor;
