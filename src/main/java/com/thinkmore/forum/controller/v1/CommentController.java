@@ -1,6 +1,5 @@
 package com.thinkmore.forum.controller.v1;
 
-import com.thinkmore.forum.dto.Comment.CommentGetDto;
 import com.thinkmore.forum.dto.Comment.CommentPostDto;
 import com.thinkmore.forum.service.CommentService;
 import com.thinkmore.forum.util.Util;
@@ -8,7 +7,6 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
 import java.util.UUID;
 
 @RestController
@@ -17,12 +15,6 @@ import java.util.UUID;
 public class CommentController {
 
     private final CommentService commentService;
-
-    @GetMapping(path = "/{post_id}")
-    public ResponseEntity<List<CommentGetDto>> findPostCommentsByPostId(@PathVariable String post_id) {
-        UUID postId = UUID.fromString(post_id);
-        return ResponseEntity.ok(commentService.getAllByPost(postId));
-    }
 
     @PostMapping
     public ResponseEntity<String> postComment(@RequestBody CommentPostDto commentDto) {

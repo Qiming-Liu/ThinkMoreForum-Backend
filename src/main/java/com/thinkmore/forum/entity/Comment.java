@@ -33,11 +33,11 @@ public class Comment {
     @JoinColumn(name = "parent_comment_id")
     private Comment parentComment;
 
-    @Column(name = "context", length = 65535, nullable = false)
+    @Column(name = "context", nullable = false, length = 5000)
     private String context;
 
-    @Column(name = "visibility", nullable = false)
-    private Boolean visibility = false;
+    @Column(name = "visibility")
+    private Boolean visibility;
 
     @Column(name = "create_timestamp")
     private OffsetDateTime createTimestamp;

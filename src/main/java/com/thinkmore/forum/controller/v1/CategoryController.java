@@ -1,19 +1,8 @@
 package com.thinkmore.forum.controller.v1;
 
-import com.thinkmore.forum.dto.category.CategoryGetDto;
-import com.thinkmore.forum.dto.category.CategoryPutDto;
-import com.thinkmore.forum.dto.post.PostGetDto;
 import com.thinkmore.forum.service.CategoryService;
-import com.thinkmore.forum.service.PostService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.data.domain.Pageable;
-import org.springframework.data.domain.Sort;
-import org.springframework.data.web.PageableDefault;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.List;
-import java.util.UUID;
 
 @RestController
 @RequestMapping(path = "/v1/category")

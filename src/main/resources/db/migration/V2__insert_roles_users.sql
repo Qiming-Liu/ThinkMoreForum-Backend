@@ -68,5 +68,3 @@ VALUES ('banned_user',
         '$argon2id$v=19$m=4096,t=3,p=1$gL/kMr7KOOCqFFDDbUwzBg$yav+sp5kn7Y6RB/zLJYAKsDvPzDVnbUZbblCJLee9Yw',
         'banned_user@forum.com', (SELECT id FROM roles WHERE role_name = 'banned_user'), now());
 
-INSERT INTO img (url, md5)
-VALUES ('https://www.thinkmoreapp.com/logo.png', 'f5a379af58f34f549c22f508a60ba04f');
