@@ -85,7 +85,7 @@ public class PublicController {
     public ResponseEntity<List<PostGetDto>> findVisiblePostsByCategoryTitle(@PathVariable("category_title") String category_title, @PageableDefault(page = 0, size = 10, sort = {"createTimestamp"}, direction = Sort.Direction.DESC) Pageable pageable) throws Exception {
         return ResponseEntity.ok(postService.getVisiblePostsByCategoryTitle(category_title, pageable));
     }
-
+  
     // Post
     @GetMapping(path = "/post/{post_id}")
     public ResponseEntity<PostGetDto> getPostById(@PathVariable String post_id) throws Exception {
