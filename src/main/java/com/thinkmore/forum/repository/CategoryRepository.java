@@ -23,7 +23,4 @@ public interface CategoryRepository extends JpaRepository<Category, UUID>, JpaSp
     Optional<Category> findByTitle(String title);
 
     List<Category> findByOrderBySortOrderAsc();
-
-
-
 }

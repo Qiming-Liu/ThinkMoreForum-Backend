@@ -58,4 +58,8 @@ public class CommentService {
 
         return "You've successfully replied the post!";
     }
+
+    public long getCommentCountByPostId(UUID postId) {
+        return commentRepository.countByPost_IdAndVisibilityIsTrue(postId);
+    }
 }
