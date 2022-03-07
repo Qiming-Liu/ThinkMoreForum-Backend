@@ -2,14 +2,11 @@ package com.thinkmore.forum.service;
 
 import com.thinkmore.forum.dto.post.PostGetDto;
 import com.thinkmore.forum.dto.post.PostMiniGetDto;
-import com.thinkmore.forum.dto.post.PostPutDto;
-import com.thinkmore.forum.dto.users.UsersMiniGetDto;
 import com.thinkmore.forum.entity.Category;
 import com.thinkmore.forum.entity.Post;
 import com.thinkmore.forum.entity.Users;
 import com.thinkmore.forum.exception.UserNotFoundException;
 import com.thinkmore.forum.mapper.PostMapper;
-import com.thinkmore.forum.mapper.UsersMapper;
 import com.thinkmore.forum.repository.CategoryRepository;
 import com.thinkmore.forum.repository.PostRepository;
 import com.thinkmore.forum.repository.UsersRepository;
@@ -18,7 +15,6 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.time.OffsetDateTime;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
@@ -46,11 +42,6 @@ public class PostService {
     }
 
     @Transactional
-    public void deletePostById(UUID postId) {
-        postRepository.deleteById(postId);
-    }
-
-    @Transactional
     public String postPost(UUID userId, String categoryTitle, String title, String context, String headImgUrl) {
 
         Post post = new Post();
@@ -62,21 +53,12 @@ public class PostService {
 
         postRepository.save(post);
 
-        Category categoryToUpdate = categoryRepo.findByTitle(postPostDto.getCategory().getTitle()).get();
+        Category categoryToUpdate = categoryRepository.findByTitle(post.getCategory().getTitle()).get();
         int newPostCount = (int) postRepository.countByCategory_TitleAndVisibilityIsTrue(categoryToUpdate.getTitle());
         categoryToUpdate.setPostCount(newPostCount);
-        categoryRepo.save(categoryToUpdate);
+        categoryRepository.save(categoryToUpdate);
 
         return post.getId().toString();
-    }
-
-    @Transactional
-    public String userEditPost(PostPutDto postPutDto) {
-
-        Post oldPost = postRepository.findById(postPutDto.getId()).get();
-        postMapper.copy(postPutDto, oldPost);
-
-        return String.format("You've successfully edited the post with title %s", postPutDto.getTitle());
     }
 
     @Transactional
@@ -127,10 +109,10 @@ public class PostService {
         oldPost.setVisibility(!oldPost.getVisibility());
         postRepository.save(oldPost);
 
-        Category categoryToUpdate = categoryRepo.findByTitle(oldPost.getCategory().getTitle()).get();
+        Category categoryToUpdate = categoryRepository.findByTitle(oldPost.getCategory().getTitle()).get();
         int newPostCount = (int) postRepository.countByCategory_TitleAndVisibilityIsTrue(categoryToUpdate.getTitle());
         categoryToUpdate.setPostCount(newPostCount);
-        categoryRepo.save(categoryToUpdate);
+        categoryRepository.save(categoryToUpdate);
 
         return true;
     }
