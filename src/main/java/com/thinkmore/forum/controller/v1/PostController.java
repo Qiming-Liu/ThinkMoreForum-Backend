@@ -62,4 +62,10 @@ public class PostController {
         Boolean response = postService.changePostVisibility(postId, userId);
         return ResponseEntity.ok(response);
     }
+
+    @PutMapping(path = "/{post_id}/view-count")
+    public void updatePostViewCount(@PathVariable("post_id") String post_id) {
+        UUID postId = UUID.fromString(post_id);
+        postService.updateViewCount(postId);
+    }
 }

@@ -20,5 +20,5 @@ public interface FollowPostRepository extends JpaRepository<FollowPost, UUID>, J
 
     Optional<FollowPost> findByPost_IdAndUsers_Id(UUID id, UUID id1);
 
-
+    long countByPost_Id(UUID id);
 }

@@ -83,12 +83,24 @@ public class FollowPostService {
         followPostRepository.save(followPost);
 
         notificationService.postNotification(post.getPostUsers(), users, " followed your post.");
+
+        Post postToUpdate = postRepository.findById(postId).get();
+        int newFollowCount = (int) followPostRepository.countByPost_Id(postId);
+        postToUpdate.setFollowCount(newFollowCount);
+        postRepository.save(postToUpdate);
     }
 
     @Transactional
     public String userUnfollowPost(UUID postId, UUID userId) {
-        return followPostRepository.deleteByUsers_IdAndPost_Id(userId, postId) > 0 ?
-                "Successfully unfollowed!" : "Unfollow failed or you didn't follow this post";
+        long responseValue = followPostRepository.deleteByUsers_IdAndPost_Id(userId, postId);
+        if (responseValue > 0) {
+            Post postToUpdate = postRepository.findById(postId).get();
+            int newFollowCount = (int) followPostRepository.countByPost_Id(postId);
+            postToUpdate.setFollowCount(newFollowCount);
+            postRepository.save(postToUpdate);
+            return "Successfully unfollowed!";
+        }
+        return "Unfollow failed or you didn't follow this post";
     }
 
 }

@@ -4,6 +4,7 @@ import com.thinkmore.forum.dto.post.PostGetDto;
 import com.thinkmore.forum.dto.post.PostMiniGetDto;
 import com.thinkmore.forum.dto.post.PostPutDto;
 import com.thinkmore.forum.dto.users.UsersMiniGetDto;
+import com.thinkmore.forum.entity.Category;
 import com.thinkmore.forum.entity.Post;
 import com.thinkmore.forum.entity.Users;
 import com.thinkmore.forum.exception.UserNotFoundException;
@@ -61,6 +62,11 @@ public class PostService {
 
         postRepository.save(post);
 
+        Category categoryToUpdate = categoryRepo.findByTitle(postPostDto.getCategory().getTitle()).get();
+        int newPostCount = (int) postRepository.countByCategory_TitleAndVisibilityIsTrue(categoryToUpdate.getTitle());
+        categoryToUpdate.setPostCount(newPostCount);
+        categoryRepo.save(categoryToUpdate);
+
         return post.getId().toString();
     }
 
@@ -113,7 +119,6 @@ public class PostService {
                 .collect(Collectors.toList());
     }
 
-    @Transactional
     public Boolean changePostVisibility(UUID postId, UUID userId) {
         Post oldPost = postRepository.findById(postId).get();
         if (oldPost.getPostUsers().getId() != userId) {
@@ -121,6 +126,19 @@ public class PostService {
         }
         oldPost.setVisibility(!oldPost.getVisibility());
         postRepository.save(oldPost);
+
+        Category categoryToUpdate = categoryRepo.findByTitle(oldPost.getCategory().getTitle()).get();
+        int newPostCount = (int) postRepository.countByCategory_TitleAndVisibilityIsTrue(categoryToUpdate.getTitle());
+        categoryToUpdate.setPostCount(newPostCount);
+        categoryRepo.save(categoryToUpdate);
+
         return true;
+    }
+
+    public void updateViewCount(UUID postId) {
+        Post oldPost = postRepository.findById(postId).get();
+        int newViewCount = oldPost.getViewCount()+1;
+        oldPost.setViewCount(newViewCount);
+        postRepository.save(oldPost);
     }
 }

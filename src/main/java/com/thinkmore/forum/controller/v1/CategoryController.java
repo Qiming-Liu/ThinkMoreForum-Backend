@@ -68,5 +68,4 @@ public class CategoryController {
         UUID uuid = UUID.fromString(category_id);
         categoryService.deleteCategory(uuid);
     }
-
 }

@@ -13,4 +13,7 @@ public interface CommentRepository extends JpaRepository<Comment, UUID>, JpaSpec
 
     @Override
     void deleteById(UUID uuid);
+
+    long countByPost_IdAndVisibilityIsTrue(UUID id);
+
 }
