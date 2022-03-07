@@ -10,5 +10,4 @@ import java.util.UUID;
 @NoArgsConstructor
 public class CommentMiniGetDto implements Serializable {
     private UUID id;
-    private String context;
 }

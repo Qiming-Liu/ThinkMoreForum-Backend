@@ -17,12 +17,6 @@ public class FollowPostController {
 
     private final FollowPostService followPostService;
 
-    @GetMapping(path = "/findAll")
-    public ResponseEntity<List<FollowPostGetDto>> findAll() {
-        List<FollowPostGetDto> followPostList = followPostService.getAllFollowPosts();
-        return ResponseEntity.ok(followPostList);
-    }
-
     @GetMapping(path = "/findAllByUserId")
     public ResponseEntity<List<FollowPostGetDto>> findAllByUserId() {
         UUID userId = UUID.fromString(Util.getJwtContext().get(0));
@@ -30,10 +24,7 @@ public class FollowPostController {
         return ResponseEntity.ok(followPostList);
     }
 
-    @GetMapping(path = "/findAllByUsername/{username}")
-    public ResponseEntity<List<FollowPostGetDto>> getFollowPostByUsername(@PathVariable String username) {
-        return ResponseEntity.ok(followPostService.getAllFollowPostsByUsername(username));
-    }
+
 
     @GetMapping(path="/checkUserFollowingState/{post_id}")
     public ResponseEntity<Boolean> checkUserFollowingState(@PathVariable String post_id) {
