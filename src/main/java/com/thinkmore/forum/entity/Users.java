@@ -27,7 +27,7 @@ public class Users {
     @Column(name = "password")
     private String password;
 
-    @Column(name = "email", nullable = false)
+    @Column(name = "email", nullable = false, length = 255)
     private String email;
 
     @Column(name = "profile_img_url")

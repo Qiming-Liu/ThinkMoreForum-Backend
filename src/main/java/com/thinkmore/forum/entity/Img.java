@@ -20,7 +20,7 @@ public class Img {
     @Column(name = "id", nullable = false)
     private UUID id;
 
-    @Column(name = "url", nullable = false, length = 260)
+    @Column(name = "url", nullable = false)
     private String url;
 
     @Column(name = "md5", nullable = false)

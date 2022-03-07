@@ -39,7 +39,7 @@ public class Category {
     @Column(name = "description", length = 60)
     private String description;
 
-    @Column(name = "post_count", nullable = false)
+    @Column(name = "post_count")
     private Integer postCount;
 
     @Column(name = "sort_order", nullable = false)
