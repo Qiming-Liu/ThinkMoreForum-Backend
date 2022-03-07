@@ -38,10 +38,10 @@ CREATE TABLE oauth
 CREATE TABLE notification
 (
     id               uuid PRIMARY KEY         DEFAULT gen_random_uuid(),
-    users_id         uuid    NOT NULL references users (id),
+    users_id         uuid NOT NULL references users (id),
     img_url          text                     DEFAULT '/logo.png',
-    context          text    NOT NULL,
-    viewed           boolean NOT NULL,
+    context          text NOT NULL,
+    viewed           boolean                  DEFAULT false,
     create_timestamp timestamp with time zone DEFAULT now()
 );
 
@@ -54,7 +54,7 @@ CREATE TABLE category
     color        varchar(7)  NOT NULL,
     title        varchar(20) NOT NULL UNIQUE,
     description  varchar(60),
-    post_count   int         NOT NULL,
+    post_count   int              DEFAULT 0,
     sort_order   int         NOT NULL UNIQUE
 );
 
@@ -66,11 +66,22 @@ CREATE TABLE post
     head_img_url     text                     DEFAULT '/logo.png',
     title            varchar(60)    NOT NULL,
     context          varchar(65535) NOT NULL,
-    view_count       int            NOT NULL,
-    follow_count     int            NOT NULL,
-    comment_count    int            NOT NULL,
-    visibility       boolean        NOT NULL,
+    view_count       int                      DEFAULT 0,
+    follow_count     int                      DEFAULT 0,
+    comment_count    int                      DEFAULT 0,
+    visibility       boolean                  DEFAULT true,
     create_timestamp timestamp with time zone DEFAULT now()
+);
+
+CREATE TABLE comment
+(
+    id                uuid PRIMARY KEY         DEFAULT gen_random_uuid(),
+    comment_users_id  uuid          NOT NULL references users (id),
+    post_id           uuid          NOT NULL references post (id),
+    parent_comment_id uuid references comment (id),
+    context           varchar(5000) NOT NULL,
+    visibility        boolean                  DEFAULT true,
+    create_timestamp  timestamp with time zone DEFAULT now()
 );
 
 CREATE TABLE follow_post
@@ -86,17 +97,6 @@ CREATE TABLE follow_user
     id                uuid PRIMARY KEY         DEFAULT gen_random_uuid(),
     users_id          uuid NOT NULL references users (id),
     followed_users_id uuid NOT NULL references users (id),
-    create_timestamp  timestamp with time zone DEFAULT now()
-);
-
-CREATE TABLE comment
-(
-    id                uuid PRIMARY KEY         DEFAULT gen_random_uuid(),
-    comment_users_id  uuid           NOT NULL references users (id),
-    post_id           uuid           NOT NULL references post (id),
-    parent_comment_id uuid references comment (id),
-    context           varchar(65535) NOT NULL,
-    visibility        boolean        NOT NULL,
     create_timestamp  timestamp with time zone DEFAULT now()
 );
 

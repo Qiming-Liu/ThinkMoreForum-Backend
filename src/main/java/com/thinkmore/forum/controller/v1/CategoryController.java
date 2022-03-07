@@ -21,18 +21,7 @@ import java.util.UUID;
 public class CategoryController {
 
     private final CategoryService categoryService;
-    private final PostService postService;
-
-    @GetMapping
-    public ResponseEntity<List<CategoryGetDto>> findAll() {
-        return ResponseEntity.ok(categoryService.getAllCategories());
-    }
-
-    @GetMapping(path = "/{category_title}")
-    public ResponseEntity<CategoryGetDto> findCategoryByCategoryTitle(@PathVariable("category_title") String category_title) throws Exception {
-
-        return ResponseEntity.ok(categoryService.getCategoryByCategoryTitle(category_title));
-    }
+    private final PostService postService; // TODO 删掉
 
     @GetMapping(path = "/{category_title}/count")
     public ResponseEntity<Long> findNumOfPostsInCategory(@PathVariable("category_title") String category_title) {

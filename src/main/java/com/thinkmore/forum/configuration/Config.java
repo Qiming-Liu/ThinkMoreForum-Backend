@@ -13,15 +13,7 @@ public class Config {
             "/swagger-ui.html",
             "/webjars/**",
             // -- API
-            "/v1/users/register/**",
-            "/v1/users/third-party-login/**",
-            "/v1/users/get-openid/**",
-            "/v1/users/unique-email/**",
-            "/v1/users/unique-username/**",
-            "/v1/users/reset-password/**",
-            "/v1/category/**",
-            "/v1/post/**",
-            "/v1/comment/**",
+            "/v1/public/**",
     };
 
     // Role

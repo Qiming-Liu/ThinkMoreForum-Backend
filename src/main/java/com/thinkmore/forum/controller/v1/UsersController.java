@@ -17,39 +17,16 @@ import java.util.UUID;
 public class UsersController {
     private final UsersService usersService;
 
-    @PostMapping(path = "/register/{email}/{username}/{password}")
-    public ResponseEntity<Boolean> register(@PathVariable String email, @PathVariable String username, @PathVariable String password) {
-        return ResponseEntity.ok(usersService.register(email, username, password));
-    }
-
-    @PostMapping(path = "/third-party-login/{email}/{username}/{oauthType}/{openid}")
-    public ResponseEntity<Boolean> thirdPartyLogin(@PathVariable String email, @PathVariable String username, @PathVariable String oauthType, @PathVariable String openid) {
-        return ResponseEntity.ok(usersService.thirdPartyLogin(email, username, oauthType, openid));
-    }
-
-    @GetMapping("/get-openid/{username}")
-    public ResponseEntity<Boolean> hasOpenid(@PathVariable String username) {
-        return ResponseEntity.ok(usersService.hasOpenid(username));
-    }
-
-    @GetMapping(path = "/unique-email/{email}")
-    public ResponseEntity<Boolean> uniqueEmail(@PathVariable String email) {
-        return ResponseEntity.ok(usersService.uniqueEmail(email));
-    }
-
-    @GetMapping(path = "/unique-username/{username}")
-    public ResponseEntity<Boolean> uniqueUsername(@PathVariable String username) {
-        return ResponseEntity.ok(usersService.uniqueUsername(username));
-    }
-
-    @GetMapping("/reset-password/{email}")
-    public ResponseEntity<Boolean> sendResetPasswordEmail(@PathVariable String email) throws Exception {
-        return ResponseEntity.ok(usersService.sendResetPasswordEmail(email));
+    @GetMapping("/openid")
+    public ResponseEntity<Boolean> hasOpenid() {
+        UUID userId = UUID.fromString(Util.getJwtContext().get(0));
+        return ResponseEntity.ok(usersService.hasOpenid(userId));
     }
 
     @PutMapping("/password-reset")
-    public ResponseEntity<Boolean> resetPassword(@RequestBody String new_password) {
-        return ResponseEntity.ok(usersService.resetPassword(new_password));
+    public ResponseEntity<Boolean> passwordReset(@RequestBody String new_password) {
+        UUID userId = UUID.fromString(Util.getJwtContext().get(0));
+        return ResponseEntity.ok(usersService.resetPassword(userId, new_password));
     }
 
     @GetMapping(path = "/my-details")
@@ -66,21 +43,25 @@ public class UsersController {
 
     @PutMapping("/username/{new_username}")
     public ResponseEntity<Boolean> changeUsername(@PathVariable String new_username) {
-        return ResponseEntity.ok(usersService.changeUsername(new_username));
+        UUID usersId = UUID.fromString(Util.getJwtContext().get(0));
+        return ResponseEntity.ok(usersService.changeUsername(usersId, new_username));
     }
 
     @GetMapping("/email/{new_email}")
     public ResponseEntity<Boolean> sendVerificationEmail(@PathVariable String new_email) throws Exception {
-        return ResponseEntity.ok(usersService.sendVerificationEmail(new_email));
+        UUID usersId = UUID.fromString(Util.getJwtContext().get(0));
+        return ResponseEntity.ok(usersService.sendVerificationEmail(usersId, new_email));
     }
 
     @PutMapping("/email/{new_email}")
     public ResponseEntity<Boolean> changeEmail(@PathVariable String new_email) {
-        return ResponseEntity.ok(usersService.changeEmail(new_email));
+        UUID usersId = UUID.fromString(Util.getJwtContext().get(0));
+        return ResponseEntity.ok(usersService.changeEmail(usersId, new_email));
     }
 
     @PutMapping("/password")
     public ResponseEntity<Boolean> changePassword(@RequestBody String old_password, @RequestBody String new_password) {
-        return ResponseEntity.ok(usersService.changePassword(old_password, new_password));
+        UUID usersId = UUID.fromString(Util.getJwtContext().get(0));
+        return ResponseEntity.ok(usersService.changePassword(usersId, old_password, new_password));
     }
 }

@@ -38,17 +38,17 @@ public class Post {
     @Column(name = "context", nullable = false, length = 65535)
     private String context;
 
-    @Column(name = "view_count", nullable = false)
+    @Column(name = "view_count")
     private Integer viewCount;
 
-    @Column(name = "follow_count", nullable = false)
+    @Column(name = "follow_count")
     private Integer followCount;
 
-    @Column(name = "comment_count", nullable = false)
+    @Column(name = "comment_count")
     private Integer commentCount;
 
-    @Column(name = "visibility", nullable = false)
-    private Boolean visibility = false;
+    @Column(name = "visibility")
+    private Boolean visibility;
 
     @Column(name = "create_timestamp")
     private OffsetDateTime createTimestamp;

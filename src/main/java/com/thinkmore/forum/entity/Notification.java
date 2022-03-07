@@ -25,13 +25,13 @@ public class Notification {
     @JoinColumn(name = "users_id", nullable = false)
     private Users users;
 
-    @Column(name = "img_url", nullable = false)
+    @Column(name = "img_url")
     private String imgUrl;
 
     @Column(name = "context", nullable = false)
     private String context;
 
-    @Column(name = "viewed", nullable = false)
+    @Column(name = "viewed")
     private Boolean viewed = false;
 
     @Column(name = "create_timestamp")
