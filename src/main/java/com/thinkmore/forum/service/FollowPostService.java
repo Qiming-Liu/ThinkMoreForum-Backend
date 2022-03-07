@@ -78,7 +78,6 @@ public class FollowPostService {
         FollowPostPostDto followPostPostDto = new FollowPostPostDto();
         followPostPostDto.setUsers(usersMiniGetDto);
         followPostPostDto.setPost(postMiniGetDto);
-        followPostPostDto.setCreateTimestamp(OffsetDateTime.now());
         FollowPost followPost = followPostMapper.toEntity(followPostPostDto);
         followPostRepository.save(followPost);
 

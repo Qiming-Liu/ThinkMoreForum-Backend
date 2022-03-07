@@ -16,7 +16,7 @@ import java.util.UUID;
 @Table(name = "oauth")
 public class Oauth {
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "id", nullable = false)
     private UUID id;
 

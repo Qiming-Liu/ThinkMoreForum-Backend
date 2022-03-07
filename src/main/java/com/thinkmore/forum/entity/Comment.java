@@ -17,7 +17,7 @@ import java.util.UUID;
 @Table(name = "comment")
 public class Comment {
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "id", nullable = false)
     private UUID id;
 
