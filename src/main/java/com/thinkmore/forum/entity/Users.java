@@ -30,6 +30,9 @@ public class Users {
     @Column(name = "email", nullable = false, length = 255)
     private String email;
 
+    @Column(name = "head_img_url")
+    private String headImgUrl;
+
     @Column(name = "profile_img_url")
     private String profileImgUrl;
 
