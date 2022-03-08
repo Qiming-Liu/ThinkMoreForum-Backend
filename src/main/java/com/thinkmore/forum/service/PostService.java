@@ -2,6 +2,7 @@ package com.thinkmore.forum.service;
 
 import com.thinkmore.forum.dto.post.PostGetDto;
 import com.thinkmore.forum.dto.post.PostMiniGetDto;
+import com.thinkmore.forum.dto.post.PostPostDto;
 import com.thinkmore.forum.entity.Category;
 import com.thinkmore.forum.entity.Post;
 import com.thinkmore.forum.entity.Users;
@@ -42,14 +43,11 @@ public class PostService {
     }
 
     @Transactional
-    public String postPost(UUID userId, String categoryTitle, String title, String context, String headImgUrl) {
+    public String postPost(UUID userId, PostPostDto postPostDto) {
 
-        Post post = new Post();
+        Post post = postMapper.toEntity(postPostDto);
         post.setPostUsers(usersRepository.getById(userId));
-        post.setCategory(categoryRepository.findByTitle(categoryTitle).get());
-        post.setTitle(title);
-        post.setContext(context);
-        post.setHeadImgUrl(headImgUrl);
+        post.setCategory(categoryRepository.findByTitle(postPostDto.getCategoryTitle()).get());
 
         postRepository.save(post);
 

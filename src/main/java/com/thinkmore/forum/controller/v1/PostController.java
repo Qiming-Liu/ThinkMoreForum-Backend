@@ -2,6 +2,7 @@ package com.thinkmore.forum.controller.v1;
 
 import com.thinkmore.forum.dto.post.PostGetDto;
 import com.thinkmore.forum.dto.post.PostMiniGetDto;
+import com.thinkmore.forum.dto.post.PostPostDto;
 import com.thinkmore.forum.service.PostService;
 import com.thinkmore.forum.util.Util;
 import lombok.RequiredArgsConstructor;
@@ -21,9 +22,9 @@ public class PostController {
 
 
     @PostMapping
-    public ResponseEntity<String> postPost(@RequestParam String categoryTitle, @RequestParam String title, @RequestParam String context, @RequestParam String headImgUrl) {
+    public ResponseEntity<String> postPost(@RequestBody PostPostDto postPostDto) {
         UUID userId = UUID.fromString(Util.getJwtContext().get(0));
-        String response = postService.postPost(userId, categoryTitle, title, context, headImgUrl);
+        String response = postService.postPost(userId, postPostDto);
         return ResponseEntity.ok(response);
     }
 

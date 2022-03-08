@@ -12,15 +12,9 @@ import java.util.UUID;
 @Data
 @NoArgsConstructor
 public class PostPostDto implements Serializable {
-    private UUID id;
-    private UsersMiniGetDto postUsers;
-    private CategoryMiniGetDto category;
+    private String categoryTitle;
     private String headImgUrl;
     private String title;
     private String context;
-    private Integer viewCount;
-    private Integer followCount;
-    private Integer commentCount;
-    private Boolean visibility;
     private OffsetDateTime createTimestamp;
 }
