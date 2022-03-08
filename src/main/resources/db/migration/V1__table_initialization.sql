@@ -21,6 +21,7 @@ CREATE TABLE users
     username             varchar(20)  NOT NULL UNIQUE,
     password             text,
     email                varchar(255) NOT NULL UNIQUE,
+    head_img_url         text                     DEFAULT '/logo.png',
     profile_img_url      text                     DEFAULT '/logo.png',
     role_id              uuid         NOT NULL references roles (id),
     last_login_timestamp timestamp with time zone DEFAULT now(),

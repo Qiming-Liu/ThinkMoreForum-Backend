@@ -9,6 +9,6 @@ import java.util.UUID;
 @NoArgsConstructor
 public class UsersMiniGetDto {
     private UUID id;
-    private String profileImgUrl;
+    private String headImgUrl;
     private String username;
 }
