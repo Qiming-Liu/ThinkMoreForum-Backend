@@ -4,6 +4,7 @@ import com.thinkmore.forum.dto.users.UsersGetDto;
 import com.thinkmore.forum.entity.JwtUser;
 import com.thinkmore.forum.configuration.Config;
 import com.thinkmore.forum.entity.Oauth;
+import com.thinkmore.forum.entity.Roles;
 import com.thinkmore.forum.entity.Users;
 import com.thinkmore.forum.exception.InvalidOldPasswordException;
 import com.thinkmore.forum.exception.UserNotFoundException;
@@ -15,6 +16,7 @@ import com.thinkmore.forum.configuration.Singleton;
 import com.thinkmore.forum.util.Util;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.data.domain.Pageable;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -22,8 +24,10 @@ import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
 import java.time.OffsetDateTime;
+import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -216,5 +220,22 @@ public class UsersService implements UserDetailsService {
             throw new Exception("Couldn't find the post with provided ID");
         }
         return targetUsersGetDto;
+    }
+
+    public List<UsersGetDto> getAllUsers() {
+        return usersRepository.findAll().stream()
+                .map(usersMapper::fromEntity)
+                .collect(Collectors.toList());
+    }
+
+    public void changeSingleUserRole(UsersGetDto inputUserGetDto) {
+        Users userToUpdate = usersRepository.findById(inputUserGetDto.getId()).get();
+        Roles newRoleOfUser = rolesRepository.findByRoleName(inputUserGetDto.getRole().getRoleName()).orElseThrow();
+        userToUpdate.setRole(newRoleOfUser);
+        usersRepository.save(userToUpdate);
+    }
+
+    public void changeUsersRoles(List<UsersGetDto> usersGetDtoList) {
+        usersGetDtoList.forEach(singleUserGetDto -> changeSingleUserRole(singleUserGetDto));
     }
 }
