@@ -18,15 +18,7 @@ public class PostController {
 
     private final PostService postService;
 
-    @GetMapping(path = "/mini")
-    public ResponseEntity<List<PostMiniGetDto>> findAllCoreInfo() {
-        return ResponseEntity.ok(postService.getAllPostsCoreInfo());
-    }
 
-    @GetMapping(path = "/user/{username}")
-    public ResponseEntity<List<PostGetDto>> findPostByPostUsersId(@PathVariable String username) {
-        return ResponseEntity.ok(postService.getPostsByPostUsersName(username));
-    }
 
     @PostMapping
     public ResponseEntity<String> postPost(@RequestParam String categoryTitle, @RequestParam String title, @RequestParam String context, @RequestParam String headImgUrl) {
@@ -43,9 +35,5 @@ public class PostController {
         return ResponseEntity.ok(response);
     }
 
-    @PutMapping(path = "/{post_id}/view-count")
-    public void updatePostViewCount(@PathVariable("post_id") String post_id) {
-        UUID postId = UUID.fromString(post_id);
-        postService.updateViewCount(postId);
-    }
+
 }

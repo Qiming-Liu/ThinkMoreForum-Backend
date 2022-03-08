@@ -2,11 +2,9 @@ package com.thinkmore.forum.controller.v1;
 
 import com.thinkmore.forum.dto.comment.CommentGetDto;
 import com.thinkmore.forum.dto.category.CategoryGetDto;
+import com.thinkmore.forum.dto.followPost.FollowPostGetDto;
 import com.thinkmore.forum.dto.post.PostGetDto;
-import com.thinkmore.forum.service.CategoryService;
-import com.thinkmore.forum.service.CommentService;
-import com.thinkmore.forum.service.PostService;
-import com.thinkmore.forum.service.UsersService;
+import com.thinkmore.forum.service.*;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Pageable;
@@ -28,7 +26,7 @@ public class PublicController {
     private final CategoryService categoryService;
     private final PostService postService;
     private final CommentService commentService;
-
+    private final FollowPostService followPostService;
     // Users
     @PostMapping(path = "/users/register")
     public ResponseEntity<Boolean> register(@RequestBody String email, @RequestBody String username, @RequestBody String password) {
@@ -66,19 +64,9 @@ public class PublicController {
         return ResponseEntity.ok(categoryService.getCategoryByCategoryTitle(category_title));
     }
 
-    @GetMapping(path = "/category/{category_title}/post")
-    public ResponseEntity<List<PostGetDto>> findPostsByCategoryTitle(@PathVariable("category_title") String category_title, @PageableDefault(page = 0, size = 10, sort = {"createTimestamp"}, direction = Sort.Direction.DESC) Pageable pageable) throws Exception {
-        return ResponseEntity.ok(postService.getPostsByCategoryTitle(category_title, pageable));
-    }
-
     @GetMapping(path = "/category/{category_title}/visible-post")
     public ResponseEntity<List<PostGetDto>> findVisiblePostsByCategoryTitle(@PathVariable("category_title") String category_title, @PageableDefault(page = 0, size = 10, sort = {"createTimestamp"}, direction = Sort.Direction.DESC) Pageable pageable) throws Exception {
         return ResponseEntity.ok(postService.getVisiblePostsByCategoryTitle(category_title, pageable));
-    }
-
-    @GetMapping(path = "/category/{category_title}/count")
-    public ResponseEntity<Long> findNumOfPostsInCategory(@PathVariable("category_title") String category_title) {
-        return ResponseEntity.ok(postService.getCountOfPostsByCategoryTitle(category_title));
     }
 
     @GetMapping(path = "/category/{category_title}/visible-count")
@@ -91,6 +79,22 @@ public class PublicController {
     public ResponseEntity<PostGetDto> getPostById(@PathVariable String post_id) throws Exception {
         UUID postId = UUID.fromString(post_id);
         return ResponseEntity.ok(postService.getPostById(postId));
+    }
+
+    @GetMapping(path = "/post/user/{username}")
+    public ResponseEntity<List<PostGetDto>> findPostByPostUsersId(@PathVariable String username) {
+        return ResponseEntity.ok(postService.getPostsByPostUsersName(username));
+    }
+
+    @PutMapping(path = "/post/{post_id}/view-count")
+    public void updatePostViewCount(@PathVariable("post_id") String post_id) {
+        UUID postId = UUID.fromString(post_id);
+        postService.updateViewCount(postId);
+    }
+
+    @GetMapping(path = "/post/follows/findAllByUsername/{username}")
+    public ResponseEntity<List<FollowPostGetDto>> getFollowPostByUsername(@PathVariable String username) {
+        return ResponseEntity.ok(followPostService.getAllFollowPostsByUsername(username));
     }
 
     // Comment
