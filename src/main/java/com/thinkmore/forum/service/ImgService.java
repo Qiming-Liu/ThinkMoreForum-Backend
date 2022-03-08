@@ -29,8 +29,8 @@ public class ImgService {
 
     @Transactional
     public Img upload(MultipartFile img) throws Exception {
-        InputStream imgIs = new ByteArrayInputStream(img.getBytes());
-        String md5 = DigestUtils.md5Hex(imgIs);
+        byte[] imgBytes = img.getBytes();
+        String md5 = DigestUtils.md5Hex(imgBytes);
 
         // check
         Optional<Img> image = imgRepository.findByMd5(md5);
@@ -40,14 +40,16 @@ public class ImgService {
 
         // put
         String fileName = img.getOriginalFilename();
-        if (fileName == null || (!fileName.endsWith(".png") && !fileName.endsWith(".jpg"))) {
+        if (fileName == null) {
             throw new RuntimeException();
         }
+        fileName = md5 + (fileName.endsWith(".png") ? ".png" : ".jpg");
+
         minioClient.putObject(
                 PutObjectArgs.builder()
                         .bucket(Config.BucketName)
                         .object(fileName)
-                        .stream(imgIs, -1, 5 * 1024 * 1024)
+                        .stream(new ByteArrayInputStream(imgBytes), imgBytes.length, -1)
                         .contentType(fileName.endsWith(".png") ? "image/png" : "image/jpeg")
                         .build());
 

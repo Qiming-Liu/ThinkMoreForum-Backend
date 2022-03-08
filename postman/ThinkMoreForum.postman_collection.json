@@ -1464,7 +1464,7 @@
 					]
 				},
 				{
-					"name": "upload 上传图片接口 为了方便 所有图片只能是png",
+					"name": "upload 上传图片接口",
 					"event": [
 						{
 							"listen": "prerequest",
@@ -1481,7 +1481,7 @@
 						"header": [
 							{
 								"key": "Authorization",
-								"value": "Bearer eyJhbGciOiJIUzM4NCJ9.eyJqdGkiOiI4M2FhZjUzYS05YmM3LTExZWMtYmQxZS1mNzdmYWY5MjUyOWEiLCJzdWIiOiJhZG1pbiIsImF1ZCI6Int9IiwiaWF0IjoxNjQ2NDA0MjMwLCJleHAiOjE2NDY0ODcwMDB9.RdR06Soel8e6BlXdha8v0bu2NdMcJ1daf5RaeFI-vMDuSrj05KdpjZWq4fv9eIle",
+								"value": "Bearer eyJhbGciOiJIUzM4NCJ9.eyJqdGkiOiI2MzMwNjQxZS1mYTg3LTQyOGUtYWI1ZC1kOWYxYTJhMGZkYjAiLCJzdWIiOiJhZG1pbiIsImF1ZCI6Int9IiwiaWF0IjoxNjQ2NzI0OTk0LCJleHAiOjE2NDY3NDYyMDB9.YYx6vLv0faZYQ9NA-BA6MERIKKfVqKnr3O48S22zFnDcD-W8xs8fH2aEmP4gKPr3",
 								"type": "text"
 							}
 						],
@@ -1489,14 +1489,9 @@
 							"mode": "formdata",
 							"formdata": [
 								{
-									"key": "file",
+									"key": "img",
 									"type": "file",
-									"src": "/C:/Users/alan/Desktop/join.png"
-								},
-								{
-									"key": "md5",
-									"value": "f5a379af58f34f549c22f508a60ba0",
-									"type": "text"
+									"src": "/C:/Users/alan/Pictures/1601011624450.jpg"
 								}
 							]
 						},
@@ -1616,11 +1611,10 @@
 					}
 				},
 				"url": {
-					"raw": "localhost:443/login",
+					"raw": "{{url}}/login",
 					"host": [
-						"localhost"
+						"{{url}}"
 					],
-					"port": "443",
 					"path": [
 						"login"
 					]
