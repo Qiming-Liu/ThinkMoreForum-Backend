@@ -25,13 +25,13 @@ public class FollowerUsersService {
     public List<FollowerUsersGetDto> getFollowersByUsername(String username) {
         Users user = usersRepository.findByUsername(username)
                 .orElseThrow(() -> new UserNotFoundException("Invalid UserName"));
-        return followerUsersRepository.findAllByUsersId(user.getId()).stream().map(followerUsersMapper::fromEntity).collect(Collectors.toList());
+        return followerUsersRepository.findAllByFollowedUsersId(user.getId()).stream().map(followerUsersMapper::fromEntity).collect(Collectors.toList());
     }
 
     public List<FollowerUsersGetDto> getFriendsByUsername(String username) {
         Users user = usersRepository.findByUsername(username)
                 .orElseThrow(() -> new UserNotFoundException("Invalid UserName"));
-        return followerUsersRepository.findAllByFollowedUsersId(user.getId()).stream().map(followerUsersMapper::fromEntity).collect(Collectors.toList());
+        return followerUsersRepository.findAllByUsersId(user.getId()).stream().map(followerUsersMapper::fromEntity).collect(Collectors.toList());
     }
 
     public FollowerUsersGetDto followUsers(UUID myUsersId, String hisUsername) {
