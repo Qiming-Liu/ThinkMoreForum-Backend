@@ -8,6 +8,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
 import java.util.UUID;
 
 @RestController
@@ -63,5 +64,11 @@ public class UsersController {
     public ResponseEntity<Boolean> changePassword(@RequestBody String old_password, @RequestBody String new_password) {
         UUID usersId = UUID.fromString(Util.getJwtContext().get(0));
         return ResponseEntity.ok(usersService.changePassword(usersId, old_password, new_password));
+    }
+
+    @PutMapping(path="/roles")
+    public ResponseEntity<String> changeUsersRoles(@RequestBody List<UsersGetDto> usersGetDtoList) {
+        usersService.changeUsersRoles(usersGetDtoList);
+        return ResponseEntity.ok("Done");
     }
 }
