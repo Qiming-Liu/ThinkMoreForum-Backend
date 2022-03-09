@@ -4,6 +4,7 @@ import com.thinkmore.forum.dto.comment.CommentGetDto;
 import com.thinkmore.forum.dto.category.CategoryGetDto;
 import com.thinkmore.forum.dto.followPost.FollowPostGetDto;
 import com.thinkmore.forum.dto.post.PostGetDto;
+import com.thinkmore.forum.dto.post.PostMiniGetDto;
 import com.thinkmore.forum.dto.users.UsersGetDto;
 import com.thinkmore.forum.service.*;
 import lombok.RequiredArgsConstructor;
@@ -81,6 +82,10 @@ public class PublicController {
     }
 
     // Post
+    @GetMapping(path = "/post")
+    public ResponseEntity<List<PostMiniGetDto>> findAllPosts(){
+        return ResponseEntity.ok(postService.getAllPostsCoreInfo());
+    }
     @GetMapping(path = "/post/{post_id}")
     public ResponseEntity<PostGetDto> getPostById(@PathVariable String post_id) throws Exception {
         UUID postId = UUID.fromString(post_id);
