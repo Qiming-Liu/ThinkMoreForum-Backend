@@ -33,22 +33,22 @@ public class PublicController {
         return ResponseEntity.ok(usersService.register(email, username, password));
     }
 
-    @PostMapping(path = "/users/third-party-login")
+    @PostMapping(path = "/users/third_party_login")
     public ResponseEntity<Boolean> thirdPartyLogin(@RequestBody String email, @RequestBody String username, @RequestBody String oauthType, @RequestBody String openid) {
         return ResponseEntity.ok(usersService.thirdPartyLogin(email, username, oauthType, openid));
     }
 
-    @GetMapping(path = "/users/unique-email/{email}")
+    @GetMapping(path = "/users/unique_email/{email}")
     public ResponseEntity<Boolean> uniqueEmail(@PathVariable String email) {
         return ResponseEntity.ok(usersService.uniqueEmail(email));
     }
 
-    @GetMapping(path = "/users/unique-username/{username}")
+    @GetMapping(path = "/users/unique_username/{username}")
     public ResponseEntity<Boolean> uniqueUsername(@PathVariable String username) {
         return ResponseEntity.ok(usersService.uniqueUsername(username));
     }
 
-    @GetMapping("/users/reset-password/{email}")
+    @GetMapping("/users/reset_password/{email}")
     public ResponseEntity<Boolean> sendResetPasswordEmail(@PathVariable String email) throws Exception {
         return ResponseEntity.ok(usersService.sendResetPasswordEmail(email));
     }
@@ -64,12 +64,12 @@ public class PublicController {
         return ResponseEntity.ok(categoryService.getCategoryByCategoryTitle(category_title));
     }
 
-    @GetMapping(path = "/category/{category_title}/visible-post")
+    @GetMapping(path = "/category/{category_title}/visible_post")
     public ResponseEntity<List<PostGetDto>> findVisiblePostsByCategoryTitle(@PathVariable("category_title") String category_title, @PageableDefault(page = 0, size = 10, sort = {"createTimestamp"}, direction = Sort.Direction.DESC) Pageable pageable) throws Exception {
         return ResponseEntity.ok(postService.getVisiblePostsByCategoryTitle(category_title, pageable));
     }
 
-    @GetMapping(path = "/category/{category_title}/visible-count")
+    @GetMapping(path = "/category/{category_title}/visible_count")
     public ResponseEntity<Long> findNumOfVisiblePostsInCategory(@PathVariable("category_title") String category_title) {
         return ResponseEntity.ok(postService.getCountOfVisiblePostsByCategoryTitle(category_title));
     }
@@ -86,13 +86,13 @@ public class PublicController {
         return ResponseEntity.ok(postService.getPostsByPostUsersName(username));
     }
 
-    @PutMapping(path = "/post/{post_id}/view-count")
+    @PutMapping(path = "/post/{post_id}/view_count")
     public void updatePostViewCount(@PathVariable("post_id") String post_id) {
         UUID postId = UUID.fromString(post_id);
         postService.updateViewCount(postId);
     }
 
-    @GetMapping(path = "/post/follows/findAllByUsername/{username}")
+    @GetMapping(path = "/post/follows/find_all_by_username/{username}")
     public ResponseEntity<List<FollowPostGetDto>> getFollowPostByUsername(@PathVariable String username) {
         return ResponseEntity.ok(followPostService.getAllFollowPostsByUsername(username));
     }

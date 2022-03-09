@@ -30,7 +30,7 @@ public class NotificationController {
         return ResponseEntity.ok(notificationService.markAsViewed(notificationIdUuid));
     }
 
-    @GetMapping(path = "/viewed-all")
+    @GetMapping(path = "/viewed_all")
     public ResponseEntity<Boolean> viewNotification() {
         UUID userId = UUID.fromString(Util.getJwtContext().get(0));
         return ResponseEntity.ok(notificationService.markAllAsViewed(userId));

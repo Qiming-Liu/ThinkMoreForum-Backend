@@ -17,7 +17,7 @@ public class FollowPostController {
 
     private final FollowPostService followPostService;
 
-    @GetMapping(path = "/findAllByUserId")
+    @GetMapping(path = "/find_all_by_user_id")
     public ResponseEntity<List<FollowPostGetDto>> findAllByUserId() {
         UUID userId = UUID.fromString(Util.getJwtContext().get(0));
         List<FollowPostGetDto> followPostList = followPostService.getAllFollowPostsByUserId(userId);
@@ -26,7 +26,7 @@ public class FollowPostController {
 
 
 
-    @GetMapping(path="/checkUserFollowingState/{post_id}")
+    @GetMapping(path="/check_user_following_state/{post_id}")
     public ResponseEntity<Boolean> checkUserFollowingState(@PathVariable String post_id) {
         UUID userId = UUID.fromString(Util.getJwtContext().get(0));
         UUID postId = UUID.fromString(post_id);
@@ -34,7 +34,7 @@ public class FollowPostController {
         return ResponseEntity.ok(userIsFollowingPost);
     }
 
-    @PostMapping(path = "/userFollowPost/{post_id}")
+    @PostMapping(path = "/user_follow_post/{post_id}")
     public ResponseEntity<String> userFollowPost(@PathVariable String post_id) {
         UUID postId = UUID.fromString(post_id);
         UUID userId = UUID.fromString(Util.getJwtContext().get(0));
@@ -42,7 +42,7 @@ public class FollowPostController {
         return ResponseEntity.ok(String.format("successfully followed post with id %s", post_id));
     }
 
-    @DeleteMapping(path = "/userUnfollowPost/{post_id}")
+    @DeleteMapping(path = "/user_unfollow_post/{post_id}")
     public ResponseEntity<String> userUnfollowPost(@PathVariable String post_id) {
         UUID postId = UUID.fromString(post_id);
         UUID userId = UUID.fromString(Util.getJwtContext().get(0));
