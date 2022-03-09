@@ -18,19 +18,19 @@ import java.util.UUID;
 public class UsersController {
     private final UsersService usersService;
 
-    @GetMapping("/openid")
+    @GetMapping("/open_id")
     public ResponseEntity<Boolean> hasOpenid() {
         UUID userId = UUID.fromString(Util.getJwtContext().get(0));
         return ResponseEntity.ok(usersService.hasOpenid(userId));
     }
 
-    @PutMapping("/password-reset")
+    @PutMapping("/password_reset")
     public ResponseEntity<Boolean> passwordReset(@RequestBody String new_password) {
         UUID userId = UUID.fromString(Util.getJwtContext().get(0));
         return ResponseEntity.ok(usersService.resetPassword(userId, new_password));
     }
 
-    @GetMapping(path = "/my-details")
+    @GetMapping(path = "/my_details")
     public ResponseEntity<UsersGetDto> getMyUser() throws Exception {
         UUID userId = UUID.fromString(Util.getJwtContext().get(0));
         return ResponseEntity.ok(usersService.getUsersById(userId));

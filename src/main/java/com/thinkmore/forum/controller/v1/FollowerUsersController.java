@@ -27,7 +27,7 @@ public class FollowerUsersController {
         return ResponseEntity.ok(followerUsersService.getFriendsByUsername(target_username));
     }
 
-    @GetMapping(path = "/followedStatus/{username}")
+    @GetMapping(path = "/followed_status/{username}")
     public ResponseEntity<Boolean> checkFollowedStatus(@PathVariable("username") String username) {
         UUID usersId = UUID.fromString(Util.getJwtContext().get(0));
         return ResponseEntity.ok(followerUsersService.followStatus(username, usersId));
