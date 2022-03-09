@@ -5,6 +5,7 @@ import com.thinkmore.forum.dto.category.CategoryGetDto;
 import com.thinkmore.forum.dto.followPost.FollowPostGetDto;
 import com.thinkmore.forum.dto.post.PostGetDto;
 import com.thinkmore.forum.dto.post.PostMiniGetDto;
+import com.thinkmore.forum.dto.users.UsersGetDto;
 import com.thinkmore.forum.service.*;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -52,6 +53,11 @@ public class PublicController {
     @GetMapping("/users/reset_password/{email}")
     public ResponseEntity<Boolean> sendResetPasswordEmail(@PathVariable String email) throws Exception {
         return ResponseEntity.ok(usersService.sendResetPasswordEmail(email));
+    }
+
+    @GetMapping(path="/users")
+    public  ResponseEntity<List<UsersGetDto>> getAllUsers() throws Exception {
+        return ResponseEntity.ok(usersService.getAllUsers());
     }
 
     // Category

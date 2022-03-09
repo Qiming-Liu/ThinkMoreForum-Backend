@@ -8,6 +8,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
 import java.util.UUID;
 
 @RestController
@@ -47,6 +48,12 @@ public class UsersController {
         return ResponseEntity.ok(usersService.changeUsername(usersId, new_username));
     }
 
+    @PutMapping("/profileimg/{new_profileimg}")
+    public ResponseEntity<Boolean> changeProfileImgUrl(@PathVariable String new_profileimg) {
+        UUID usersId = UUID.fromString(Util.getJwtContext().get(0));
+        return ResponseEntity.ok(usersService.changeProfileImgUrl(usersId, new_profileimg));
+    }
+
     @GetMapping("/email/{new_email}")
     public ResponseEntity<Boolean> sendVerificationEmail(@PathVariable String new_email) throws Exception {
         UUID usersId = UUID.fromString(Util.getJwtContext().get(0));
@@ -63,5 +70,11 @@ public class UsersController {
     public ResponseEntity<Boolean> changePassword(@RequestBody String old_password, @RequestBody String new_password) {
         UUID usersId = UUID.fromString(Util.getJwtContext().get(0));
         return ResponseEntity.ok(usersService.changePassword(usersId, old_password, new_password));
+    }
+
+    @PutMapping(path="/roles")
+    public ResponseEntity<String> changeUsersRoles(@RequestBody List<UsersGetDto> usersGetDtoList) {
+        usersService.changeUsersRoles(usersGetDtoList);
+        return ResponseEntity.ok("Done");
     }
 }
