@@ -133,6 +133,16 @@ public class UsersService implements UserDetailsService {
     }
 
     @Transactional
+    public boolean changeProfileImgUrl(UUID usersId, String newProfileImgUrl) {
+        Users user = usersRepository.findById(usersId)
+                .orElseThrow(() -> new UserNotFoundException("Invalid UserID"));
+
+        user.setProfileImgUrl(newProfileImgUrl);
+        usersRepository.save(user);
+        return true;
+    }
+
+    @Transactional
     public boolean sendVerificationEmail(UUID usersId, String newEmail) throws Exception {
         Users user = usersRepository.findById(usersId)
                 .orElseThrow(() -> new UserNotFoundException("Invalid UserID"));
