@@ -2,7 +2,7 @@ package com.thinkmore.forum.service;
 
 import com.thinkmore.forum.dto.oauth.OauthPostDto;
 import com.thinkmore.forum.dto.users.UsersGetDto;
-import com.thinkmore.forum.dto.users.UsersMiniPostDto;
+import com.thinkmore.forum.dto.users.UsersMiniPutDto;
 import com.thinkmore.forum.dto.users.UsersPostDto;
 import com.thinkmore.forum.entity.JwtUser;
 import com.thinkmore.forum.configuration.Config;
@@ -19,7 +19,6 @@ import com.thinkmore.forum.configuration.Singleton;
 import com.thinkmore.forum.util.Util;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.data.domain.Pageable;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -176,7 +175,7 @@ public class UsersService implements UserDetailsService {
     }
 
     @Transactional
-    public boolean changePassword(UUID usersId, UsersMiniPostDto usersMiniPostDto) {
+    public boolean changePassword(UUID usersId, UsersMiniPutDto usersMiniPostDto) {
         Users user = usersRepository.findById(usersId)
                 .orElseThrow(() -> new UserNotFoundException("Invalid UserID"));
 
