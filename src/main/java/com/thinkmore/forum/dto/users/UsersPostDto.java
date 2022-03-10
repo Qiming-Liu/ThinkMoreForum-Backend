@@ -11,12 +11,7 @@ import java.util.UUID;
 @Data
 @NoArgsConstructor
 public class UsersPostDto implements Serializable {
-    private UUID id;
     private String username;
     private String email;
-    private String headImgUrl;
-    private String profileImgUrl;
-    private RolesPostDto role;
-    private OffsetDateTime lastLoginTimestamp;
-    private OffsetDateTime createTimestamp;
+    private String password;
 }
