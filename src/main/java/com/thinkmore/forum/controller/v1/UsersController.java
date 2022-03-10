@@ -1,6 +1,7 @@
 package com.thinkmore.forum.controller.v1;
 
 import com.thinkmore.forum.dto.users.UsersGetDto;
+import com.thinkmore.forum.dto.users.UsersMiniPutDto;
 import com.thinkmore.forum.service.UsersService;
 import com.thinkmore.forum.util.Util;
 import lombok.RequiredArgsConstructor;
@@ -67,9 +68,9 @@ public class UsersController {
     }
 
     @PutMapping("/password")
-    public ResponseEntity<Boolean> changePassword(@RequestBody String old_password, @RequestBody String new_password) {
+    public ResponseEntity<Boolean> changePassword(@RequestBody UsersMiniPutDto usersMiniPostDto) {
         UUID usersId = UUID.fromString(Util.getJwtContext().get(0));
-        return ResponseEntity.ok(usersService.changePassword(usersId, old_password, new_password));
+        return ResponseEntity.ok(usersService.changePassword(usersId, usersMiniPostDto));
     }
 
     @PutMapping(path="/roles")

@@ -3,9 +3,11 @@ package com.thinkmore.forum.controller.v1;
 import com.thinkmore.forum.dto.comment.CommentGetDto;
 import com.thinkmore.forum.dto.category.CategoryGetDto;
 import com.thinkmore.forum.dto.followPost.FollowPostGetDto;
+import com.thinkmore.forum.dto.oauth.OauthPostDto;
 import com.thinkmore.forum.dto.post.PostGetDto;
 import com.thinkmore.forum.dto.post.PostMiniGetDto;
 import com.thinkmore.forum.dto.users.UsersGetDto;
+import com.thinkmore.forum.dto.users.UsersPostDto;
 import com.thinkmore.forum.service.*;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -31,13 +33,13 @@ public class PublicController {
     private final FollowPostService followPostService;
     // Users
     @PostMapping(path = "/users/register")
-    public ResponseEntity<Boolean> register(@RequestBody String email, @RequestBody String username, @RequestBody String password) {
-        return ResponseEntity.ok(usersService.register(email, username, password));
+    public ResponseEntity<Boolean> register(@RequestBody UsersPostDto usersPostDto) {
+        return ResponseEntity.ok(usersService.register(usersPostDto));
     }
 
-    @PostMapping(path = "/users/third_party_login")
-    public ResponseEntity<Boolean> thirdPartyLogin(@RequestBody String email, @RequestBody String username, @RequestBody String oauthType, @RequestBody String openid) {
-        return ResponseEntity.ok(usersService.thirdPartyLogin(email, username, oauthType, openid));
+    @PostMapping(path = "/users/third_party_login/{email}/{username}")
+    public ResponseEntity<Boolean> thirdPartyLogin(@PathVariable String email, @PathVariable String username, @RequestBody OauthPostDto oauthPostDto) {
+        return ResponseEntity.ok(usersService.thirdPartyLogin(email, username, oauthPostDto));
     }
 
     @GetMapping(path = "/users/unique_email/{email}")

@@ -1,6 +1,9 @@
 package com.thinkmore.forum.service;
 
+import com.thinkmore.forum.dto.oauth.OauthPostDto;
 import com.thinkmore.forum.dto.users.UsersGetDto;
+import com.thinkmore.forum.dto.users.UsersMiniPutDto;
+import com.thinkmore.forum.dto.users.UsersPostDto;
 import com.thinkmore.forum.entity.JwtUser;
 import com.thinkmore.forum.configuration.Config;
 import com.thinkmore.forum.entity.Oauth;
@@ -16,7 +19,6 @@ import com.thinkmore.forum.configuration.Singleton;
 import com.thinkmore.forum.util.Util;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.data.domain.Pageable;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -50,13 +52,12 @@ public class UsersService implements UserDetailsService {
     }
 
     @Transactional
-    public Boolean register(String email, String username, String password) {
-        Util.checkPassword(password);
-        Users user = new Users();
+    public Boolean register(UsersPostDto usersPostDto) {
+        Users user = usersMapper.toEntity(usersPostDto);
 
-        user.setUsername(username);
-        user.setPassword(Singleton.passwordEncoder().encode(password));
-        user.setEmail(email);
+        user.setUsername(usersPostDto.getUsername());
+        user.setPassword(Singleton.passwordEncoder().encode(usersPostDto.getPassword()));
+        user.setEmail(usersPostDto.getEmail());
         user.setRole(rolesRepository.findByRoleName(Config.DefaultRole).orElseThrow());
 
         usersRepository.save(user);
@@ -65,20 +66,20 @@ public class UsersService implements UserDetailsService {
     }
 
     @Transactional
-    public Boolean thirdPartyLogin(String email, String username, String oauthType, String openid) {
+    public Boolean thirdPartyLogin(String email, String username, OauthPostDto oauthPostDto) {
         if (!uniqueEmail(email)) {
             Users users = usersRepository.findByEmail(email).get();
-            users.setPassword(Singleton.passwordEncoder().encode(openid));
+            users.setPassword(Singleton.passwordEncoder().encode(oauthPostDto.getOpenid()));
 
             Oauth oauth = new Oauth();
 
             oauth.setUsers(users);
-            oauth.setOauthType(oauthType);
-            oauth.setOpenid(openid);
+            oauth.setOauthType(oauthPostDto.getOauthType());
+            oauth.setOpenid(oauthPostDto.getOpenid());
 
             oauthRepository.save(oauth);
             return true;
-        } else if (oauthRepository.findByOpenid(openid).isPresent()) {
+        } else if (oauthRepository.findByOpenid(oauthPostDto.getOpenid()).isPresent()) {
             return true;
         }
 
@@ -86,7 +87,7 @@ public class UsersService implements UserDetailsService {
 
         user.setEmail(email);
         user.setUsername(username);
-        user.setPassword(Singleton.passwordEncoder().encode(openid));
+        user.setPassword(Singleton.passwordEncoder().encode(oauthPostDto.getOpenid()));
         user.setRole(rolesRepository.findByRoleName(Config.DefaultRole).orElseThrow());
 
         usersRepository.save(user);
@@ -94,8 +95,8 @@ public class UsersService implements UserDetailsService {
         Oauth oauth = new Oauth();
 
         oauth.setUsers(user);
-        oauth.setOauthType(oauthType);
-        oauth.setOpenid(openid);
+        oauth.setOauthType(oauthPostDto.getOauthType());
+        oauth.setOpenid(oauthPostDto.getOpenid());
 
         oauthRepository.save(oauth);
         return true;
@@ -174,18 +175,15 @@ public class UsersService implements UserDetailsService {
     }
 
     @Transactional
-    public boolean changePassword(UUID usersId, String oldPassword, String newPassword) {
-        Util.checkPassword(oldPassword);
-        Util.checkPassword(newPassword);
-
+    public boolean changePassword(UUID usersId, UsersMiniPutDto usersMiniPostDto) {
         Users user = usersRepository.findById(usersId)
                 .orElseThrow(() -> new UserNotFoundException("Invalid UserID"));
 
-        if (!Singleton.passwordEncoder().matches(oldPassword, user.getPassword())) {
+        if (!Singleton.passwordEncoder().matches(usersMiniPostDto.getOldPassword(), user.getPassword())) {
             throw new InvalidOldPasswordException("Old password is wrong");
         }
 
-        user.setPassword(Singleton.passwordEncoder().encode(newPassword));
+        user.setPassword(Singleton.passwordEncoder().encode(usersMiniPostDto.getNewPassword()));
         usersRepository.save(user);
         return true;
     }
