@@ -2,7 +2,6 @@ package com.thinkmore.forum.service;
 
 import com.thinkmore.forum.dto.oauth.OauthPostDto;
 import com.thinkmore.forum.dto.users.UsersGetDto;
-import com.thinkmore.forum.dto.users.UsersImgPutDto;
 import com.thinkmore.forum.dto.users.UsersMiniPutDto;
 import com.thinkmore.forum.dto.users.UsersPostDto;
 import com.thinkmore.forum.entity.JwtUser;
@@ -135,11 +134,11 @@ public class UsersService implements UserDetailsService {
     }
 
     @Transactional
-    public boolean changeProfileImgUrl(UUID usersId, UsersImgPutDto usersImgPutDto) {
+    public boolean changeProfileImgUrl(UUID usersId, String profileImgUrl) {
         Users user = usersRepository.findById(usersId)
                 .orElseThrow(() -> new UserNotFoundException("Invalid UserID"));
 
-        user.setProfileImgUrl(usersImgPutDto.getProfileImgUrl());
+        user.setProfileImgUrl(profileImgUrl);
         usersRepository.save(user);
         return true;
     }
@@ -226,7 +225,7 @@ public class UsersService implements UserDetailsService {
         if (targetUsers.isPresent()) {
             targetUsersGetDto = usersMapper.fromEntity(targetUsers.get());
         } else {
-            throw new Exception("Couldn't find the post with provided ID");
+            throw new Exception("Couldn't find the user with provided ID");
         }
         return targetUsersGetDto;
     }
