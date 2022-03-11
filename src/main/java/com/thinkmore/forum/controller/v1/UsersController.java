@@ -1,6 +1,7 @@
 package com.thinkmore.forum.controller.v1;
 
 import com.thinkmore.forum.dto.users.UsersGetDto;
+import com.thinkmore.forum.dto.users.UsersImgPutDto;
 import com.thinkmore.forum.dto.users.UsersMiniPutDto;
 import com.thinkmore.forum.service.UsersService;
 import com.thinkmore.forum.util.Util;
@@ -49,10 +50,10 @@ public class UsersController {
         return ResponseEntity.ok(usersService.changeUsername(usersId, new_username));
     }
 
-    @PutMapping("/profileimg/{new_profileimg}")
-    public ResponseEntity<Boolean> changeProfileImgUrl(@PathVariable String new_profileimg) {
+    @PutMapping("/profileimg")
+    public ResponseEntity<Boolean> changeProfileImgUrl(@RequestBody UsersImgPutDto usersImgPutDto) {
         UUID usersId = UUID.fromString(Util.getJwtContext().get(0));
-        return ResponseEntity.ok(usersService.changeProfileImgUrl(usersId, new_profileimg));
+        return ResponseEntity.ok(usersService.changeProfileImgUrl(usersId, usersImgPutDto));
     }
 
     @GetMapping("/email/{new_email}")
