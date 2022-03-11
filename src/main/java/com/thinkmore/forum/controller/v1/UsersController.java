@@ -1,6 +1,7 @@
 package com.thinkmore.forum.controller.v1;
 
 import com.thinkmore.forum.dto.users.UsersGetDto;
+import com.thinkmore.forum.dto.users.UsersImgPutDto;
 import com.thinkmore.forum.dto.users.UsersMiniPutDto;
 import com.thinkmore.forum.service.UsersService;
 import com.thinkmore.forum.util.Util;
@@ -50,9 +51,9 @@ public class UsersController {
     }
 
     @PutMapping("/profileimg")
-    public ResponseEntity<Boolean> changeProfileImgUrl(@RequestBody String profileImgUrl) {
+    public ResponseEntity<Boolean> changeProfileImgUrl(@RequestBody UsersImgPutDto usersImgPutDto) {
         UUID usersId = UUID.fromString(Util.getJwtContext().get(0));
-        return ResponseEntity.ok(usersService.changeProfileImgUrl(usersId, profileImgUrl));
+        return ResponseEntity.ok(usersService.changeProfileImgUrl(usersId, usersImgPutDto));
     }
 
     @GetMapping("/email/{new_email}")
@@ -68,9 +69,9 @@ public class UsersController {
     }
 
     @PutMapping("/password")
-    public ResponseEntity<Boolean> changePassword(@RequestBody UsersMiniPutDto usersMiniPostDto) {
+    public ResponseEntity<Boolean> changePassword(@RequestBody UsersMiniPutDto usersMiniPutDto) {
         UUID usersId = UUID.fromString(Util.getJwtContext().get(0));
-        return ResponseEntity.ok(usersService.changePassword(usersId, usersMiniPostDto));
+        return ResponseEntity.ok(usersService.changePassword(usersId, usersMiniPutDto));
     }
 
     @PutMapping(path="/roles")
