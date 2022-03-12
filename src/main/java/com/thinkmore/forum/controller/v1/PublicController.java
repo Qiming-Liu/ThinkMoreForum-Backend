@@ -73,14 +73,16 @@ public class PublicController {
         return ResponseEntity.ok(categoryService.getCategoryByCategoryTitle(category_title));
     }
 
-    @GetMapping(path = "/category/{category_title}/visible_post")
-    public ResponseEntity<List<PostGetDto>> findVisiblePostsByCategoryTitle(@PathVariable("category_title") String category_title, @PageableDefault(page = 0, size = 10, sort = {"createTimestamp"}, direction = Sort.Direction.DESC) Pageable pageable) throws Exception {
-        return ResponseEntity.ok(postService.getVisiblePostsByCategoryTitle(category_title, pageable));
+    @GetMapping(path = "/category/{category_id}/visible_post")
+    public ResponseEntity<List<PostGetDto>> findVisiblePostsByCategoryId(@PathVariable("category_id") String category_id, @PageableDefault(page = 0, size = 10, sort = {"createTimestamp"}, direction = Sort.Direction.DESC) Pageable pageable) throws Exception {
+        UUID categoryId = UUID.fromString(category_id);
+        return ResponseEntity.ok(postService.getVisiblePostsByCategoryId(categoryId, pageable));
     }
 
-    @GetMapping(path = "/category/{category_title}/visible_count")
-    public ResponseEntity<Long> findNumOfVisiblePostsInCategory(@PathVariable("category_title") String category_title) {
-        return ResponseEntity.ok(postService.getCountOfVisiblePostsByCategoryTitle(category_title));
+    @GetMapping(path = "/category/{category_id}/visible_count")
+    public ResponseEntity<Long> findNumOfVisiblePostsInCategory(@PathVariable("category_id") String category_id) {
+        UUID categoryId = UUID.fromString(category_id);
+        return ResponseEntity.ok(postService.getCountOfVisiblePostsByCategoryId(categoryId));
     }
 
     // Post

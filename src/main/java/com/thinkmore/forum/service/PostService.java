@@ -52,7 +52,7 @@ public class PostService {
         postRepository.save(post);
 
         Category categoryToUpdate = categoryRepository.findByTitle(post.getCategory().getTitle()).get();
-        int newPostCount = (int) postRepository.countByCategory_TitleAndVisibilityIsTrue(categoryToUpdate.getTitle());
+        int newPostCount = (int) postRepository.countByCategory_IdAndVisibilityIsTrue(categoryToUpdate.getId());
         categoryToUpdate.setPostCount(newPostCount);
         categoryRepository.save(categoryToUpdate);
 
@@ -88,13 +88,13 @@ public class PostService {
     }
 
     @Transactional
-    public long getCountOfVisiblePostsByCategoryTitle(String category_title) {
-        return postRepository.countByCategory_TitleAndVisibilityIsTrue(category_title);
+    public long getCountOfVisiblePostsByCategoryId(UUID categoryId) {
+        return postRepository.countByCategory_IdAndVisibilityIsTrue(categoryId);
     }
 
     @Transactional
-    public List<PostGetDto> getVisiblePostsByCategoryTitle(String category_title, Pageable pageable) {
-        return postRepository.findByCategory_TitleAndVisibilityIsTrue(category_title, pageable).stream()
+    public List<PostGetDto> getVisiblePostsByCategoryId(UUID categoryId, Pageable pageable) {
+        return postRepository.findByCategory_IdAndVisibilityIsTrue(categoryId, pageable).stream()
                 .map(postMapper::fromEntity)
                 .collect(Collectors.toList());
     }
@@ -108,7 +108,7 @@ public class PostService {
         postRepository.save(oldPost);
 
         Category categoryToUpdate = categoryRepository.findByTitle(oldPost.getCategory().getTitle()).get();
-        int newPostCount = (int) postRepository.countByCategory_TitleAndVisibilityIsTrue(categoryToUpdate.getTitle());
+        int newPostCount = (int) postRepository.countByCategory_IdAndVisibilityIsTrue(categoryToUpdate.getId());
         categoryToUpdate.setPostCount(newPostCount);
         categoryRepository.save(categoryToUpdate);
 
