@@ -2,6 +2,7 @@ package com.thinkmore.forum.service;
 
 import com.thinkmore.forum.dto.oauth.OauthPostDto;
 import com.thinkmore.forum.dto.users.UsersGetDto;
+import com.thinkmore.forum.dto.users.UsersImgPutDto;
 import com.thinkmore.forum.dto.users.UsersMiniPutDto;
 import com.thinkmore.forum.dto.users.UsersPostDto;
 import com.thinkmore.forum.entity.JwtUser;
@@ -134,11 +135,11 @@ public class UsersService implements UserDetailsService {
     }
 
     @Transactional
-    public boolean changeProfileImgUrl(UUID usersId, String newProfileImgUrl) {
+    public boolean changeProfileImgUrl(UUID usersId, UsersImgPutDto usersImgPutDto) {
         Users user = usersRepository.findById(usersId)
                 .orElseThrow(() -> new UserNotFoundException("Invalid UserID"));
 
-        user.setProfileImgUrl(newProfileImgUrl);
+        user.setProfileImgUrl(usersImgPutDto.getProfileImgUrl());
         usersRepository.save(user);
         return true;
     }
@@ -175,15 +176,15 @@ public class UsersService implements UserDetailsService {
     }
 
     @Transactional
-    public boolean changePassword(UUID usersId, UsersMiniPutDto usersMiniPostDto) {
+    public boolean changePassword(UUID usersId, UsersMiniPutDto usersMiniPutDto) {
         Users user = usersRepository.findById(usersId)
                 .orElseThrow(() -> new UserNotFoundException("Invalid UserID"));
 
-        if (!Singleton.passwordEncoder().matches(usersMiniPostDto.getOldPassword(), user.getPassword())) {
+        if (!Singleton.passwordEncoder().matches(usersMiniPutDto.getOldPassword(), user.getPassword())) {
             throw new InvalidOldPasswordException("Old password is wrong");
         }
 
-        user.setPassword(Singleton.passwordEncoder().encode(usersMiniPostDto.getNewPassword()));
+        user.setPassword(Singleton.passwordEncoder().encode(usersMiniPutDto.getNewPassword()));
         usersRepository.save(user);
         return true;
     }
@@ -225,7 +226,7 @@ public class UsersService implements UserDetailsService {
         if (targetUsers.isPresent()) {
             targetUsersGetDto = usersMapper.fromEntity(targetUsers.get());
         } else {
-            throw new Exception("Couldn't find the post with provided ID");
+            throw new Exception("Couldn't find the user with provided ID");
         }
         return targetUsersGetDto;
     }
