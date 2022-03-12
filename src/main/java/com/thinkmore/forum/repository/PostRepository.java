@@ -22,7 +22,8 @@ public interface PostRepository extends JpaRepository<Post, UUID>, JpaSpecificat
 
     long countByCategory_Title(String title);
 
-    long countByCategory_TitleAndVisibilityIsTrue(String title);
+    long countByCategory_IdAndVisibilityIsTrue(UUID id);
 
-    List<Post> findByCategory_TitleAndVisibilityIsTrue(String title, Pageable pageable);
+    List<Post> findByCategory_IdAndVisibilityIsTrue(UUID id, Pageable pageable);
+
 }
