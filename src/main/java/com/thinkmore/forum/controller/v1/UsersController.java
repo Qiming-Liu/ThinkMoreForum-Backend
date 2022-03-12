@@ -44,6 +44,11 @@ public class UsersController {
         return ResponseEntity.ok(usersService.getUsersById(userId));
     }
 
+    @GetMapping(path = "/detail/{username}")
+    public ResponseEntity<UsersGetDto> getUserByUsername(@PathVariable String username) throws Exception {
+        return ResponseEntity.ok(usersService.getUsersByUsername(username));
+    }
+
     @PutMapping("/username/{new_username}")
     public ResponseEntity<Boolean> changeUsername(@PathVariable String new_username) {
         UUID usersId = UUID.fromString(Util.getJwtContext().get(0));

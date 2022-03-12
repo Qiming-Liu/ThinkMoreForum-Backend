@@ -231,6 +231,17 @@ public class UsersService implements UserDetailsService {
         return targetUsersGetDto;
     }
 
+    public UsersGetDto getUsersByUsername(String username) throws Exception {
+        Optional<Users> targetUsers = usersRepository.findByUsername(username);
+        UsersGetDto targetUsersGetDto;
+        if (targetUsers.isPresent()) {
+            targetUsersGetDto = usersMapper.fromEntity(targetUsers.get());
+        } else {
+            throw new Exception("Couldn't find the user with provided username");
+        }
+        return targetUsersGetDto;
+    }
+
     public List<UsersGetDto> getAllUsers() {
         return usersRepository.findAll().stream()
                 .map(usersMapper::fromEntity)
