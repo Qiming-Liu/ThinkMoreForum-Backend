@@ -2,8 +2,8 @@ package com.thinkmore.forum.service;
 
 import com.thinkmore.forum.dto.category.CategoryGetDto;
 import com.thinkmore.forum.dto.category.CategoryPutDto;
+import com.thinkmore.forum.dto.post.PostPutDto;
 import com.thinkmore.forum.entity.Category;
-import com.thinkmore.forum.entity.Post;
 import com.thinkmore.forum.mapper.CategoryMapper;
 import com.thinkmore.forum.repository.CategoryRepository;
 import com.thinkmore.forum.repository.PostRepository;
@@ -12,6 +12,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.UUID;
 import java.util.stream.Collectors;
 
 @Service
@@ -64,10 +65,24 @@ public class CategoryService {
 
         removeList.forEach(category ->
                 postRepository.findByCategory_Title(category.getTitle())
-                .forEach(post -> post.setCategory(null)));
+                        .forEach(post -> post.setCategory(null)));
 
         categoryRepository.deleteAll(removeList);
         categoryRepository.saveAll(addList);
         return true;
+    }
+
+    public CategoryGetDto putCategoryPinPostById(UUID categoryId, UUID postId) {
+        Category category = categoryRepository.findById(categoryId).get();
+        category.setPinPost(postRepository.findById(postId).get());
+        categoryRepository.save(category);
+        return categoryMapper.fromEntity(category);
+    }
+
+    public CategoryGetDto putCategoryPinPostNull(UUID categoryId) {
+        Category category = categoryRepository.findById(categoryId).get();
+        category.setPinPost(null);
+        categoryRepository.save(category);
+        return categoryMapper.fromEntity(category);
     }
 }
