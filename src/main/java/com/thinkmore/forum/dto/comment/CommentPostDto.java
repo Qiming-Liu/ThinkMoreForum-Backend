@@ -12,11 +12,8 @@ import java.util.UUID;
 @Data
 @NoArgsConstructor
 public class CommentPostDto implements Serializable {
-    private UUID id;
-    private UsersMiniGetDto commentUsers;
     private PostMiniGetDto post;
     private CommentMiniGetDto parentComment;
     private String context;
     private Boolean visibility;
-    private OffsetDateTime createTimestamp;
 }
