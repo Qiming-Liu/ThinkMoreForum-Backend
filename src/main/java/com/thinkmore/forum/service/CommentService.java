@@ -26,7 +26,6 @@ public class CommentService {
     private final CommentRepository commentRepository;
 
     private final CommentMapper commentMapper;
-    private final UsersMapper usersMapper;
     private final UsersRepository usersRepository;
     private final NotificationService notificationService;
     private final PostRepository postRepository;
@@ -39,11 +38,14 @@ public class CommentService {
 
     public String postComment(UUID userId, CommentPostDto commentPostDto) {
         Users users = usersRepository.findById(userId).get();
-        UsersMiniGetDto usersMiniGetDto = usersMapper.entityToMiniDto(users);
-
-        commentPostDto.setCommentUsers(usersMiniGetDto);
-        commentPostDto.setVisibility(true);
+        Post post = postRepository.getById(commentPostDto.getPost().getId());
         Comment comment = commentMapper.toEntity(commentPostDto);
+        comment.setCommentUsers(users);
+        comment.setPost(post);
+        if (commentPostDto.getParentComment() != null) {
+            Comment parentComment = commentRepository.getById(commentPostDto.getParentComment().getId());
+            comment.setParentComment(parentComment);
+        }
         commentRepository.save(comment);
 
         String context;
