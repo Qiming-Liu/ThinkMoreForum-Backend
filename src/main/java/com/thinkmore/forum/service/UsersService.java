@@ -151,7 +151,7 @@ public class UsersService implements UserDetailsService {
 
         Util.createMail(
                 Config.fromEmail,
-                newEmail,
+                user.getEmail(),
                 "Change Email Request",
                 "Your account " + user.getUsername() + " is changing email to " + newEmail);
 

@@ -1,3 +1,4 @@
+# Local development environment
 version: '3.8'
 services:
   db:
