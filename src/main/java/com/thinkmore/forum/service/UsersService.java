@@ -135,11 +135,11 @@ public class UsersService implements UserDetailsService {
     }
 
     @Transactional
-    public boolean changeProfileImgUrl(UUID usersId, UsersImgPutDto usersImgPutDto) {
+    public boolean changeHeadImgUrl(UUID usersId, UsersImgPutDto usersImgPutDto) {
         Users user = usersRepository.findById(usersId)
                 .orElseThrow(() -> new UserNotFoundException("Invalid UserID"));
 
-        user.setProfileImgUrl(usersImgPutDto.getProfileImgUrl());
+        user.setHeadImgUrl(usersImgPutDto.getHeadImgUrl());
         usersRepository.save(user);
         return true;
     }
