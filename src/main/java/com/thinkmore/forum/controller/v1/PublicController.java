@@ -62,6 +62,11 @@ public class PublicController {
         return ResponseEntity.ok(usersService.getAllUsers());
     }
 
+    @GetMapping(path="/users/profile/{username}")
+    public  ResponseEntity<UsersGetDto> getUserProfile(@PathVariable String username) throws Exception {
+        return ResponseEntity.ok(usersService.getUserProfile(username));
+    }
+
     // Category
     @GetMapping(path = "/category")
     public ResponseEntity<List<CategoryGetDto>> findAll() {
