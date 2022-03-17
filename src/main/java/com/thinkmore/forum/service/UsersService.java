@@ -247,10 +247,4 @@ public class UsersService implements UserDetailsService {
     public void changeUsersRoles(List<UsersGetDto> usersGetDtoList) {
         usersGetDtoList.forEach(singleUserGetDto -> changeSingleUserRole(singleUserGetDto));
     }
-
-    public UsersGetDto getUserProfile(String username) {
-        Optional<Users> targetUsers = usersRepository.findByUsername(username);
-        UsersGetDto targetUsersGetDto = usersMapper.fromEntity(targetUsers.get());
-        return targetUsersGetDto;
-    }
 }
