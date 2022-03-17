@@ -46,25 +46,25 @@ VALUES ('min', '$argon2id$v=19$m=4096,t=3,p=1$gL/kMr7KOOCqFFDDbUwzBg$yav+sp5kn7Y
         'alfred.minjiang@gmail.com', (SELECT id FROM roles WHERE role_name = 'admin'), now());
 
 INSERT INTO users (username, password, email, role_id, last_login_timestamp)
-VALUES ('admin', '$argon2id$v=19$m=4096,t=3,p=1$gL/kMr7KOOCqFFDDbUwzBg$yav+sp5kn7Y6RB/zLJYAKsDvPzDVnbUZbblCJLee9Yw',
+VALUES ('Admin User', '$argon2id$v=19$m=4096,t=3,p=1$gL/kMr7KOOCqFFDDbUwzBg$yav+sp5kn7Y6RB/zLJYAKsDvPzDVnbUZbblCJLee9Yw',
         'admin@forum.com', (SELECT id FROM roles WHERE role_name = 'admin'), now());
 
 INSERT INTO users (username, password, email, role_id, last_login_timestamp)
-VALUES ('moderator', '$argon2id$v=19$m=4096,t=3,p=1$gL/kMr7KOOCqFFDDbUwzBg$yav+sp5kn7Y6RB/zLJYAKsDvPzDVnbUZbblCJLee9Yw',
+VALUES ('Moderator User', '$argon2id$v=19$m=4096,t=3,p=1$gL/kMr7KOOCqFFDDbUwzBg$yav+sp5kn7Y6RB/zLJYAKsDvPzDVnbUZbblCJLee9Yw',
         'moderator@forum.com', (SELECT id FROM roles WHERE role_name = 'moderator'), now());
 
 INSERT INTO users (username, password, email, role_id, last_login_timestamp)
-VALUES ('verified_user',
+VALUES ('Verified User',
         '$argon2id$v=19$m=4096,t=3,p=1$gL/kMr7KOOCqFFDDbUwzBg$yav+sp5kn7Y6RB/zLJYAKsDvPzDVnbUZbblCJLee9Yw',
         'verified_user@forum.com', (SELECT id FROM roles WHERE role_name = 'verified_user'), now());
 
 INSERT INTO users (username, password, email, role_id, last_login_timestamp)
-VALUES ('unverified_user',
+VALUES ('Unverified User',
         '$argon2id$v=19$m=4096,t=3,p=1$gL/kMr7KOOCqFFDDbUwzBg$yav+sp5kn7Y6RB/zLJYAKsDvPzDVnbUZbblCJLee9Yw',
         'unverified_user@forum.com', (SELECT id FROM roles WHERE role_name = 'unverified_user'), now());
 
 INSERT INTO users (username, password, email, role_id, last_login_timestamp)
-VALUES ('banned_user',
+VALUES ('Banned User',
         '$argon2id$v=19$m=4096,t=3,p=1$gL/kMr7KOOCqFFDDbUwzBg$yav+sp5kn7Y6RB/zLJYAKsDvPzDVnbUZbblCJLee9Yw',
         'banned_user@forum.com', (SELECT id FROM roles WHERE role_name = 'banned_user'), now());
 

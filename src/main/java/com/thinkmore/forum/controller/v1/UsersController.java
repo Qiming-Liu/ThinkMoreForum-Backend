@@ -50,10 +50,10 @@ public class UsersController {
         return ResponseEntity.ok(usersService.changeUsername(usersId, new_username));
     }
 
-    @PutMapping("/profileimg")
-    public ResponseEntity<Boolean> changeProfileImgUrl(@RequestBody UsersImgPutDto usersImgPutDto) {
+    @PutMapping("/headimg")
+    public ResponseEntity<Boolean> changeHeadImgUrl(@RequestBody UsersImgPutDto usersImgPutDto) {
         UUID usersId = UUID.fromString(Util.getJwtContext().get(0));
-        return ResponseEntity.ok(usersService.changeProfileImgUrl(usersId, usersImgPutDto));
+        return ResponseEntity.ok(usersService.changeHeadImgUrl(usersId, usersImgPutDto));
     }
 
     @GetMapping("/email/{new_email}")
