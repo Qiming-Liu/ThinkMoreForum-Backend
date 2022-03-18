@@ -101,13 +101,13 @@ public class PostService {
 
     public Boolean changePostVisibility(UUID postId, UUID userId) {
         Post oldPost = postRepository.findById(postId).get();
-        if (oldPost.getPostUsers().getId() != userId) {
+        if (oldPost.getPostUsers().getId().equals(userId)) {
             return false;
         }
         oldPost.setVisibility(!oldPost.getVisibility());
         postRepository.save(oldPost);
 
-        Category categoryToUpdate = categoryRepository.findByTitle(oldPost.getCategory().getTitle()).get();
+        Category categoryToUpdate = categoryRepository.findById(oldPost.getCategory().getId()).get();
         int newPostCount = (int) postRepository.countByCategory_IdAndVisibilityIsTrue(categoryToUpdate.getId());
         categoryToUpdate.setPostCount(newPostCount);
         categoryRepository.save(categoryToUpdate);
