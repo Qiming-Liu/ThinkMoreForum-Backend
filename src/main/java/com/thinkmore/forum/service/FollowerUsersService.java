@@ -14,6 +14,8 @@ import java.util.List;
 import java.util.UUID;
 import java.util.stream.Collectors;
 
+import javax.transaction.Transactional;
+
 @Service
 @RequiredArgsConstructor
 public class FollowerUsersService {
@@ -22,18 +24,21 @@ public class FollowerUsersService {
     private final FollowerUsersMapper followerUsersMapper;
     private final NotificationService notificationService;
 
+    @Transactional
     public List<FollowerUsersGetDto> getFollowersByUsername(String username) {
         Users user = usersRepository.findByUsername(username)
                 .orElseThrow(() -> new UserNotFoundException("Invalid UserName"));
         return followerUsersRepository.findAllByFollowedUsersId(user.getId()).stream().map(followerUsersMapper::fromEntity).collect(Collectors.toList());
     }
 
+    @Transactional
     public List<FollowerUsersGetDto> getFriendsByUsername(String username) {
         Users user = usersRepository.findByUsername(username)
                 .orElseThrow(() -> new UserNotFoundException("Invalid UserName"));
         return followerUsersRepository.findAllByUsersId(user.getId()).stream().map(followerUsersMapper::fromEntity).collect(Collectors.toList());
     }
 
+    @Transactional
     public FollowerUsersGetDto followUsers(UUID myUsersId, String hisUsername) {
         Users myUser = usersRepository.findById(myUsersId)
                 .orElseThrow(() -> new UserNotFoundException("Invalid UserID"));
@@ -49,6 +54,7 @@ public class FollowerUsersService {
         return followerUsersMapper.fromEntity(followUser);
     }
 
+    @Transactional
     public void unfollowUsers(String username, String followedUsername) {
         Users user = usersRepository.findByUsername(username)
                 .orElseThrow(() -> new UserNotFoundException("Invalid UserName"));
@@ -57,6 +63,7 @@ public class FollowerUsersService {
         followerUsersRepository.deleteByUsersIdAndFollowedUsersId(user.getId(), followedUser.getId());
     }
 
+    @Transactional
     public boolean followStatus(String username, UUID usersId) {
         Users tampUser = usersRepository.findByUsername(username)
                 .orElseThrow(() -> new UserNotFoundException("Invalid UserName"));

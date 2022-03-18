@@ -14,7 +14,6 @@ import java.util.UUID;
 @RequestMapping(path = "/v1/post/follows")
 @RequiredArgsConstructor
 public class FollowPostController {
-
     private final FollowPostService followPostService;
 
     @GetMapping(path = "/find_all_by_user_id")
@@ -23,8 +22,6 @@ public class FollowPostController {
         List<FollowPostGetDto> followPostList = followPostService.getAllFollowPostsByUserId(userId);
         return ResponseEntity.ok(followPostList);
     }
-
-
 
     @GetMapping(path="/check_user_following_state/{post_id}")
     public ResponseEntity<Boolean> checkUserFollowingState(@PathVariable String post_id) {

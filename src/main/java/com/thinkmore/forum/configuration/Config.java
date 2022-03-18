@@ -30,6 +30,7 @@ public class Config {
 
     // Oss
     public final static String BucketName = "image";
+
     // JWT
     public final static String JwtSecretKey = "fruue37r7yrfhf87f7876guyggf%$$#$%^&%RTHGhjjkj23456rkkkkdkd";
     public final static String JwtPrefix = "Bearer ";

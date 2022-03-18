@@ -13,7 +13,6 @@ import java.util.UUID;
 @RequestMapping(path = "/v1/comment")
 @RequiredArgsConstructor
 public class CommentController {
-
     private final CommentService commentService;
 
     @PostMapping

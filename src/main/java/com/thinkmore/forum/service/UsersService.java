@@ -13,12 +13,18 @@ import com.thinkmore.forum.entity.Users;
 import com.thinkmore.forum.exception.InvalidOldPasswordException;
 import com.thinkmore.forum.exception.UserNotFoundException;
 import com.thinkmore.forum.mapper.UsersMapper;
+import com.thinkmore.forum.message.ResetPasswordEmailMessage;
+import com.thinkmore.forum.message.VerificationEmailMessage;
 import com.thinkmore.forum.repository.OauthRepository;
 import com.thinkmore.forum.repository.RolesRepository;
 import com.thinkmore.forum.repository.UsersRepository;
 import com.thinkmore.forum.configuration.Singleton;
 import com.thinkmore.forum.util.Util;
+
 import lombok.RequiredArgsConstructor;
+import org.springframework.amqp.rabbit.annotation.RabbitListener;
+import org.springframework.amqp.rabbit.core.RabbitTemplate;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -26,6 +32,7 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
+
 import java.time.OffsetDateTime;
 import java.util.List;
 import java.util.Optional;
@@ -38,6 +45,9 @@ public class UsersService implements UserDetailsService {
 
     @Value("${domain.name}")
     public String domainName;
+
+    @Autowired
+    RabbitTemplate rabbitTemplate;
 
     private final UsersRepository usersRepository;
     private final OauthRepository oauthRepository;
@@ -127,7 +137,7 @@ public class UsersService implements UserDetailsService {
     @Transactional
     public boolean changeUsername(UUID usersId, String newUsername) {
         Users user = usersRepository.findById(usersId)
-                .orElseThrow(() -> new UserNotFoundException("Invalid UserID"));
+                                    .orElseThrow(() -> new UserNotFoundException("Invalid UserID"));
 
         user.setUsername(newUsername);
         usersRepository.save(user);
@@ -137,7 +147,7 @@ public class UsersService implements UserDetailsService {
     @Transactional
     public boolean changeHeadImgUrl(UUID usersId, UsersImgPutDto usersImgPutDto) {
         Users user = usersRepository.findById(usersId)
-                .orElseThrow(() -> new UserNotFoundException("Invalid UserID"));
+                                    .orElseThrow(() -> new UserNotFoundException("Invalid UserID"));
 
         user.setHeadImgUrl(usersImgPutDto.getHeadImgUrl());
         usersRepository.save(user);
@@ -145,29 +155,35 @@ public class UsersService implements UserDetailsService {
     }
 
     @Transactional
-    public boolean sendVerificationEmail(UUID usersId, String newEmail) throws Exception {
-        Users user = usersRepository.findById(usersId)
-                .orElseThrow(() -> new UserNotFoundException("Invalid UserID"));
+    public boolean sendVerificationEmail(UUID usersId, String newEmail) {
+        VerificationEmailMessage message = new VerificationEmailMessage(usersId, newEmail);
+        rabbitTemplate.convertAndSend("VerificationEmail", message);
+        return true;
+    }
+
+    @Transactional
+    @RabbitListener(queues = "VerificationEmail")
+    public void handleVerificationEmail(VerificationEmailMessage message) throws Exception {
+        Users user = usersRepository.findById(message.getUsersId())
+                                    .orElseThrow(() -> new UserNotFoundException("Invalid UserID"));
 
         Util.createMail(
                 Config.fromEmail,
                 user.getEmail(),
                 "Change Email Request",
-                "Your account " + user.getUsername() + " is changing email to " + newEmail);
+                "Your account " + user.getUsername() + " is changing email to " + message.getNew_email());
 
         Util.createMail(
                 Config.fromEmail,
-                newEmail,
+                message.getNew_email(),
                 "Verify Email",
-                Config.VerifyEmailContext + domainName + Config.VerifyEmailUrl + newEmail);
-
-        return true;
+                Config.VerifyEmailContext + domainName + Config.VerifyEmailUrl + message.getNew_email());
     }
 
     @Transactional
     public boolean changeEmail(UUID usersId, String newEmail) {
         Users user = usersRepository.findById(usersId)
-                .orElseThrow(() -> new UserNotFoundException("Invalid UserID"));
+                                    .orElseThrow(() -> new UserNotFoundException("Invalid UserID"));
 
         user.setEmail(newEmail);
         usersRepository.save(user);
@@ -178,7 +194,7 @@ public class UsersService implements UserDetailsService {
     @Transactional
     public boolean changePassword(UUID usersId, UsersMiniPutDto usersMiniPutDto) {
         Users user = usersRepository.findById(usersId)
-                .orElseThrow(() -> new UserNotFoundException("Invalid UserID"));
+                                    .orElseThrow(() -> new UserNotFoundException("Invalid UserID"));
 
         if (!Singleton.passwordEncoder().matches(usersMiniPutDto.getOldPassword(), user.getPassword())) {
             throw new InvalidOldPasswordException("Old password is wrong");
@@ -190,8 +206,16 @@ public class UsersService implements UserDetailsService {
     }
 
     @Transactional
-    public boolean sendResetPasswordEmail(String email) throws Exception {
-        Optional<Users> user = usersRepository.findByEmail(email);
+    public boolean sendResetPasswordEmail(String email) {
+        ResetPasswordEmailMessage message = new ResetPasswordEmailMessage(email);
+        rabbitTemplate.convertAndSend("ResetPasswordEmail", message);
+        return true;
+    }
+
+    @Transactional
+    @RabbitListener(queues = "ResetPasswordEmail")
+    public void handleResetPasswordEmail(ResetPasswordEmailMessage message) throws Exception {
+        Optional<Users> user = usersRepository.findByEmail(message.getEmail());
 
         if (user.isPresent()) {
 
@@ -199,13 +223,11 @@ public class UsersService implements UserDetailsService {
 
             Util.createMail(
                     Config.fromEmail,
-                    email,
+                    message.getEmail(),
                     "Reset password",
                     Config.ResetPasswordContext +
                             domainName + Config.ResetPasswordUrl + encode);
         }
-
-        return true;
     }
 
     @Transactional
@@ -213,7 +235,7 @@ public class UsersService implements UserDetailsService {
         Util.checkPassword(password);
 
         Users user = usersRepository.findById(usersId)
-                .orElseThrow(() -> new UserNotFoundException("Invalid UserID"));
+                                    .orElseThrow(() -> new UserNotFoundException("Invalid UserID"));
 
         user.setPassword(Singleton.passwordEncoder().encode(password));
         usersRepository.save(user);
@@ -233,8 +255,8 @@ public class UsersService implements UserDetailsService {
 
     public List<UsersGetDto> getAllUsers() {
         return usersRepository.findAll().stream()
-                .map(usersMapper::fromEntity)
-                .collect(Collectors.toList());
+                              .map(usersMapper::fromEntity)
+                              .collect(Collectors.toList());
     }
 
     public void changeSingleUserRole(UsersGetDto inputUserGetDto) {

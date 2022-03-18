@@ -14,7 +14,6 @@ import java.util.UUID;
 @RequestMapping(path = "/v1/category")
 @RequiredArgsConstructor
 public class CategoryController {
-
     private final CategoryService categoryService;
 
     @PutMapping
