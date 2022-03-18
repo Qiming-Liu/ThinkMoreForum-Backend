@@ -19,6 +19,8 @@ import java.util.List;
 import java.util.UUID;
 import java.util.stream.Collectors;
 
+import javax.transaction.Transactional;
+
 @Service
 @RequiredArgsConstructor
 public class CommentService {
@@ -30,12 +32,14 @@ public class CommentService {
     private final NotificationService notificationService;
     private final PostRepository postRepository;
 
+    @Transactional
     public List<CommentGetDto> getAllByPost(UUID postId) {
         return commentRepository.findByPost_IdOrderByCreateTimestampAsc(postId).stream()
                 .map(commentMapper::fromEntity)
                 .collect(Collectors.toList());
     }
 
+    @Transactional
     public String postComment(UUID userId, CommentPostDto commentPostDto) {
         Users users = usersRepository.findById(userId).get();
         Post post = postRepository.getById(commentPostDto.getPost().getId());
@@ -66,9 +70,5 @@ public class CommentService {
         postRepository.save(postToUpdate);
 
         return "You've successfully replied the post!";
-    }
-
-    public long getCommentCountByPostId(UUID postId) {
-        return commentRepository.countByPost_IdAndVisibilityIsTrue(postId);
     }
 }

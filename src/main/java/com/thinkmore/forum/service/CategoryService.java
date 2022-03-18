@@ -15,6 +15,8 @@ import java.util.Optional;
 import java.util.UUID;
 import java.util.stream.Collectors;
 
+import javax.transaction.Transactional;
+
 @Service
 @RequiredArgsConstructor
 public class CategoryService {
@@ -23,10 +25,12 @@ public class CategoryService {
     private final CategoryMapper categoryMapper;
     private final PostRepository postRepository;
 
+    @Transactional
     public List<CategoryGetDto> getAllCategories() {
         return categoryRepository.findByOrderBySortOrderAsc().stream().map(categoryMapper::fromEntity).collect(Collectors.toList());
     }
 
+    @Transactional
     public CategoryGetDto getCategoryByCategoryTitle(String category_title) throws Exception {
         Optional<Category> targetCategory = categoryRepository.findByTitle(category_title);
         CategoryGetDto targetCategoryGetDto;
@@ -38,6 +42,7 @@ public class CategoryService {
         return targetCategoryGetDto;
     }
 
+    @Transactional
     public Boolean putCategory(List<CategoryPutDto> categoryPutDtoList) {
         List<Category> categoryNewList = categoryPutDtoList.stream().map(categoryMapper::toEntity).collect(Collectors.toList());
         List<Category> categoryOldList = categoryRepository.findByOrderBySortOrderAsc();
@@ -72,6 +77,7 @@ public class CategoryService {
         return true;
     }
 
+    @Transactional
     public CategoryGetDto putCategoryPinPostById(UUID categoryId, UUID postId) {
         Category category = categoryRepository.findById(categoryId).get();
         category.setPinPost(postRepository.findById(postId).get());
@@ -79,6 +85,7 @@ public class CategoryService {
         return categoryMapper.fromEntity(category);
     }
 
+    @Transactional
     public CategoryGetDto putCategoryPinPostNull(UUID categoryId) {
         Category category = categoryRepository.findById(categoryId).get();
         category.setPinPost(null);

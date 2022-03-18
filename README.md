@@ -6,6 +6,7 @@
 * Gradle
 * PostgreSQL
 * MinIO
+* RabbitMQ
 
 ## How to Build for Production
 ```shell

@@ -9,6 +9,7 @@ import com.thinkmore.forum.dto.post.PostMiniGetDto;
 import com.thinkmore.forum.dto.users.UsersGetDto;
 import com.thinkmore.forum.dto.users.UsersPostDto;
 import com.thinkmore.forum.service.*;
+
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Pageable;
@@ -31,6 +32,7 @@ public class PublicController {
     private final PostService postService;
     private final CommentService commentService;
     private final FollowPostService followPostService;
+
     // Users
     @PostMapping(path = "/users/register")
     public ResponseEntity<Boolean> register(@RequestBody UsersPostDto usersPostDto) {
@@ -57,14 +59,15 @@ public class PublicController {
         return ResponseEntity.ok(usersService.sendResetPasswordEmail(email));
     }
 
-    @GetMapping(path="/users")
-    public  ResponseEntity<List<UsersGetDto>> getAllUsers() throws Exception {
-        return ResponseEntity.ok(usersService.getAllUsers());
+    @GetMapping(path = "/users/id/{users_id}")
+    public ResponseEntity<UsersGetDto> getUserById(@PathVariable String users_id) throws Exception {
+        UUID user_id = UUID.fromString(users_id);
+        return ResponseEntity.ok(usersService.getUsersById(user_id));
     }
 
     // Category
     @GetMapping(path = "/category")
-    public ResponseEntity<List<CategoryGetDto>> findAll() {
+    public ResponseEntity<List<CategoryGetDto>> getAllCategories() {
         return ResponseEntity.ok(categoryService.getAllCategories());
     }
 

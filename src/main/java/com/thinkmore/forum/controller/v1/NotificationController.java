@@ -15,11 +15,10 @@ import java.util.UUID;
 @RequestMapping(path = "/v1/notification")
 @RequiredArgsConstructor
 public class NotificationController {
-
     private final NotificationService notificationService;
 
     @GetMapping
-    public ResponseEntity<List<NotificationGetDto>> findNotificationsByUserId() {
+    public ResponseEntity<List<NotificationGetDto>> getNotifications() {
         UUID userId = UUID.fromString(Util.getJwtContext().get(0));
         return ResponseEntity.ok(notificationService.getNotificationsByUserId(userId));
     }

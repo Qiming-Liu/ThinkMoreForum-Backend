@@ -20,6 +20,17 @@ import java.util.UUID;
 public class UsersController {
     private final UsersService usersService;
 
+    @GetMapping(path="/all")
+    public  ResponseEntity<List<UsersGetDto>> getAllUsers(){
+        return ResponseEntity.ok(usersService.getAllUsers());
+    }
+
+    @GetMapping(path = "/me")
+    public ResponseEntity<UsersGetDto> getMe() throws Exception {
+        UUID userId = UUID.fromString(Util.getJwtContext().get(0));
+        return ResponseEntity.ok(usersService.getUsersById(userId));
+    }
+
     @GetMapping("/open_id")
     public ResponseEntity<Boolean> hasOpenid() {
         UUID userId = UUID.fromString(Util.getJwtContext().get(0));
@@ -32,16 +43,10 @@ public class UsersController {
         return ResponseEntity.ok(usersService.resetPassword(userId, new_password));
     }
 
-    @GetMapping(path = "/my_details")
-    public ResponseEntity<UsersGetDto> getMyUser() throws Exception {
-        UUID userId = UUID.fromString(Util.getJwtContext().get(0));
-        return ResponseEntity.ok(usersService.getUsersById(userId));
-    }
-
-    @GetMapping(path = "/details/{usersId}")
-    public ResponseEntity<UsersGetDto> getUserById(@PathVariable String usersId) throws Exception {
-        UUID userId = UUID.fromString(usersId);
-        return ResponseEntity.ok(usersService.getUsersById(userId));
+    @PutMapping("/password")
+    public ResponseEntity<Boolean> changePassword(@RequestBody UsersMiniPutDto usersMiniPutDto) {
+        UUID usersId = UUID.fromString(Util.getJwtContext().get(0));
+        return ResponseEntity.ok(usersService.changePassword(usersId, usersMiniPutDto));
     }
 
     @PutMapping("/username/{new_username}")
@@ -51,7 +56,7 @@ public class UsersController {
     }
 
     @PutMapping("/headimg")
-    public ResponseEntity<Boolean> changeHeadImgUrl(@RequestBody UsersImgPutDto usersImgPutDto) {
+    public ResponseEntity<Boolean> changeHeadImg(@RequestBody UsersImgPutDto usersImgPutDto) {
         UUID usersId = UUID.fromString(Util.getJwtContext().get(0));
         return ResponseEntity.ok(usersService.changeHeadImgUrl(usersId, usersImgPutDto));
     }
@@ -66,12 +71,6 @@ public class UsersController {
     public ResponseEntity<Boolean> changeEmail(@PathVariable String new_email) {
         UUID usersId = UUID.fromString(Util.getJwtContext().get(0));
         return ResponseEntity.ok(usersService.changeEmail(usersId, new_email));
-    }
-
-    @PutMapping("/password")
-    public ResponseEntity<Boolean> changePassword(@RequestBody UsersMiniPutDto usersMiniPutDto) {
-        UUID usersId = UUID.fromString(Util.getJwtContext().get(0));
-        return ResponseEntity.ok(usersService.changePassword(usersId, usersMiniPutDto));
     }
 
     @PutMapping(path="/roles")

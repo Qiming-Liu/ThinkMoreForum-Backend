@@ -21,13 +21,13 @@ import java.util.List;
 @EnableSwagger2
 public class SwaggerConfig {
 
-    @Value("${swagger}")
-    private boolean swagger;
+    @Value("${swagger.enable}")
+    private boolean swaggerEnable;
 
     @Bean
     public Docket api() {
         return new Docket(DocumentationType.SWAGGER_2)
-                .enable(swagger)
+                .enable(swaggerEnable)
                 .apiInfo(apiInfo())
                 .globalOperationParameters(jwt())
                 .select()

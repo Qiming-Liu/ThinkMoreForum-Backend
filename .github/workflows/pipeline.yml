@@ -16,6 +16,8 @@ jobs:
       run: |
         chmod +x gradlew
         ./gradlew build
+        mv "./rabbitmq/rabbitmq.conf" "./docker/rabbitmq.conf"
+        mv "./rabbitmq/definitions.json" "./docker/definitions.json"
         mv "./build/libs/forum-0.0.1.jar" "./docker/app.jar"
       
     - name: Push

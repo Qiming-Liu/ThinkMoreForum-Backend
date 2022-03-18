@@ -1,7 +1,5 @@
 package com.thinkmore.forum.controller.v1;
 
-import com.thinkmore.forum.dto.post.PostGetDto;
-import com.thinkmore.forum.dto.post.PostMiniGetDto;
 import com.thinkmore.forum.dto.post.PostPostDto;
 import com.thinkmore.forum.service.PostService;
 import com.thinkmore.forum.util.Util;
@@ -9,17 +7,13 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
 import java.util.UUID;
 
 @RestController
 @RequestMapping(path = "/v1/post")
 @RequiredArgsConstructor
 public class PostController {
-
     private final PostService postService;
-
-
 
     @PostMapping
     public ResponseEntity<String> postPost(@RequestBody PostPostDto postPostDto) {
@@ -35,6 +29,4 @@ public class PostController {
         Boolean response = postService.changePostVisibility(postId, userId);
         return ResponseEntity.ok(response);
     }
-
-
 }
