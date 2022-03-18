@@ -101,7 +101,7 @@ public class PostService {
 
     public Boolean changePostVisibility(UUID postId, UUID userId) {
         Post oldPost = postRepository.findById(postId).get();
-        if (oldPost.getPostUsers().getId().equals(userId)) {
+        if (!oldPost.getPostUsers().getId().equals(userId)) {
             return false;
         }
         oldPost.setVisibility(!oldPost.getVisibility());
