@@ -23,7 +23,7 @@ public class NotificationService {
     @Transactional
     public List<NotificationGetDto> getNotificationsByUserId(UUID userId) {
 
-        List<NotificationGetDto> all = notificationRepository.findByUsers_IdOrderByCreateTimestampDesc(userId).stream()
+        List<NotificationGetDto> all = notificationRepository.findByNotifyUsers_IdOrderByCreateTimestampDesc(userId).stream()
                 .map(notificationMapper::fromEntity)
                 .collect(Collectors.toList());
 
@@ -44,7 +44,7 @@ public class NotificationService {
 
     @Transactional
     public boolean markAllAsViewed(UUID userId) {
-        notificationRepository.findByUsers_IdOrderByCreateTimestampDesc(userId)
+        notificationRepository.findByNotifyUsers_IdOrderByCreateTimestampDesc(userId)
                 .forEach(notification -> {
                     notification.setViewed(true);
                     notificationRepository.save(notification);
@@ -54,12 +54,12 @@ public class NotificationService {
     }
 
     @Transactional
-    public void postNotification(Users notifyUser, Users triggerUser, String context) {
+    public void postNotification(Users triggerUser, Users notifyUser, String context) {
 
         Notification notification = new Notification();
-        notification.setUsers(notifyUser);
+        notification.setTriggerUsers(triggerUser);
+        notification.setNotifyUsers(notifyUser);
         notification.setContext(triggerUser.getUsername() + context);
-        notification.setImgUrl(triggerUser.getProfileImgUrl());
         notification.setViewed(false);
         notificationRepository.save(notification);
     }

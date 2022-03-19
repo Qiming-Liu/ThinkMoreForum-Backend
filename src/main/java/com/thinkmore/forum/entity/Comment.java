@@ -25,6 +25,10 @@ public class Comment {
     @JoinColumn(name = "comment_users_id", nullable = false)
     private Users commentUsers;
 
+    @ManyToOne
+    @JoinColumn(name = "mention_users_id")
+    private Users mentionUsers;
+
     @ManyToOne(optional = false)
     @JoinColumn(name = "post_id", nullable = false)
     private Post post;

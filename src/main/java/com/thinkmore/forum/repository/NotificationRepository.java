@@ -9,5 +9,5 @@ import java.util.UUID;
 
 public interface NotificationRepository extends JpaRepository<Notification, UUID>, JpaSpecificationExecutor<Notification> {
 
-    List<Notification> findByUsers_IdOrderByCreateTimestampDesc(UUID id);
+    List<Notification> findByNotifyUsers_IdOrderByCreateTimestampDesc(UUID id);
 }

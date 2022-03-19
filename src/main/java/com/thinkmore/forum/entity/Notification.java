@@ -22,11 +22,12 @@ public class Notification {
     private UUID id;
 
     @ManyToOne(optional = false)
-    @JoinColumn(name = "users_id", nullable = false)
-    private Users users;
+    @JoinColumn(name = "trigger_users_id", nullable = false)
+    private Users triggerUsers;
 
-    @Column(name = "img_url")
-    private String imgUrl;
+    @ManyToOne(optional = false)
+    @JoinColumn(name = "notify_users_id", nullable = false)
+    private Users notifyUsers;
 
     @Column(name = "context", nullable = false)
     private String context;

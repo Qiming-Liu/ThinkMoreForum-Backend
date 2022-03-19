@@ -17,6 +17,4 @@ public interface PostMapper {
 
     @BeanMapping(nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.IGNORE)
     void copy(PostPutDto postPutDto, @MappingTarget Post post);
-
-
 }

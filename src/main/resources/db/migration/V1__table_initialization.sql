@@ -38,8 +38,8 @@ CREATE TABLE oauth
 CREATE TABLE notification
 (
     id               uuid PRIMARY KEY         DEFAULT gen_random_uuid(),
-    users_id         uuid NOT NULL references users (id),
-    img_url          text                     DEFAULT '/logo.png',
+    trigger_users_id uuid NOT NULL references users (id),
+    notify_users_id  uuid NOT NULL references users (id),
     context          text NOT NULL,
     viewed           boolean                  DEFAULT false,
     create_timestamp timestamp with time zone DEFAULT now()
@@ -77,6 +77,7 @@ CREATE TABLE comment
 (
     id                uuid PRIMARY KEY         DEFAULT gen_random_uuid(),
     comment_users_id  uuid          NOT NULL references users (id),
+    mention_users_id  uuid references users (id),
     post_id           uuid          NOT NULL references post (id),
     parent_comment_id uuid references comment (id),
     context           varchar(5000) NOT NULL,

@@ -18,7 +18,6 @@ public class CommentController {
     @PostMapping
     public ResponseEntity<String> postComment(@RequestBody CommentPostDto commentDto) {
         UUID userId = UUID.fromString(Util.getJwtContext().get(0));
-        String response = commentService.postComment(userId, commentDto);
-        return ResponseEntity.ok(response);
+        return ResponseEntity.ok(commentService.postComment(userId, commentDto));
     }
 }

@@ -6,12 +6,12 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.io.Serializable;
-import java.time.OffsetDateTime;
-import java.util.UUID;
 
 @Data
 @NoArgsConstructor
 public class CommentPostDto implements Serializable {
+    private UsersMiniGetDto commentUsers;
+    private UsersMiniGetDto mentionUsers;
     private PostMiniGetDto post;
     private CommentMiniGetDto parentComment;
     private String context;

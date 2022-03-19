@@ -14,6 +14,7 @@ import java.util.UUID;
 public class CommentGetDto implements Serializable {
     private UUID id;
     private UsersMiniGetDto commentUsers;
+    private UsersMiniGetDto mentionUsers;
     private PostMiniGetDto post;
     private CommentMiniGetDto parentComment;
     private String context;

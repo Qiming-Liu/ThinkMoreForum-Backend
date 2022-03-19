@@ -1,0 +1,17 @@
+{
+  "name": "upload-images",
+  "version": "1.0.0",
+  "description": "",
+  "main": "upload-images.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "license": "ISC",
+  "devDependencies": {
+    "aws-sdk": "^2.1024.0"
+  },
+  "dependencies": {
+    "uuid": "^8.3.2"
+  }
+}
