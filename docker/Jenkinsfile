@@ -24,7 +24,7 @@ pipeline {
           echo '===========Push image to AWS ECR and Update Service=========='
           withAWS(credentials: "${AWS_CREDS}", region: "${AWS_REGION}") {
             sh "aws ecr get-login-password  --region ${AWS_REGION} | docker login --username AWS --password-stdin ${ECR_REPO}"
-            sh "aws ecr batch-delete-image --repository-name ${ECR_REPO} --image-ids imageTag=${ECR_TAG}:latest || aws ecr list-images --repository-name ${ECR_REPO}"
+            sh "aws ecr batch-delete-image --repository-name ${ECR_TAG} --image-ids imageTag=${ECR_TAG}:latest || aws ecr list-images --repository-name ${ECR_TAG}"
             sh "docker build -t ${ECR_TAG} ."
             sh "docker tag ${ECR_TAG}:latest ${ECR_REPO}:latest"
             sh "docker push ${ECR_REPO}:latest"
