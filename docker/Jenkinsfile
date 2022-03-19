@@ -1,8 +1,6 @@
 pipeline {
   agent any
   environment {
-    BACKEND_URL = 'https://github.com/Qiming-Liu/ThinkMoreForum-Backend.git'
-
     AWS_REGION = 'ap-southeast-2'
     TAG = "${env.BUILD_ID}"
     //AWS ecr
@@ -11,10 +9,6 @@ pipeline {
     AWS_CREDS = 'aws_accessid'
     AWS_ECS_CLUSTER = 't2m'
     AWS_ECS_SERVICE = 't22'
-    //Dockerhub
-    myapp = ''
-    JENKINS_DOCKER_HUB_CREDNENT_ID = 'thinkmorebackend_dockerhub'
-    DOCKER_HUB_REGISTRY = 'thinkmoreapp'
   }
 
   stages {
@@ -22,31 +16,6 @@ pipeline {
       steps {
         echo "PATH IS :${PATH}"
         sh 'ls -la ./'
-      }
-    }
-    stage('Build docker image for docker hub') {
-      steps {
-        echo '===========Build docker image=========='
-        script {
-          // sh 'docker  build .'
-          // myapp = docker.build("${IMAGE}")
-          myapp = docker.build DOCKER_HUB_REGISTRY + ":$BUILD_NUMBER"
-        }
-      }
-    }
-    stage('Push image to Dockerhub') {
-      steps {
-        echo '===========Push image to Dockerhub=========='
-        script {
-          docker.withRegistry('https://registry.hub.docker.com', JENKINS_DOCKER_HUB_CREDNENT_ID ) {
-            myapp.push()
-          }
-        }
-      }
-    }
-    stage('Cleaning up') {
-      steps {
-        sh "docker rmi $DOCKER_HUB_REGISTRY:$BUILD_NUMBER"
       }
     }
     stage('Push image') {
