@@ -7,8 +7,8 @@ pipeline {
     ECR_TAG = 'thinkmorecluster2'
     ECR_REPO = '981456608012.dkr.ecr.ap-southeast-2.amazonaws.com/thinkmorecluster2'
     AWS_CREDS = 'aws_accessid'
-    AWS_ECS_CLUSTER = 'thinkmore-test'
-    AWS_ECS_SERVICE = 'service-test'
+    AWS_ECS_CLUSTER = 'thinkmore-cluster-withenv'
+    AWS_ECS_SERVICE = 'task-withenv'
   }
 
   stages {
