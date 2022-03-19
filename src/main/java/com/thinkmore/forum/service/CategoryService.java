@@ -2,20 +2,18 @@ package com.thinkmore.forum.service;
 
 import com.thinkmore.forum.dto.category.CategoryGetDto;
 import com.thinkmore.forum.dto.category.CategoryPutDto;
-import com.thinkmore.forum.dto.post.PostPutDto;
 import com.thinkmore.forum.entity.Category;
 import com.thinkmore.forum.mapper.CategoryMapper;
 import com.thinkmore.forum.repository.CategoryRepository;
 import com.thinkmore.forum.repository.PostRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 import java.util.stream.Collectors;
-
-import javax.transaction.Transactional;
 
 @Service
 @RequiredArgsConstructor

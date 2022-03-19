@@ -2,24 +2,20 @@ package com.thinkmore.forum.service;
 
 import com.thinkmore.forum.dto.comment.CommentGetDto;
 import com.thinkmore.forum.dto.comment.CommentPostDto;
-import com.thinkmore.forum.dto.users.UsersMiniGetDto;
 import com.thinkmore.forum.entity.Comment;
 import com.thinkmore.forum.entity.Post;
 import com.thinkmore.forum.entity.Users;
 import com.thinkmore.forum.mapper.CommentMapper;
-import com.thinkmore.forum.mapper.UsersMapper;
 import com.thinkmore.forum.repository.CommentRepository;
 import com.thinkmore.forum.repository.PostRepository;
 import com.thinkmore.forum.repository.UsersRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
-import java.time.OffsetDateTime;
 import java.util.List;
 import java.util.UUID;
 import java.util.stream.Collectors;
-
-import javax.transaction.Transactional;
 
 @Service
 @RequiredArgsConstructor

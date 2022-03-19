@@ -35,6 +35,10 @@ services:
       MINIO_URL: https://img.thinkmoreapp.com
       MINIO_ROOT_USER: minio
       MINIO_ROOT_PASSWORD: development
+      RABBITMQ_HOST: localhost
+      RABBITMQ_PORT: 5672
+      RABBITMQ_DEFAULT_USER: rabbitmq
+      RABBITMQ_DEFAULT_PASS: development
       DOMAIN_NAME: https://www.thinkmoreapp.com
       SSL_ENABLE: 'true'
       ENABLE_SWAGGER: 'true'
