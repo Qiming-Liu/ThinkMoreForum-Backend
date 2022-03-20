@@ -41,9 +41,9 @@ public class FollowerUsersController {
 
     @DeleteMapping(path = "/follow/{username}")
     public ResponseEntity<?> unfollow_user(@PathVariable("username") String target_username) {
-        String username = Util.getJwtContext().get(1);
+        UUID usersId = UUID.fromString(Util.getJwtContext().get(0));
         try {
-            followerUsersService.unfollowUsers(username, target_username);
+            followerUsersService.unfollowUsers(usersId, target_username);
             return ResponseEntity.ok().body("Deleted");
         } catch (Exception e) {
             return ResponseEntity.status(404).body("Not found");

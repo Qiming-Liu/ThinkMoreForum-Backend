@@ -16,6 +16,6 @@ public interface FollowerUsersRepository extends JpaRepository<FollowUser, UUID>
 
     List<FollowUser> findByUsersIdAndFollowedUsersId(UUID userId, UUID FollowedUsersId);
 
-    void deleteByUsersIdAndFollowedUsersId(UUID userId, UUID FollowedUsersId);
+    long deleteByUsersIdAndFollowedUsersId(UUID userId, UUID FollowedUsersId);
 
 }

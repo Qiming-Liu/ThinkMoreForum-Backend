@@ -54,12 +54,10 @@ public class FollowerUsersService {
     }
 
     @Transactional
-    public void unfollowUsers(String username, String followedUsername) {
-        Users user = usersRepository.findByUsername(username)
-                .orElseThrow(() -> new UserNotFoundException("Invalid UserName"));
+    public void unfollowUsers(UUID userID, String followedUsername) {
         Users followedUser = usersRepository.findByUsername(followedUsername)
                 .orElseThrow(() -> new UserNotFoundException("Invalid UserName"));
-        followerUsersRepository.deleteByUsersIdAndFollowedUsersId(user.getId(), followedUser.getId());
+        followerUsersRepository.deleteByUsersIdAndFollowedUsersId(userID, followedUser.getId());
     }
 
     @Transactional
