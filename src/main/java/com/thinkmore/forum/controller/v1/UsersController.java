@@ -61,6 +61,12 @@ public class UsersController {
         return ResponseEntity.ok(usersService.changeHeadImgUrl(usersId, usersImgPutDto));
     }
 
+    @PutMapping("/profileimg")
+    public ResponseEntity<Boolean> changeProfileImg(@RequestBody UsersImgPutDto usersImgPutDto) {
+        UUID usersId = UUID.fromString(Util.getJwtContext().get(0));
+        return ResponseEntity.ok(usersService.changeProfileImgUrl(usersId, usersImgPutDto));
+    }
+
     @GetMapping("/email/{new_email}")
     public ResponseEntity<Boolean> sendVerificationEmail(@PathVariable String new_email) throws Exception {
         UUID usersId = UUID.fromString(Util.getJwtContext().get(0));
