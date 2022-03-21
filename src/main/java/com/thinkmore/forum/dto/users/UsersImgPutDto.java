@@ -9,4 +9,5 @@ import java.io.Serializable;
 @NoArgsConstructor
 public class UsersImgPutDto implements Serializable {
     private String headImgUrl;
+    private String profileImgUrl;
 }

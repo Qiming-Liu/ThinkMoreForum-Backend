@@ -154,6 +154,16 @@ public class UsersService implements UserDetailsService {
     }
 
     @Transactional
+    public boolean changeProfileImgUrl(UUID usersId, UsersImgPutDto usersImgPutDto) {
+        Users user = usersRepository.findById(usersId)
+                .orElseThrow(() -> new UserNotFoundException("Invalid UserID"));
+
+        user.setProfileImgUrl(usersImgPutDto.getProfileImgUrl());
+        usersRepository.save(user);
+        return true;
+    }
+
+    @Transactional
     public boolean sendVerificationEmail(UUID usersId, String newEmail) {
         VerificationEmailMessage message = new VerificationEmailMessage(usersId, newEmail);
         rabbitTemplate.convertAndSend("VerificationEmail", message);
