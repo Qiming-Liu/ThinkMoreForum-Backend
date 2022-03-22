@@ -23,7 +23,7 @@ public class ImgService {
     private final ImgRepository imgRepository;
     private final MinioClient minioClient;
 
-//    @Value("${minio.url}")
+    @Value("${minio.url}")
     private String minioUrl;
 
     @Transactional
