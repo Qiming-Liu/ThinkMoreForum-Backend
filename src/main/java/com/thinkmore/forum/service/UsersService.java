@@ -42,7 +42,7 @@ import java.util.stream.Collectors;
 @RequiredArgsConstructor
 public class UsersService implements UserDetailsService {
 
-    @Value("${domain.name}")
+//    @Value("${domain.name}")
     public String domainName;
 
     @Autowired
