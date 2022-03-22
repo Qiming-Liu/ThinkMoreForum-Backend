@@ -15,6 +15,8 @@ import java.util.Optional;
 import java.util.UUID;
 import java.util.stream.Collectors;
 
+import static org.springframework.data.jpa.domain.AbstractPersistable_.id;
+
 @Service
 @RequiredArgsConstructor
 public class CategoryService {
@@ -50,7 +52,7 @@ public class CategoryService {
 
         List<Category> removeList = categoryOldList.stream().filter(category -> {
             for (Category categoryNew : categoryNewList) {
-                if (categoryNew.getTitle().equals(category.getTitle())) {
+                if (categoryNew.getId().equals(category.getId())) {
                     return false;
                 }
             }
@@ -58,10 +60,15 @@ public class CategoryService {
         }).collect(Collectors.toList());
 
         List<Category> addList = categoryNewList.stream().filter(category -> {
-            for (Category categoryOld : categoryOldList) {
-                if (categoryOld.getTitle().equals(category.getTitle())) {
+                if (category.getId() != null) {
                     return false;
                 }
+            return true;
+        }).collect(Collectors.toList());
+
+        List<Category> updateList = categoryNewList.stream().filter(category -> {
+            if (category.getId() == null) {
+                return false;
             }
             return true;
         }).collect(Collectors.toList());
@@ -71,6 +78,7 @@ public class CategoryService {
                         .forEach(post -> post.setCategory(null)));
 
         categoryRepository.deleteAll(removeList);
+        categoryRepository.saveAll(updateList);
         categoryRepository.saveAll(addList);
         return true;
     }
