@@ -6,6 +6,7 @@ import org.hibernate.annotations.DynamicInsert;
 import org.hibernate.annotations.DynamicUpdate;
 
 import javax.persistence.*;
+import java.time.OffsetDateTime;
 import java.util.UUID;
 
 @Entity
@@ -27,9 +28,6 @@ public class Category {
     @Column(name = "head_img_url")
     private String headImgUrl;
 
-    @Column(name = "type")
-    private Integer type;
-
     @Column(name = "color", nullable = false, length = 7)
     private String color;
 
@@ -44,4 +42,10 @@ public class Category {
 
     @Column(name = "sort_order", nullable = false)
     private Integer sortOrder;
+
+    @Column(name = "participant_count", nullable = false)
+    private Integer participantCount;
+
+    @Column(name = "last_update_timestamp", nullable = false)
+    private OffsetDateTime lastUpdateTimestamp;
 }

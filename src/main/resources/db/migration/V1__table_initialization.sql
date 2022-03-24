@@ -7,6 +7,13 @@ CREATE TABLE img
     md5 text NOT NULL UNIQUE
 );
 
+CREATE TABLE component
+(
+    id  uuid PRIMARY KEY DEFAULT gen_random_uuid(),
+    name text,
+    code text
+);
+
 CREATE TABLE roles
 (
     id         uuid PRIMARY KEY DEFAULT gen_random_uuid(),
@@ -50,12 +57,13 @@ CREATE TABLE category
     id           uuid PRIMARY KEY DEFAULT gen_random_uuid(),
     pin_post_id  uuid,
     head_img_url text             DEFAULT '/logo.png',
-    type         int,
     color        varchar(7)  NOT NULL,
     title        varchar(20) NOT NULL UNIQUE,
     description  varchar(60),
     post_count   int              DEFAULT 0,
-    sort_order   int         NOT NULL UNIQUE
+    sort_order   int         NOT NULL UNIQUE,
+    participant_count int         DEFAULT 0,
+    last_update_timestamp timestamp with time zone DEFAULT now()
 );
 
 CREATE TABLE post

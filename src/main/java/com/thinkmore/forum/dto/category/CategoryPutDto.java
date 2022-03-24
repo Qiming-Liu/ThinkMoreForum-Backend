@@ -5,6 +5,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.io.Serializable;
+import java.time.OffsetDateTime;
 import java.util.UUID;
 
 @Data
@@ -19,4 +20,6 @@ public class CategoryPutDto implements Serializable {
     private String description;
     private Integer postCount;
     private Integer sortOrder;
+    private Integer participantCount;
+    private OffsetDateTime lastUpdateTimestamp;
 }
