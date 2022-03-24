@@ -31,7 +31,7 @@ public class FollowerUsersService {
     }
 
     @Transactional
-    public List<FollowerUsersGetDto> getFriendsByUsername(String username) {
+    public List<FollowerUsersGetDto> getFollowingByUsername(String username) {
         Users user = usersRepository.findByUsername(username)
                 .orElseThrow(() -> new UserNotFoundException("Invalid UserName"));
         return followerUsersRepository.findAllByUsersId(user.getId()).stream().map(followerUsersMapper::fromEntity).collect(Collectors.toList());

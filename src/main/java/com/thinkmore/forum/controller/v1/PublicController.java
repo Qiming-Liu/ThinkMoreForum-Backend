@@ -3,6 +3,7 @@ package com.thinkmore.forum.controller.v1;
 import com.thinkmore.forum.dto.comment.CommentGetDto;
 import com.thinkmore.forum.dto.category.CategoryGetDto;
 import com.thinkmore.forum.dto.followPost.FollowPostGetDto;
+import com.thinkmore.forum.dto.followerUsers.FollowerUsersGetDto;
 import com.thinkmore.forum.dto.oauth.OauthPostDto;
 import com.thinkmore.forum.dto.post.PostGetDto;
 import com.thinkmore.forum.dto.post.PostMiniGetDto;
@@ -32,6 +33,7 @@ public class PublicController {
     private final PostService postService;
     private final CommentService commentService;
     private final FollowPostService followPostService;
+    private final FollowerUsersService followerUsersService;
 
     // Users
     @PostMapping(path = "/users/register")
@@ -120,5 +122,16 @@ public class PublicController {
     public ResponseEntity<List<CommentGetDto>> getCommentsByPostId(@PathVariable String post_id) {
         UUID postId = UUID.fromString(post_id);
         return ResponseEntity.ok(commentService.getAllByPost(postId));
+    }
+
+    // Followers, Following
+    @GetMapping(path = "/follower/{username}")
+    public ResponseEntity<List<FollowerUsersGetDto>> getFollower(@PathVariable("username") String target_username) {
+        return ResponseEntity.ok(followerUsersService.getFollowersByUsername(target_username));
+    }
+
+    @GetMapping(path = "/following/{username}")
+    public ResponseEntity<List<FollowerUsersGetDto>> getFollowing(@PathVariable("username") String target_username) {
+        return ResponseEntity.ok(followerUsersService.getFollowingByUsername(target_username));
     }
 }
