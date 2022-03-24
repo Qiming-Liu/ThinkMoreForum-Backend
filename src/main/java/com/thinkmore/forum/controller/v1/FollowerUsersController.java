@@ -16,17 +16,6 @@ import java.util.UUID;
 public class FollowerUsersController {
     private final FollowerUsersService followerUsersService;
 
-    //  view fans
-    @GetMapping(path = "/follower/{username}")
-    public ResponseEntity<List<FollowerUsersGetDto>> view_follower(@PathVariable("username") String target_username) {
-        return ResponseEntity.ok(followerUsersService.getFollowersByUsername(target_username));
-    }
-
-    @GetMapping(path = "/followed/{username}")
-    public ResponseEntity<List<FollowerUsersGetDto>> view_followed_user(@PathVariable("username") String target_username) {
-        return ResponseEntity.ok(followerUsersService.getFriendsByUsername(target_username));
-    }
-
     @GetMapping(path = "/followed_status/{username}")
     public ResponseEntity<Boolean> checkFollowedStatus(@PathVariable("username") String username) {
         UUID usersId = UUID.fromString(Util.getJwtContext().get(0));
@@ -39,7 +28,7 @@ public class FollowerUsersController {
         return ResponseEntity.ok(followerUsersService.followUsers(usersId, username));
     }
 
-    @DeleteMapping(path = "/follow/{username}")
+    @DeleteMapping(path = "/unfollow/{username}")
     public ResponseEntity<?> unfollow_user(@PathVariable("username") String target_username) {
         UUID usersId = UUID.fromString(Util.getJwtContext().get(0));
         try {
