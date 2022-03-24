@@ -48,7 +48,7 @@ public class FollowerUsersService {
         followUser.setUsers(myUser);
         followUser.setFollowedUsers(hisUser);
         followerUsersRepository.save(followUser);
-        notificationService.postNotification(hisUser, myUser, " followed you.");
+        notificationService.postNotification(myUser, hisUser, " followed you.");
 
         return followerUsersMapper.fromEntity(followUser);
     }

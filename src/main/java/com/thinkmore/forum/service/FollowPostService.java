@@ -77,7 +77,7 @@ public class FollowPostService {
         FollowPost followPost = followPostMapper.toEntity(followPostPostDto);
         followPostRepository.save(followPost);
 
-        notificationService.postNotification(post.getPostUsers(), users, " followed your post.");
+        notificationService.postNotification(users, post.getPostUsers(), " followed your post.");
 
         Post postToUpdate = postRepository.findById(postId).get();
         int newFollowCount = (int) followPostRepository.countByPost_Id(postId);

@@ -58,7 +58,7 @@ public class CommentService {
             context = " replied your comment.";
         }
 
-        notificationService.postNotification(notifyUser, users, context);
+        notificationService.postNotification(users, notifyUser, context);
 
         Post postToUpdate = postRepository.findById(commentPostDto.getPost().getId()).get();
         int newCommentCount = (int) commentRepository.countByPost_IdAndVisibilityIsTrue(postToUpdate.getId());
