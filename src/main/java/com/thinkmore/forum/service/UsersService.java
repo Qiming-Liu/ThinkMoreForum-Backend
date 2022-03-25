@@ -241,8 +241,6 @@ public class UsersService implements UserDetailsService {
 
     @Transactional
     public boolean resetPassword(UUID usersId, String password) {
-        Util.checkPassword(password);
-
         Users user = usersRepository.findById(usersId)
                                     .orElseThrow(() -> new UserNotFoundException("Invalid UserID"));
 

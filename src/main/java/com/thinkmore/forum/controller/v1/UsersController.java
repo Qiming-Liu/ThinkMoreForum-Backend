@@ -81,6 +81,7 @@ public class UsersController {
 
     @PutMapping(path="/roles")
     public ResponseEntity<String> changeUsersRoles(@RequestBody List<UsersGetDto> usersGetDtoList) {
+        Util.checkPermission("adminManagement");
         usersService.changeUsersRoles(usersGetDtoList);
         return ResponseEntity.ok("Done");
     }
