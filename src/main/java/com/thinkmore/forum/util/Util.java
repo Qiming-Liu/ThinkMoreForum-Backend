@@ -1,5 +1,7 @@
 package com.thinkmore.forum.util;
 
+import com.google.gson.JsonObject;
+import com.google.gson.JsonParser;
 import com.sendgrid.Method;
 import com.sendgrid.Request;
 import com.sendgrid.Response;
@@ -7,16 +9,22 @@ import com.sendgrid.SendGrid;
 import com.sendgrid.helpers.mail.Mail;
 import com.sendgrid.helpers.mail.objects.Content;
 import com.sendgrid.helpers.mail.objects.Email;
+
 import com.thinkmore.forum.configuration.Config;
 import com.thinkmore.forum.configuration.Singleton;
 import com.thinkmore.forum.entity.JwtUser;
+
 import io.jsonwebtoken.Jwts;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.codec.binary.Hex;
+import org.springframework.http.HttpStatus;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.web.server.ResponseStatusException;
 
 import javax.crypto.Cipher;
 import javax.crypto.spec.SecretKeySpec;
+import javax.naming.NoPermissionException;
+
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
@@ -28,24 +36,19 @@ import java.util.Date;
 @Slf4j
 public class Util {
 
-    /**
-     * "1f7bdc16-8720-11ec-a661-271721f30666",   UUID.fromString(Util.getJwtContext().get(0))
-     * "admin",                                  Util.getJwtContext().get(1)
-     * "{}"                                      Util.getJwtContext().get(2)
-     */
     public static ArrayList<String> getJwtContext() {
         return (ArrayList<String>) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
     }
 
     public static String generateJwt(JwtUser user) {
         return Jwts.builder()
-                .setId(user.getId() + "")
-                .setSubject(user.getRoleName())
-                .setAudience(user.getPermission())
-                .setIssuedAt(new Date())
-                .setExpiration(java.sql.Date.valueOf(LocalDate.now().plusDays(1)))
-                .signWith(Singleton.secretKey)
-                .compact();
+                   .setId(user.getId() + "")
+                   .setSubject(user.getRoleName())
+                   .setAudience(user.getPermission())
+                   .setIssuedAt(new Date())
+                   .setExpiration(java.sql.Date.valueOf(LocalDate.now().plusDays(1)))
+                   .signWith(Singleton.secretKey)
+                   .compact();
     }
 
     public static void createMail(String from, String to, String emailTitle, String emailContent) throws Exception {
@@ -62,16 +65,16 @@ public class Util {
         Response response = sg.api(request);
         log.info(response.toString());
     }
-    public static void checkPassword (String password){
-        //TODO fix here
-//        String pattern = "(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=.*[@#$^&+=])(?=\\S+$).{6,16}";
-//        if (!password.matches(pattern)){
-//            throw new InvalidOldPasswordException("Invalid Password!" );
-//        }
-    }
 
     public static String UrlEncoder(String url) throws UnsupportedEncodingException {
         return URLEncoder.encode(url, StandardCharsets.UTF_8.toString());
+    }
+
+    public static void checkPermission(String permissionName){
+        JsonObject permissionObject = JsonParser.parseString(getJwtContext().get(2)).getAsJsonObject();
+        if (!permissionObject.get(permissionName).getAsBoolean()) {
+            throw new ResponseStatusException(HttpStatus.PAYMENT_REQUIRED);
+        }
     }
 }
 

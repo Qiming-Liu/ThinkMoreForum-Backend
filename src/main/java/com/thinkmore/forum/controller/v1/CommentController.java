@@ -17,6 +17,7 @@ public class CommentController {
 
     @PostMapping
     public ResponseEntity<String> postComment(@RequestBody CommentPostDto commentDto) {
+        Util.checkPermission("postComment");
         UUID userId = UUID.fromString(Util.getJwtContext().get(0));
         return ResponseEntity.ok(commentService.postComment(userId, commentDto));
     }
