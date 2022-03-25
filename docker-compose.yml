@@ -25,9 +25,9 @@ services:
     environment:
       RABBITMQ_DEFAULT_USER: rabbitmq
       RABBITMQ_DEFAULT_PASS: development
-#    volumes:
-#      - ./rabbitmq/rabbitmq.conf:/etc/rabbitmq/rabbitmq.conf
-#      - ./rabbitmq/definitions.json:/etc/rabbitmq/definitions.json
+   volumes:
+     - ./rabbitmq/rabbitmq.conf:/etc/rabbitmq/rabbitmq.conf
+     - ./rabbitmq/definitions.json:/etc/rabbitmq/definitions.json
     ports:
       - "5672:5672"
       - "15672:15672"
