@@ -31,10 +31,6 @@ dependencies {
     implementation 'org.springframework.boot:spring-boot-starter-web:2.6.4'
     annotationProcessor 'org.springframework.boot:spring-boot-configuration-processor:2.6.4'
 
-    testImplementation 'org.springframework.amqp:spring-rabbit-test:2.6.4'
-    testImplementation 'org.springframework.boot:spring-boot-starter-test:2.6.4'
-    testImplementation 'org.springframework.security:spring-security-test:5.6.2'
-
     implementation 'org.apache.commons:commons-lang3:3.12.0'
     implementation 'com.fasterxml.jackson.core:jackson-core:2.13.2'
     implementation 'com.fasterxml.jackson.core:jackson-annotations:2.13.2'
@@ -60,6 +56,10 @@ dependencies {
     implementation 'io.minio:minio:8.3.7'
     implementation 'com.sendgrid:sendgrid-java:4.8.3'
     implementation 'com.squareup.okhttp3:okhttp:4.9.3'
+
+    testImplementation 'org.springframework.amqp:spring-rabbit-test:2.4.2'
+    testImplementation 'org.springframework.boot:spring-boot-starter-test:2.6.4'
+    testImplementation 'org.springframework.security:spring-security-test:5.6.2'
 }
 
 tasks.named('test') {
