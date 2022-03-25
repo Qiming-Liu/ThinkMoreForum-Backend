@@ -16,12 +16,12 @@ public class ComponentController {
     private final ComponentService componentService;
 
     @PostMapping
-    public ResponseEntity<ComponentGetDto> postComponent(ComponentPostDto componentPostDto) {
+    public ResponseEntity<ComponentGetDto> postComponent(@RequestBody ComponentPostDto componentPostDto) {
         return ResponseEntity.ok(componentService.postComponent(componentPostDto));
     }
 
     @PutMapping
-    public ResponseEntity<ComponentGetDto> putComponent(ComponentPutDto componentPutDto) {
+    public ResponseEntity<ComponentGetDto> putComponent(@RequestBody ComponentPutDto componentPutDto) {
         return ResponseEntity.ok(componentService.putComponent(componentPutDto));
     }
 
