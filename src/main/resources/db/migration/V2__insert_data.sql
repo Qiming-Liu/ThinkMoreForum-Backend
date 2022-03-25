@@ -22,10 +22,12 @@ INSERT INTO img (id, url, md5) VALUES ('9ccecfb8-68d8-4704-94ae-6fb948c8c60f', '
 INSERT INTO img (id, url, md5) VALUES ('d1c1af67-cad1-4aec-afb0-d2023e1bb039', 'https://img.thinkmoreapp.com/image/b7209cb50392f27a62c6e6e112fe0b6c.png', 'b7209cb50392f27a62c6e6e112fe0b6c');
 INSERT INTO img (id, url, md5) VALUES ('caafcf43-c2c6-4058-ad49-a4f18aab6d6a', 'https://img.thinkmoreapp.com/image/1bfa58f7c01801f072afef7ee7a7093b.jpg', '1bfa58f7c01801f072afef7ee7a7093b');
 
-INSERT INTO roles (id, role_name, permission) VALUES ('f14a0866-3bc7-44a8-ab39-815d03c67d13', 'admin', '{}');
-INSERT INTO roles (id, role_name, permission) VALUES ('396e2ee8-8674-4efe-840b-1a98f98bb783', 'verified_user', '{}');
-INSERT INTO roles (id, role_name, permission) VALUES ('68158867-b690-4170-bfa9-9cfaf7a3d344', 'unverified_user', '{}');
-INSERT INTO roles (id, role_name, permission) VALUES ('d7d57f7d-f7a1-4362-8a85-fbba9bba3f1d', 'banned_user', '{}');
+INSERT INTO component (name, code) VALUES ('footer', '<div><p>footer</p></div>');
+
+INSERT INTO roles (id, role_name, permission) VALUES ('f14a0866-3bc7-44a8-ab39-815d03c67d13', 'admin', '{"adminManagement":true,"postManagement":true,"makePost":true,"postComment":true,"uploadImg":true,"search":true}');
+INSERT INTO roles (id, role_name, permission) VALUES ('396e2ee8-8674-4efe-840b-1a98f98bb783', 'verified_user', '{"adminManagement":false,"postManagement":false,"makePost":true,"postComment":true,"uploadImg":true,"search":true}');
+INSERT INTO roles (id, role_name, permission) VALUES ('68158867-b690-4170-bfa9-9cfaf7a3d344', 'unverified_user', '{"adminManagement":false,"postManagement":false,"makePost":false,"postComment":false,"uploadImg":false,"search":false}');
+INSERT INTO roles (id, role_name, permission) VALUES ('d7d57f7d-f7a1-4362-8a85-fbba9bba3f1d', 'banned_user', '{"adminManagement":false,"postManagement":false,"makePost":false,"postComment":false,"uploadImg":false,"search":false}');
 
 INSERT INTO users (id, username, password, email, head_img_url, profile_img_url, role_id, last_login_timestamp, create_timestamp) VALUES ('0b41b6fa-52cf-41d9-8961-b12a0349a68d', 'AdminUser', '$argon2id$v=19$m=4096,t=3,p=1$gL/kMr7KOOCqFFDDbUwzBg$yav+sp5kn7Y6RB/zLJYAKsDvPzDVnbUZbblCJLee9Yw', 'admin@forum.com', '/logo.png', '/logo.png', 'f14a0866-3bc7-44a8-ab39-815d03c67d13', '2022-03-19 11:40:16.209253 +00:00', '2022-03-15 14:51:19.327247 +00:00');
 INSERT INTO users (id, username, password, email, head_img_url, profile_img_url, role_id, last_login_timestamp, create_timestamp) VALUES ('062d9f34-4cb2-4d22-b931-c84156e713a4', 'VerifiedUser', '$argon2id$v=19$m=4096,t=3,p=1$gL/kMr7KOOCqFFDDbUwzBg$yav+sp5kn7Y6RB/zLJYAKsDvPzDVnbUZbblCJLee9Yw', 'verified_user@forum.com', '/logo.png', '/logo.png', '396e2ee8-8674-4efe-840b-1a98f98bb783', '2022-03-18 06:12:37.941455 +00:00', '2022-03-15 14:51:19.327247 +00:00');

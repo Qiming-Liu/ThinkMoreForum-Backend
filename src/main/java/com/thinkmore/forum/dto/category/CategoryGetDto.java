@@ -17,6 +17,7 @@ public class CategoryGetDto implements Serializable {
     private String color;
     private String title;
     private String description;
+    private Integer viewCount;
     private Integer postCount;
     private Integer sortOrder;
     private Integer participantCount;

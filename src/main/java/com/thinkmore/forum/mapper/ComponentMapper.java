@@ -8,6 +8,9 @@ import org.mapstruct.*;
 
 @Mapper(unmappedTargetPolicy = ReportingPolicy.IGNORE, componentModel = "spring")
 public interface ComponentMapper {
+
+    Component toEntity(ComponentPutDto componentPutDto);
+
     Component toEntity(ComponentPostDto ComponentPostDto);
 
     ComponentGetDto fromEntity(Component component);
