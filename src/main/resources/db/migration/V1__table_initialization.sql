@@ -4,14 +4,14 @@ CREATE TABLE img
 (
     id  uuid PRIMARY KEY DEFAULT gen_random_uuid(),
     url text NOT NULL UNIQUE,
-    md5 text NOT NULL UNIQUE
+    md5 text NOT NULL
 );
 
 CREATE TABLE component
 (
-    id  uuid PRIMARY KEY DEFAULT gen_random_uuid(),
-    name text,
-    code text
+    id   uuid PRIMARY KEY DEFAULT gen_random_uuid(),
+    name text NOT NULL UNIQUE,
+    code text NOT NULL
 );
 
 CREATE TABLE roles
@@ -54,15 +54,16 @@ CREATE TABLE notification
 
 CREATE TABLE category
 (
-    id           uuid PRIMARY KEY DEFAULT gen_random_uuid(),
-    pin_post_id  uuid,
-    head_img_url text             DEFAULT '/logo.png',
-    color        varchar(7)  NOT NULL,
-    title        varchar(20) NOT NULL UNIQUE,
-    description  varchar(60),
-    post_count   int              DEFAULT 0,
-    sort_order   int         NOT NULL UNIQUE,
-    participant_count int         DEFAULT 0,
+    id                    uuid PRIMARY KEY         DEFAULT gen_random_uuid(),
+    pin_post_id           uuid,
+    head_img_url          text                     DEFAULT '/logo.png',
+    color                 varchar(7)  NOT NULL,
+    title                 varchar(20) NOT NULL UNIQUE,
+    description           varchar(100),
+    view_count            int                      DEFAULT 0,
+    post_count            int                      DEFAULT 0,
+    sort_order            int         NOT NULL UNIQUE,
+    participant_count     int                      DEFAULT 0,
     last_update_timestamp timestamp with time zone DEFAULT now()
 );
 
@@ -72,7 +73,7 @@ CREATE TABLE post
     post_users_id    uuid           NOT NULL references users (id),
     category_id      uuid references category (id),
     head_img_url     text                     DEFAULT '/logo.png',
-    title            varchar(60)    NOT NULL,
+    title            varchar(100)    NOT NULL,
     context          varchar(65535) NOT NULL,
     view_count       int                      DEFAULT 0,
     follow_count     int                      DEFAULT 0,

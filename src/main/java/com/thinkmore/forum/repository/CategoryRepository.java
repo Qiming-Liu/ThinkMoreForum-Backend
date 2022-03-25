@@ -12,8 +12,6 @@ import java.util.UUID;
 @Repository
 public interface CategoryRepository extends JpaRepository<Category, UUID>, JpaSpecificationExecutor<Category> {
 
-    Category save(Category category);
-
     @Override
     Optional<Category> findById(UUID uuid);
 

@@ -32,7 +32,7 @@ public class Post {
     @Column(name = "head_img_url")
     private String headImgUrl;
 
-    @Column(name = "title", nullable = false, length = 60)
+    @Column(name = "title", nullable = false, length = 100)
     private String title;
 
     @Column(name = "context", nullable = false, length = 65535)

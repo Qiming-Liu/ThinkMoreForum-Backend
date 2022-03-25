@@ -2,6 +2,7 @@ package com.thinkmore.forum.controller.v1;
 
 import com.thinkmore.forum.dto.comment.CommentGetDto;
 import com.thinkmore.forum.dto.category.CategoryGetDto;
+import com.thinkmore.forum.dto.component.ComponentGetDto;
 import com.thinkmore.forum.dto.followPost.FollowPostGetDto;
 import com.thinkmore.forum.dto.followerUsers.FollowerUsersGetDto;
 import com.thinkmore.forum.dto.oauth.OauthPostDto;
@@ -34,6 +35,7 @@ public class PublicController {
     private final CommentService commentService;
     private final FollowPostService followPostService;
     private final FollowerUsersService followerUsersService;
+    private final ComponentService componentService;
 
     // Users
     @PostMapping(path = "/users/register")
@@ -133,5 +135,11 @@ public class PublicController {
     @GetMapping(path = "/following/{username}")
     public ResponseEntity<List<FollowerUsersGetDto>> getFollowing(@PathVariable("username") String target_username) {
         return ResponseEntity.ok(followerUsersService.getFollowingByUsername(target_username));
+    }
+
+    // Component
+    @GetMapping(path = "/component/{name}")
+    public ResponseEntity<ComponentGetDto> getComponentByName(@PathVariable String name) throws Exception {
+        return ResponseEntity.ok(componentService.getComponent(name));
     }
 }

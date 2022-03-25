@@ -34,8 +34,11 @@ public class Category {
     @Column(name = "title", nullable = false, length = 20)
     private String title;
 
-    @Column(name = "description", length = 60)
+    @Column(name = "description", length = 100)
     private String description;
+
+    @Column(name = "view_count")
+    private Integer viewCount;
 
     @Column(name = "post_count")
     private Integer postCount;
