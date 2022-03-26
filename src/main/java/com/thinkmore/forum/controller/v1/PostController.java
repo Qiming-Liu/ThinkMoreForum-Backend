@@ -48,12 +48,4 @@ public class PostController {
         List<PostGetDto> response = postService.getPostByTitleContainingString(string);
         return ResponseEntity.ok(response);
     }
-
-    //get post by string and title return list of post
-//
-//    @GetMapping(path = "/title/{title}")
-//    public ResponseEntity<List<PostMiniGetDto>> getPostByTitle(@PathVariable("title") String title) {
-//        List response = postService.getPostByTitle(title);
-//        return ResponseEntity.ok(postService.getPostByTitle(response));
-//    }
 }
