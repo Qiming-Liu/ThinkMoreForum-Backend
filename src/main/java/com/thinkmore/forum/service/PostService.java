@@ -71,6 +71,22 @@ public class PostService {
         return postRepository.countByCategory_Title(category_title);
     }
 
+    //get post by title
+    @Transactional
+    public List<PostGetDto> getPostByTitle(String title) {
+        return postRepository.findByTitle(title).stream()
+                .map(postMapper::fromEntity)
+                .collect(Collectors.toList());
+    }
+
+    //get post by string return list of post
+    @Transactional
+    public List<PostGetDto> getPostByTitleContainingString(String string) {
+        return postRepository.findByTitleContainingIgnoreCase(string).stream()
+                .map(postMapper::fromEntity)
+                .collect(Collectors.toList());
+    }
+
     @Transactional
     public List<PostMiniGetDto> getAllPostsCoreInfo() {
         return postRepository.findAll().stream()

@@ -14,6 +14,14 @@ public interface PostRepository extends JpaRepository<Post, UUID>, JpaSpecificat
     @Override
     void deleteById(@NotNull UUID uuid);
 
+    //find post by title
+    List<Post> findByTitle(String title);
+
+    List<Post> findByTitleContainingIgnoreCase(String title);
+
+    //findByTitleContainingString
+
+
     List<Post> findByCategory_Title(String title);
 
     List<Post> findByCategory_Title(String title, Pageable pageable);

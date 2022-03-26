@@ -126,7 +126,6 @@ public class PublicController {
         return ResponseEntity.ok(commentService.getAllByPost(postId));
     }
 
-    // Followers, Following
     @GetMapping(path = "/follower/{username}")
     public ResponseEntity<List<FollowerUsersGetDto>> getFollower(@PathVariable("username") String target_username) {
         return ResponseEntity.ok(followerUsersService.getFollowersByUsername(target_username));
