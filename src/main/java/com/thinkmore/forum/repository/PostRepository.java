@@ -22,6 +22,8 @@ public interface PostRepository extends JpaRepository<Post, UUID>, JpaSpecificat
 
     long countByCategory_Title(String title);
 
+    List<Post> findByOrderByCommentCountDesc(Pageable pageable);
+
     long countByCategory_IdAndVisibilityIsTrue(UUID id);
 
     List<Post> findByCategory_IdAndVisibilityIsTrue(UUID id, Pageable pageable);
