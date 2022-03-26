@@ -3,13 +3,16 @@ package com.thinkmore.forum.service;
 import com.thinkmore.forum.dto.roles.RolesGetDto;
 import com.thinkmore.forum.dto.roles.RolesPutDto;
 import com.thinkmore.forum.entity.Roles;
+import com.thinkmore.forum.entity.Users;
 import com.thinkmore.forum.mapper.RolesMapper;
 import com.thinkmore.forum.repository.RolesRepository;
+import com.thinkmore.forum.repository.UsersRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
@@ -17,6 +20,7 @@ import java.util.stream.Collectors;
 public class RoleService {
     private final RolesRepository roleRepository;
     private final RolesMapper rolesMapper;
+    private final UsersRepository usersRepository;
 
     @Transactional
     public List<RolesGetDto> getAllRoles() {
@@ -51,9 +55,24 @@ public class RoleService {
             return true;
         }).collect(Collectors.toList());
 
+        List<List<Users>> usersList = removeList.stream().map(
+                (r) -> usersRepository.findByRole(r)).collect(Collectors.toList());
+
         roleRepository.deleteAll(removeList);
         roleRepository.saveAll(updateList);
         roleRepository.saveAll(addList);
+
+        Roles role = roleRepository.findByRoleName("verified_user").get();
+        usersList.stream().map(list -> {
+            if (!list.isEmpty()) {
+                list.stream().map(users -> {
+                    users.setRole(role);
+                    return users;
+                });
+            }
+            usersRepository.saveAll(list);
+            return list;
+        });
         return true;
     }
 }
