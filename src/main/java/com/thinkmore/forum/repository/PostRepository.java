@@ -19,9 +19,6 @@ public interface PostRepository extends JpaRepository<Post, UUID>, JpaSpecificat
 
     List<Post> findByTitleContainingIgnoreCase(String title);
 
-    //findByTitleContainingString
-
-
     List<Post> findByCategory_Title(String title);
 
     List<Post> findByCategory_Title(String title, Pageable pageable);
