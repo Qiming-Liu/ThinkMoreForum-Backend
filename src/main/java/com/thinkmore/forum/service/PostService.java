@@ -1,14 +1,19 @@
 package com.thinkmore.forum.service;
 
+import com.thinkmore.forum.dto.comment.CommentGetDto;
+import com.thinkmore.forum.dto.post.PostCommentGetDto;
 import com.thinkmore.forum.dto.post.PostGetDto;
 import com.thinkmore.forum.dto.post.PostMiniGetDto;
 import com.thinkmore.forum.dto.post.PostPostDto;
 import com.thinkmore.forum.entity.Category;
+import com.thinkmore.forum.entity.Comment;
 import com.thinkmore.forum.entity.Post;
 import com.thinkmore.forum.entity.Users;
 import com.thinkmore.forum.exception.UserNotFoundException;
+import com.thinkmore.forum.mapper.CommentMapper;
 import com.thinkmore.forum.mapper.PostMapper;
 import com.thinkmore.forum.repository.CategoryRepository;
+import com.thinkmore.forum.repository.CommentRepository;
 import com.thinkmore.forum.repository.PostRepository;
 import com.thinkmore.forum.repository.UsersRepository;
 import lombok.RequiredArgsConstructor;
@@ -18,6 +23,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.Random;
 import java.util.UUID;
 import java.util.stream.Collectors;
 
@@ -29,6 +35,8 @@ public class PostService {
     private final PostMapper postMapper;
     private final UsersRepository usersRepository;
     private final CategoryRepository categoryRepository;
+    private final CommentRepository commentRepository;
+    private final CommentMapper commentMapper;
 
     @Transactional
     public PostGetDto getPostById(UUID postId) throws Exception {
@@ -40,6 +48,22 @@ public class PostService {
             throw new Exception("Couldn't find the post with provided ID");
         }
         return targetPostGetDto;
+    }
+
+    @Transactional
+    public PostCommentGetDto getMaxCountCommentPost(Pageable pageable) {
+        List<Post> posts = postRepository.findByOrderByCommentCountDesc(pageable);
+
+        Random random = new Random();
+        int i = random.nextInt(3);
+
+        List<Comment> comments = commentRepository.findByPost_IdOrderByCreateTimestampAsc(posts.get(i).getId());
+        PostCommentGetDto postCommentGetDto = new PostCommentGetDto();
+        List<CommentGetDto> commentGetDtoList = comments.stream().map(commentMapper::fromEntity).collect(Collectors.toList());
+
+        postCommentGetDto.setComments(commentGetDtoList);
+        postCommentGetDto.setPost(postMapper.fromEntity(posts.get(i)));
+        return postCommentGetDto;
     }
 
     @Transactional
@@ -75,6 +99,13 @@ public class PostService {
     public List<PostMiniGetDto> getAllPostsCoreInfo() {
         return postRepository.findAll().stream()
                 .map(postMapper::entityToMiniDto)
+                .collect(Collectors.toList());
+    }
+
+    @Transactional
+    public List<PostGetDto> getPostByTitleContainingString(String string) {
+        return postRepository.findByTitleContainingIgnoreCase(string).stream()
+                .map(postMapper::fromEntity)
                 .collect(Collectors.toList());
     }
 

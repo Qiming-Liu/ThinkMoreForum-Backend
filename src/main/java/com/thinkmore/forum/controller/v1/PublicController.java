@@ -6,6 +6,7 @@ import com.thinkmore.forum.dto.component.ComponentGetDto;
 import com.thinkmore.forum.dto.followPost.FollowPostGetDto;
 import com.thinkmore.forum.dto.followerUsers.FollowerUsersGetDto;
 import com.thinkmore.forum.dto.oauth.OauthPostDto;
+import com.thinkmore.forum.dto.post.PostCommentGetDto;
 import com.thinkmore.forum.dto.post.PostGetDto;
 import com.thinkmore.forum.dto.post.PostMiniGetDto;
 import com.thinkmore.forum.dto.users.UsersGetDto;
@@ -117,6 +118,11 @@ public class PublicController {
     @GetMapping(path = "/post/follows/find_all_by_username/{username}")
     public ResponseEntity<List<FollowPostGetDto>> getFollowPostByUsername(@PathVariable String username) {
         return ResponseEntity.ok(followPostService.getAllFollowPostsByUsername(username));
+    }
+
+    @GetMapping(path="/post/max_count_comment")
+    public ResponseEntity<PostCommentGetDto> getMaxCountCommentPost(@PageableDefault(page = 0, size = 3) Pageable pageable) {
+        return ResponseEntity.ok(postService.getMaxCountCommentPost(pageable));
     }
 
     // Comment
