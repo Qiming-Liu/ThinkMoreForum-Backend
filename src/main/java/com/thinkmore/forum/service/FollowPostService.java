@@ -15,6 +15,8 @@ import com.thinkmore.forum.repository.FollowPostRepository;
 import com.thinkmore.forum.repository.PostRepository;
 import com.thinkmore.forum.repository.UsersRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -83,6 +85,7 @@ public class FollowPostService {
         int newFollowCount = (int) followPostRepository.countByPost_Id(postId);
         postToUpdate.setFollowCount(newFollowCount);
         postRepository.save(postToUpdate);
+
     }
 
     @Transactional
