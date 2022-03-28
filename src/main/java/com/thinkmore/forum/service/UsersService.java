@@ -33,6 +33,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.OffsetDateTime;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
@@ -56,8 +57,7 @@ public class UsersService implements UserDetailsService {
     //only for jwt
     @Override
     public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
-        Users user = usersRepository.findByEmail(email).orElseThrow(() ->
-                new UsernameNotFoundException(String.format("Login Email %s not found", email)));
+        Users user = usersRepository.findByEmail(email).orElseThrow(() -> new UsernameNotFoundException(String.format("Login Email %s not found", email)));
         return new JwtUser(user);
     }
 
@@ -114,8 +114,7 @@ public class UsersService implements UserDetailsService {
 
     @Transactional
     public void updateLastLoginTimestamp(String username) {
-        Users user = usersRepository.findByUsername(username).orElseThrow(() ->
-                new UsernameNotFoundException(String.format("Username %s not found", username)));
+        Users user = usersRepository.findByUsername(username).orElseThrow(() -> new UsernameNotFoundException(String.format("Username %s not found", username)));
         user.setLastLoginTimestamp(OffsetDateTime.now());
         usersRepository.save(user);
     }
@@ -135,8 +134,7 @@ public class UsersService implements UserDetailsService {
 
     @Transactional
     public boolean changeUsername(UUID usersId, String newUsername) {
-        Users user = usersRepository.findById(usersId)
-                                    .orElseThrow(() -> new UserNotFoundException("Invalid UserID"));
+        Users user = usersRepository.findById(usersId).orElseThrow(() -> new UserNotFoundException("Invalid UserID"));
 
         user.setUsername(newUsername);
         usersRepository.save(user);
@@ -145,8 +143,7 @@ public class UsersService implements UserDetailsService {
 
     @Transactional
     public boolean changeHeadImgUrl(UUID usersId, UsersImgPutDto usersImgPutDto) {
-        Users user = usersRepository.findById(usersId)
-                                    .orElseThrow(() -> new UserNotFoundException("Invalid UserID"));
+        Users user = usersRepository.findById(usersId).orElseThrow(() -> new UserNotFoundException("Invalid UserID"));
 
         user.setHeadImgUrl(usersImgPutDto.getHeadImgUrl());
         usersRepository.save(user);
@@ -155,8 +152,7 @@ public class UsersService implements UserDetailsService {
 
     @Transactional
     public boolean changeProfileImgUrl(UUID usersId, UsersImgPutDto usersImgPutDto) {
-        Users user = usersRepository.findById(usersId)
-                .orElseThrow(() -> new UserNotFoundException("Invalid UserID"));
+        Users user = usersRepository.findById(usersId).orElseThrow(() -> new UserNotFoundException("Invalid UserID"));
 
         user.setProfileImgUrl(usersImgPutDto.getProfileImgUrl());
         usersRepository.save(user);
@@ -173,26 +169,16 @@ public class UsersService implements UserDetailsService {
     @Transactional
     @RabbitListener(queues = "VerificationEmail")
     public void handleVerificationEmail(VerificationEmailMessage message) throws Exception {
-        Users user = usersRepository.findById(message.getUsersId())
-                                    .orElseThrow(() -> new UserNotFoundException("Invalid UserID"));
+        Users user = usersRepository.findById(message.getUsersId()).orElseThrow(() -> new UserNotFoundException("Invalid UserID"));
 
-        Util.createMail(
-                Config.fromEmail,
-                user.getEmail(),
-                "Change Email Request",
-                "Your account " + user.getUsername() + " is changing email to " + message.getNew_email());
+        Util.createMail(Config.fromEmail, user.getEmail(), "Change Email Request", "Your account " + user.getUsername() + " is changing email to " + message.getNew_email());
 
-        Util.createMail(
-                Config.fromEmail,
-                message.getNew_email(),
-                "Verify Email",
-                Config.VerifyEmailContext + domainName + Config.VerifyEmailUrl + message.getNew_email());
+        Util.createMail(Config.fromEmail, message.getNew_email(), "Verify Email", Config.VerifyEmailContext + domainName + Config.VerifyEmailUrl + message.getNew_email());
     }
 
     @Transactional
     public boolean changeEmail(UUID usersId, String newEmail) {
-        Users user = usersRepository.findById(usersId)
-                                    .orElseThrow(() -> new UserNotFoundException("Invalid UserID"));
+        Users user = usersRepository.findById(usersId).orElseThrow(() -> new UserNotFoundException("Invalid UserID"));
 
         user.setEmail(newEmail);
         usersRepository.save(user);
@@ -202,8 +188,7 @@ public class UsersService implements UserDetailsService {
 
     @Transactional
     public boolean changePassword(UUID usersId, UsersMiniPutDto usersMiniPutDto) {
-        Users user = usersRepository.findById(usersId)
-                                    .orElseThrow(() -> new UserNotFoundException("Invalid UserID"));
+        Users user = usersRepository.findById(usersId).orElseThrow(() -> new UserNotFoundException("Invalid UserID"));
 
         if (!Singleton.passwordEncoder().matches(usersMiniPutDto.getOldPassword(), user.getPassword())) {
             throw new InvalidOldPasswordException("Old password is wrong");
@@ -230,19 +215,13 @@ public class UsersService implements UserDetailsService {
 
             String encode = Util.UrlEncoder(Config.JwtPrefix + Util.generateJwt(new JwtUser(user.get())));
 
-            Util.createMail(
-                    Config.fromEmail,
-                    message.getEmail(),
-                    "Reset password",
-                    Config.ResetPasswordContext +
-                            domainName + Config.ResetPasswordUrl + encode);
+            Util.createMail(Config.fromEmail, message.getEmail(), "Reset password", Config.ResetPasswordContext + domainName + Config.ResetPasswordUrl + encode);
         }
     }
 
     @Transactional
     public boolean resetPassword(UUID usersId, String password) {
-        Users user = usersRepository.findById(usersId)
-                                    .orElseThrow(() -> new UserNotFoundException("Invalid UserID"));
+        Users user = usersRepository.findById(usersId).orElseThrow(() -> new UserNotFoundException("Invalid UserID"));
 
         user.setPassword(Singleton.passwordEncoder().encode(password));
         usersRepository.save(user);
@@ -260,10 +239,20 @@ public class UsersService implements UserDetailsService {
         return targetUsersGetDto;
     }
 
+    //get user by string return list of user
+    public List<UsersGetDto> getUserByContainingString(String string) {
+        List<Users> users = usersRepository.findByUsernameContainingIgnoreCase(string);
+        List<UsersGetDto> usersGetDto = new ArrayList<>();
+        for (Users user : users) {
+            usersGetDto.add(usersMapper.fromEntity(user));
+        }
+        return usersGetDto;
+    }
+
+
+
     public List<UsersGetDto> getAllUsers() {
-        return usersRepository.findAll().stream()
-                              .map(usersMapper::fromEntity)
-                              .collect(Collectors.toList());
+        return usersRepository.findAll().stream().map(usersMapper::fromEntity).collect(Collectors.toList());
     }
 
     public void changeSingleUserRole(UsersGetDto inputUserGetDto) {

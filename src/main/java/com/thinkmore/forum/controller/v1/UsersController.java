@@ -31,6 +31,15 @@ public class UsersController {
         return ResponseEntity.ok(usersService.getUsersById(userId));
     }
 
+    //get user by string return list of user
+
+    @GetMapping(path = "/string/{string}")
+    public ResponseEntity<List<UsersGetDto>> getUserByContainingString(@PathVariable("string") String string) {
+        List<UsersGetDto> response = usersService.getUserByContainingString(string);
+        return ResponseEntity.ok(response);
+    }
+
+
     @GetMapping("/open_id")
     public ResponseEntity<Boolean> hasOpenid() {
         UUID userId = UUID.fromString(Util.getJwtContext().get(0));
