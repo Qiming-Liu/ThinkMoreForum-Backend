@@ -17,7 +17,6 @@ public class GreetingController {
     @MessageMapping("/hello")
     @SendTo("/hall/greetings")
     public OnlineMsg rigisterOnline(OnlineMsg onlineMsg) throws Exception {
-        Thread.sleep(1000); // simulated delay
         return onlineMsg;
     }
 
