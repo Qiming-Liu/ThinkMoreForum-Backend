@@ -6,12 +6,13 @@ import io.minio.MakeBucketArgs;
 import io.minio.MinioClient;
 import io.minio.SetBucketPolicyArgs;
 import org.springframework.amqp.rabbit.annotation.EnableRabbit;
-import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.crypto.argon2.Argon2PasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.web.servlet.config.annotation.CorsRegistry;
+import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
 import javax.crypto.SecretKey;
 import java.nio.charset.StandardCharsets;
@@ -51,5 +52,19 @@ public class Singleton {
                 SetBucketPolicyArgs.builder().bucket(Config.BucketName).config(policyJson).build());
 
         return minioClient;
+    }
+
+    @Bean
+    public WebMvcConfigurer corsConfigurer() {
+        return new WebMvcConfigurer() {
+            @Override
+            public void addCorsMappings(CorsRegistry registry) {
+                registry.addMapping("/**")
+                        .allowedMethods("GET", "POST", "PUT", "DELETE")
+                        .allowedHeaders("X-Requested-With","Origin","Content-Type","Accept","Authorization")
+                        .exposedHeaders("Access-Control-Allow-Headers", "Authorization, x-xsrf-token, Access-Control-Allow-Headers, Origin, Accept, X-Requested-With, Content-Type, Access-Control-Request-Method, Access-Control-Request-Headers")
+                        .allowedOrigins("*");
+            }
+        };
     }
 }
