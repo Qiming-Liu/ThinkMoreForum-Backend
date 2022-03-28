@@ -1,10 +1,10 @@
-name: Pipeline
+name: Build Push Deploy
 on:
   push:
     branches: [ main ]
   workflow_dispatch:
 jobs:
-  Pipeline:
+  build:
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v2
