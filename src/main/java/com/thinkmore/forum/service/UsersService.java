@@ -33,6 +33,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.OffsetDateTime;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
@@ -249,6 +250,7 @@ public class UsersService implements UserDetailsService {
         return true;
     }
 
+    @Transactional
     public UsersGetDto getUsersById(UUID userId) throws Exception {
         Optional<Users> targetUsers = usersRepository.findById(userId);
         UsersGetDto targetUsersGetDto;
@@ -260,12 +262,14 @@ public class UsersService implements UserDetailsService {
         return targetUsersGetDto;
     }
 
+    @Transactional
     public List<UsersGetDto> getAllUsers() {
         return usersRepository.findAll().stream()
                               .map(usersMapper::fromEntity)
                               .collect(Collectors.toList());
     }
 
+    @Transactional
     public void changeSingleUserRole(UsersGetDto inputUserGetDto) {
         Users userToUpdate = usersRepository.findById(inputUserGetDto.getId()).get();
         Roles newRoleOfUser = rolesRepository.findByRoleName(inputUserGetDto.getRole().getRoleName()).orElseThrow();
@@ -273,7 +277,18 @@ public class UsersService implements UserDetailsService {
         usersRepository.save(userToUpdate);
     }
 
+    @Transactional
     public void changeUsersRoles(List<UsersGetDto> usersGetDtoList) {
         usersGetDtoList.forEach(singleUserGetDto -> changeSingleUserRole(singleUserGetDto));
+    }
+
+    @Transactional
+    public List<UsersGetDto> getUserByContainingString(String string) {
+        List<Users> users = usersRepository.findByUsernameContainingIgnoreCase(string);
+        List<UsersGetDto> usersGetDto = new ArrayList<>();
+        for (Users user : users) {
+            usersGetDto.add(usersMapper.fromEntity(user));
+        }
+        return usersGetDto;
     }
 }
