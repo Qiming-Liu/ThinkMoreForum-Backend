@@ -48,7 +48,6 @@ public class UsersService implements UserDetailsService {
 
     @Autowired
     RabbitTemplate rabbitTemplate;
-
     private final UsersRepository usersRepository;
     private final OauthRepository oauthRepository;
     private final UsersMapper usersMapper;
@@ -64,14 +63,11 @@ public class UsersService implements UserDetailsService {
     @Transactional
     public Boolean register(UsersPostDto usersPostDto) {
         Users user = usersMapper.toEntity(usersPostDto);
-
         user.setUsername(usersPostDto.getUsername());
         user.setPassword(Singleton.passwordEncoder().encode(usersPostDto.getPassword()));
         user.setEmail(usersPostDto.getEmail());
         user.setRole(rolesRepository.findByRoleName(Config.DefaultRole).orElseThrow());
-
         usersRepository.save(user);
-
         return true;
     }
 
@@ -80,13 +76,10 @@ public class UsersService implements UserDetailsService {
         if (!uniqueEmail(email)) {
             Users users = usersRepository.findByEmail(email).get();
             users.setPassword(Singleton.passwordEncoder().encode(oauthPostDto.getOpenid()));
-
             Oauth oauth = new Oauth();
-
             oauth.setUsers(users);
             oauth.setOauthType(oauthPostDto.getOauthType());
             oauth.setOpenid(oauthPostDto.getOpenid());
-
             oauthRepository.save(oauth);
             return true;
         } else if (oauthRepository.findByOpenid(oauthPostDto.getOpenid()).isPresent()) {
@@ -94,20 +87,15 @@ public class UsersService implements UserDetailsService {
         }
 
         Users user = new Users();
-
         user.setEmail(email);
         user.setUsername(username);
         user.setPassword(Singleton.passwordEncoder().encode(oauthPostDto.getOpenid()));
         user.setRole(rolesRepository.findByRoleName(Config.DefaultRole).orElseThrow());
-
         usersRepository.save(user);
-
         Oauth oauth = new Oauth();
-
         oauth.setUsers(user);
         oauth.setOauthType(oauthPostDto.getOauthType());
         oauth.setOpenid(oauthPostDto.getOpenid());
-
         oauthRepository.save(oauth);
         return true;
     }
@@ -135,7 +123,6 @@ public class UsersService implements UserDetailsService {
     @Transactional
     public boolean changeUsername(UUID usersId, String newUsername) {
         Users user = usersRepository.findById(usersId).orElseThrow(() -> new UserNotFoundException("Invalid UserID"));
-
         user.setUsername(newUsername);
         usersRepository.save(user);
         return true;
@@ -144,7 +131,6 @@ public class UsersService implements UserDetailsService {
     @Transactional
     public boolean changeHeadImgUrl(UUID usersId, UsersImgPutDto usersImgPutDto) {
         Users user = usersRepository.findById(usersId).orElseThrow(() -> new UserNotFoundException("Invalid UserID"));
-
         user.setHeadImgUrl(usersImgPutDto.getHeadImgUrl());
         usersRepository.save(user);
         return true;
@@ -170,30 +156,24 @@ public class UsersService implements UserDetailsService {
     @RabbitListener(queues = "VerificationEmail")
     public void handleVerificationEmail(VerificationEmailMessage message) throws Exception {
         Users user = usersRepository.findById(message.getUsersId()).orElseThrow(() -> new UserNotFoundException("Invalid UserID"));
-
         Util.createMail(Config.fromEmail, user.getEmail(), "Change Email Request", "Your account " + user.getUsername() + " is changing email to " + message.getNew_email());
-
         Util.createMail(Config.fromEmail, message.getNew_email(), "Verify Email", Config.VerifyEmailContext + domainName + Config.VerifyEmailUrl + message.getNew_email());
     }
 
     @Transactional
     public boolean changeEmail(UUID usersId, String newEmail) {
         Users user = usersRepository.findById(usersId).orElseThrow(() -> new UserNotFoundException("Invalid UserID"));
-
         user.setEmail(newEmail);
         usersRepository.save(user);
-
         return true;
     }
 
     @Transactional
     public boolean changePassword(UUID usersId, UsersMiniPutDto usersMiniPutDto) {
         Users user = usersRepository.findById(usersId).orElseThrow(() -> new UserNotFoundException("Invalid UserID"));
-
         if (!Singleton.passwordEncoder().matches(usersMiniPutDto.getOldPassword(), user.getPassword())) {
             throw new InvalidOldPasswordException("Old password is wrong");
         }
-
         user.setPassword(Singleton.passwordEncoder().encode(usersMiniPutDto.getNewPassword()));
         usersRepository.save(user);
         return true;
@@ -210,11 +190,8 @@ public class UsersService implements UserDetailsService {
     @RabbitListener(queues = "ResetPasswordEmail")
     public void handleResetPasswordEmail(ResetPasswordEmailMessage message) throws Exception {
         Optional<Users> user = usersRepository.findByEmail(message.getEmail());
-
         if (user.isPresent()) {
-
             String encode = Util.UrlEncoder(Config.JwtPrefix + Util.generateJwt(new JwtUser(user.get())));
-
             Util.createMail(Config.fromEmail, message.getEmail(), "Reset password", Config.ResetPasswordContext + domainName + Config.ResetPasswordUrl + encode);
         }
     }
@@ -222,7 +199,6 @@ public class UsersService implements UserDetailsService {
     @Transactional
     public boolean resetPassword(UUID usersId, String password) {
         Users user = usersRepository.findById(usersId).orElseThrow(() -> new UserNotFoundException("Invalid UserID"));
-
         user.setPassword(Singleton.passwordEncoder().encode(password));
         usersRepository.save(user);
         return true;
