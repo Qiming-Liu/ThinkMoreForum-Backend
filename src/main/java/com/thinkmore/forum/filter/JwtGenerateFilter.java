@@ -1,7 +1,11 @@
 package com.thinkmore.forum.filter;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
+
+import com.thinkmore.forum.dto.users.UsersGetDto;
 import com.thinkmore.forum.entity.JwtUser;
 import com.thinkmore.forum.configuration.Config;
 import com.thinkmore.forum.service.UsersService;
@@ -18,6 +22,8 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 import javax.servlet.FilterChain;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+
+import java.io.IOException;
 import java.util.stream.Collectors;
 
 @RequiredArgsConstructor
@@ -44,14 +50,20 @@ public class JwtGenerateFilter extends UsernamePasswordAuthenticationFilter {
     protected void successfulAuthentication(HttpServletRequest request,
                                             HttpServletResponse response,
                                             FilterChain chain,
-                                            Authentication authResult) {
+                                            Authentication authResult) throws IOException {
 
         //update last login timestamp
-        usersService.updateLastLoginTimestamp(authResult.getName());
+        UsersGetDto usersGetDto = usersService.updateLastLoginTimestamp(authResult.getName());
 
         //generate jwt
         JwtUser jwtUser = (JwtUser) authResult.getPrincipal();
-
         response.addHeader(HttpHeaders.AUTHORIZATION, Config.JwtPrefix + Util.generateJwt(jwtUser));
+
+        //return user info
+        response.setContentType("application/json");
+        response.setCharacterEncoding("UTF-8");
+        ObjectMapper objectMapper = new ObjectMapper();
+        objectMapper.registerModule(new JavaTimeModule());
+        response.getWriter().write(objectMapper.writeValueAsString(usersGetDto));
     }
 }
