@@ -16,6 +16,7 @@ import com.thinkmore.forum.repository.CategoryRepository;
 import com.thinkmore.forum.repository.CommentRepository;
 import com.thinkmore.forum.repository.PostRepository;
 import com.thinkmore.forum.repository.UsersRepository;
+
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
@@ -35,6 +36,7 @@ public class PostService {
     private final PostMapper postMapper;
     private final UsersRepository usersRepository;
     private final CategoryRepository categoryRepository;
+    private final CategoryService categoryService;
     private final CommentRepository commentRepository;
     private final CommentMapper commentMapper;
 
@@ -80,42 +82,32 @@ public class PostService {
         categoryToUpdate.setPostCount(newPostCount);
         categoryRepository.save(categoryToUpdate);
 
+        categoryService.updateParticipant(post.getCategory().getId());
+
         return post.getId().toString();
-    }
-
-    @Transactional
-    public List<PostGetDto> getPostsByCategoryTitle(String category_title, Pageable pageable) {
-        return postRepository.findByCategory_Title(category_title, pageable).stream()
-                .map(postMapper::fromEntity)
-                .collect(Collectors.toList());
-    }
-
-    @Transactional
-    public long getCountOfPostsByCategoryTitle(String category_title) {
-        return postRepository.countByCategory_Title(category_title);
     }
 
     @Transactional
     public List<PostMiniGetDto> getAllPostsCoreInfo() {
         return postRepository.findAll().stream()
-                .map(postMapper::entityToMiniDto)
-                .collect(Collectors.toList());
+                             .map(postMapper::entityToMiniDto)
+                             .collect(Collectors.toList());
     }
 
     @Transactional
     public List<PostGetDto> getPostByTitleContainingString(String string) {
         return postRepository.findByTitleContainingIgnoreCase(string).stream()
-                .map(postMapper::fromEntity)
-                .collect(Collectors.toList());
+                             .map(postMapper::fromEntity)
+                             .collect(Collectors.toList());
     }
 
     @Transactional
     public List<PostGetDto> getPostsByPostUsersName(String username) {
         Users user = usersRepository.findByUsername(username)
-                .orElseThrow(() -> new UserNotFoundException("Invalid UserName"));
+                                    .orElseThrow(() -> new UserNotFoundException("Invalid UserName"));
         return postRepository.findByPostUsersId(user.getId()).stream()
-                .map(postMapper::fromEntity)
-                .collect(Collectors.toList());
+                             .map(postMapper::fromEntity)
+                             .collect(Collectors.toList());
     }
 
     @Transactional
@@ -126,10 +118,11 @@ public class PostService {
     @Transactional
     public List<PostGetDto> getVisiblePostsByCategoryId(UUID categoryId, Pageable pageable) {
         return postRepository.findByCategory_IdAndVisibilityIsTrue(categoryId, pageable).stream()
-                .map(postMapper::fromEntity)
-                .collect(Collectors.toList());
+                             .map(postMapper::fromEntity)
+                             .collect(Collectors.toList());
     }
 
+    @Transactional
     public Boolean changePostVisibility(UUID postId, UUID userId) {
         Post oldPost = postRepository.findById(postId).get();
         Users requestInitiator = usersRepository.findById(userId).get();
@@ -150,10 +143,15 @@ public class PostService {
         return true;
     }
 
+    @Transactional
     public void updateViewCount(UUID postId) {
-        Post oldPost = postRepository.findById(postId).get();
-        int newViewCount = oldPost.getViewCount()+1;
-        oldPost.setViewCount(newViewCount);
-        postRepository.save(oldPost);
+        Post post = postRepository.findById(postId).get();
+        post.setViewCount(post.getViewCount() + 1);
+        postRepository.save(post);
+
+        Category category = categoryRepository.findById(post.getCategory().getId()).get();
+        List<Post> posts = postRepository.findByCategory_IdAndVisibilityIsTrue(category.getId());
+        category.setViewCount(posts.stream().mapToInt(Post::getViewCount).sum());
+        categoryRepository.save(category);
     }
 }

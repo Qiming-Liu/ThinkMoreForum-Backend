@@ -2,13 +2,16 @@ package com.thinkmore.forum.service;
 
 import com.thinkmore.forum.dto.comment.CommentGetDto;
 import com.thinkmore.forum.dto.comment.CommentPostDto;
+import com.thinkmore.forum.entity.Category;
 import com.thinkmore.forum.entity.Comment;
 import com.thinkmore.forum.entity.Post;
 import com.thinkmore.forum.entity.Users;
 import com.thinkmore.forum.mapper.CommentMapper;
+import com.thinkmore.forum.repository.CategoryRepository;
 import com.thinkmore.forum.repository.CommentRepository;
 import com.thinkmore.forum.repository.PostRepository;
 import com.thinkmore.forum.repository.UsersRepository;
+
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -22,17 +25,18 @@ import java.util.stream.Collectors;
 public class CommentService {
 
     private final CommentRepository commentRepository;
+    private final UsersRepository usersRepository;
+    private final PostRepository postRepository;
 
     private final CommentMapper commentMapper;
-    private final UsersRepository usersRepository;
     private final NotificationService notificationService;
-    private final PostRepository postRepository;
+    private final CategoryService categoryService;
 
     @Transactional
     public List<CommentGetDto> getAllByPost(UUID postId) {
         return commentRepository.findByPost_IdOrderByCreateTimestampAsc(postId).stream()
-                .map(commentMapper::fromEntity)
-                .collect(Collectors.toList());
+                                .map(commentMapper::fromEntity)
+                                .collect(Collectors.toList());
     }
 
     @Transactional
@@ -64,6 +68,8 @@ public class CommentService {
         int newCommentCount = (int) commentRepository.countByPost_IdAndVisibilityIsTrue(postToUpdate.getId());
         postToUpdate.setCommentCount(newCommentCount);
         postRepository.save(postToUpdate);
+
+        categoryService.updateParticipant(post.getCategory().getId());
 
         return "You've successfully replied the post!";
     }
