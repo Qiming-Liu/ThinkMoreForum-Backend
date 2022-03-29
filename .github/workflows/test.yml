@@ -18,7 +18,7 @@ jobs:
         ./gradlew build
         mv "./rabbitmq/rabbitmq.conf" "./docker/rabbitmq.conf"
         mv "./rabbitmq/definitions.json" "./docker/definitions.json"
-        mv "./build/libs/forum-0.0.1.jar" "./docker/app.jar"
+        mv "./build/libs/forum-1.0.0.jar" "./docker/app.jar"
 
     - name: Test Run
       run: docker-compose up -d

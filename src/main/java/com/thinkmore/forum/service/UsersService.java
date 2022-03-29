@@ -114,11 +114,12 @@ public class UsersService implements UserDetailsService {
     }
 
     @Transactional
-    public void updateLastLoginTimestamp(String username) {
+    public UsersGetDto updateLastLoginTimestamp(String username) {
         Users user = usersRepository.findByUsername(username).orElseThrow(() ->
                 new UsernameNotFoundException(String.format("Username %s not found", username)));
         user.setLastLoginTimestamp(OffsetDateTime.now());
         usersRepository.save(user);
+        return usersMapper.fromEntity(user);
     }
 
     public boolean uniqueEmail(String email) {
@@ -157,7 +158,7 @@ public class UsersService implements UserDetailsService {
     @Transactional
     public boolean changeProfileImgUrl(UUID usersId, UsersImgPutDto usersImgPutDto) {
         Users user = usersRepository.findById(usersId)
-                .orElseThrow(() -> new UserNotFoundException("Invalid UserID"));
+                                    .orElseThrow(() -> new UserNotFoundException("Invalid UserID"));
 
         user.setProfileImgUrl(usersImgPutDto.getProfileImgUrl());
         usersRepository.save(user);
