@@ -1,4 +1,4 @@
-package com.thinkmore.forum.webSocket;
+package com.thinkmore.forum.websocket;
 
 import lombok.Data;
 import lombok.NoArgsConstructor;

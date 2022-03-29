@@ -1,7 +1,7 @@
 package com.thinkmore.forum.controller.v1;
 
-import com.thinkmore.forum.webSocket.OnlineMsg;
-import com.thinkmore.forum.webSocket.ReminderMessage;
+import com.thinkmore.forum.websocket.OnlineMsg;
+import com.thinkmore.forum.websocket.ReminderMessage;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.messaging.handler.annotation.MessageMapping;
 import org.springframework.messaging.handler.annotation.SendTo;
@@ -9,7 +9,7 @@ import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.stereotype.Controller;
 
 @Controller
-public class GreetingController {
+public class WebsocketController {
 
     @Autowired
     private SimpMessagingTemplate simpMessagingTemplate;

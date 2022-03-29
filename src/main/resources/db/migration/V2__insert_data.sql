@@ -22,7 +22,7 @@ INSERT INTO img (id, url, md5) VALUES ('9ccecfb8-68d8-4704-94ae-6fb948c8c60f', '
 INSERT INTO img (id, url, md5) VALUES ('d1c1af67-cad1-4aec-afb0-d2023e1bb039', 'https://img.thinkmoreapp.com/image/b7209cb50392f27a62c6e6e112fe0b6c.png', 'b7209cb50392f27a62c6e6e112fe0b6c');
 INSERT INTO img (id, url, md5) VALUES ('caafcf43-c2c6-4058-ad49-a4f18aab6d6a', 'https://img.thinkmoreapp.com/image/1bfa58f7c01801f072afef7ee7a7093b.jpg', '1bfa58f7c01801f072afef7ee7a7093b');
 
-INSERT INTO component (name, code) VALUES ('footer', '<div><p>footer</p></div>');
+INSERT INTO component (name, code) VALUES ('footer', '');
 
 INSERT INTO roles (id, role_name, permission) VALUES ('f14a0866-3bc7-44a8-ab39-815d03c67d13', 'admin', '{"adminManagement":true,"postManagement":true,"makePost":true,"postComment":true,"uploadImg":true,"search":true}');
 INSERT INTO roles (id, role_name, permission) VALUES ('396e2ee8-8674-4efe-840b-1a98f98bb783', 'verified_user', '{"adminManagement":false,"postManagement":false,"makePost":true,"postComment":true,"uploadImg":true,"search":true}');

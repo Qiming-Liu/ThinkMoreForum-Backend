@@ -3,13 +3,20 @@ package com.thinkmore.forum.service;
 import com.thinkmore.forum.dto.category.CategoryGetDto;
 import com.thinkmore.forum.dto.category.CategoryPutDto;
 import com.thinkmore.forum.entity.Category;
+import com.thinkmore.forum.entity.Comment;
+import com.thinkmore.forum.entity.Post;
+import com.thinkmore.forum.entity.Users;
 import com.thinkmore.forum.mapper.CategoryMapper;
 import com.thinkmore.forum.repository.CategoryRepository;
+import com.thinkmore.forum.repository.CommentRepository;
 import com.thinkmore.forum.repository.PostRepository;
+
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.OffsetDateTime;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
@@ -24,6 +31,7 @@ public class CategoryService {
     private final CategoryRepository categoryRepository;
     private final CategoryMapper categoryMapper;
     private final PostRepository postRepository;
+    private final CommentRepository commentRepository;
 
     @Transactional
     public List<CategoryGetDto> getAllCategories() {
@@ -60,9 +68,9 @@ public class CategoryService {
         }).collect(Collectors.toList());
 
         List<Category> addList = categoryNewList.stream().filter(category -> {
-                if (category.getId() != null) {
-                    return false;
-                }
+            if (category.getId() != null) {
+                return false;
+            }
             return true;
         }).collect(Collectors.toList());
 
@@ -75,7 +83,7 @@ public class CategoryService {
 
         removeList.forEach(category ->
                 postRepository.findByCategory_Title(category.getTitle())
-                        .forEach(post -> post.setCategory(null)));
+                              .forEach(post -> post.setCategory(null)));
 
         categoryRepository.deleteAll(removeList);
         categoryRepository.saveAll(updateList);
@@ -97,5 +105,21 @@ public class CategoryService {
         category.setPinPost(null);
         categoryRepository.save(category);
         return categoryMapper.fromEntity(category);
+    }
+
+    @Transactional
+    public void updateParticipant(UUID categoryId) {
+        Category category = categoryRepository.findById(categoryId).get();
+        List<Post> postList = postRepository.findByCategory_Title(category.getTitle());
+        List<Comment> commentList = postList.stream().flatMap(post -> commentRepository.findByPost_IdOrderByCreateTimestampAsc(post.getId()).stream()).collect(Collectors.toList());
+        List<Users> usersList = commentList.stream().map(Comment::getCommentUsers).collect(Collectors.toList());
+        usersList.addAll(postList.stream().map(Post::getPostUsers).collect(Collectors.toList()));
+        HashSet<UUID> set = new HashSet<>();
+        for (Users user : usersList) {
+            set.add(user.getId());
+        }
+        category.setParticipantCount(set.size());
+        category.setLastUpdateTimestamp(OffsetDateTime.now());
+        categoryRepository.save(category);
     }
 }
