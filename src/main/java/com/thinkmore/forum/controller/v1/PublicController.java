@@ -60,14 +60,13 @@ public class PublicController {
     }
 
     @GetMapping("/users/reset_password/{email}")
-    public ResponseEntity<Boolean> sendResetPasswordEmail(@PathVariable String email) throws Exception {
+    public ResponseEntity<Boolean> sendResetPasswordEmail(@PathVariable String email) {
         return ResponseEntity.ok(usersService.sendResetPasswordEmail(email));
     }
 
-    @GetMapping(path = "/users/id/{users_id}")
-    public ResponseEntity<UsersGetDto> getUserById(@PathVariable String users_id) throws Exception {
-        UUID user_id = UUID.fromString(users_id);
-        return ResponseEntity.ok(usersService.getUsersById(user_id));
+    @GetMapping(path = "/users/username/{username}")
+    public ResponseEntity<UsersGetDto> getUserById(@PathVariable String username) {
+        return ResponseEntity.ok(usersService.getUserByUsername(username));
     }
 
     // Category

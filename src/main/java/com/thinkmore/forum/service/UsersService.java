@@ -252,15 +252,9 @@ public class UsersService implements UserDetailsService {
     }
 
     @Transactional
-    public UsersGetDto getUsersById(UUID userId) throws Exception {
-        Optional<Users> targetUsers = usersRepository.findById(userId);
-        UsersGetDto targetUsersGetDto;
-        if (targetUsers.isPresent()) {
-            targetUsersGetDto = usersMapper.fromEntity(targetUsers.get());
-        } else {
-            throw new Exception("Couldn't find the user with provided ID");
-        }
-        return targetUsersGetDto;
+    public UsersGetDto getUserByUsername(String username) {
+        Optional<Users> targetUsers = usersRepository.findByUsername(username);
+        return usersMapper.fromEntity(targetUsers.get());
     }
 
     @Transactional

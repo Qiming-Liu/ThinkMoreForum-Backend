@@ -25,14 +25,6 @@ public class UsersController {
         return ResponseEntity.ok(usersService.getAllUsers());
     }
 
-    @GetMapping(path = "/me")
-    public ResponseEntity<UsersGetDto> getMe() throws Exception {
-        UUID userId = UUID.fromString(Util.getJwtContext().get(0));
-        return ResponseEntity.ok(usersService.getUsersById(userId));
-    }
-
-    //get user by string return list of user
-
     @GetMapping(path = "/string/{string}")
     public ResponseEntity<List<UsersGetDto>> getUserByContainingString(@PathVariable("string") String string) {
         List<UsersGetDto> response = usersService.getUserByContainingString(string);
