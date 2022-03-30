@@ -257,6 +257,15 @@ public class UsersService implements UserDetailsService {
         return usersMapper.fromEntity(targetUsers.get());
     }
 
+    public List<UsersGetDto> getUserByContainingString(String string) {
+        List<Users> users = usersRepository.findByUsernameContainingIgnoreCase(string);
+        List<UsersGetDto> usersGetDto = new ArrayList<>();
+        for (Users user : users) {
+            usersGetDto.add(usersMapper.fromEntity(user));
+        }
+        return usersGetDto;
+    }
+
     @Transactional
     public List<UsersGetDto> getAllUsers() {
         return usersRepository.findAll().stream()
@@ -275,15 +284,5 @@ public class UsersService implements UserDetailsService {
     @Transactional
     public void changeUsersRoles(List<UsersGetDto> usersGetDtoList) {
         usersGetDtoList.forEach(singleUserGetDto -> changeSingleUserRole(singleUserGetDto));
-    }
-
-    @Transactional
-    public List<UsersGetDto> getUserByContainingString(String string) {
-        List<Users> users = usersRepository.findByUsernameContainingIgnoreCase(string);
-        List<UsersGetDto> usersGetDto = new ArrayList<>();
-        for (Users user : users) {
-            usersGetDto.add(usersMapper.fromEntity(user));
-        }
-        return usersGetDto;
     }
 }
