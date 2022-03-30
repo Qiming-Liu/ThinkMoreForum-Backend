@@ -7,5 +7,5 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class OnlineMsg {
     private String userId;
-    private Boolean online;
+    private String status;
 }
