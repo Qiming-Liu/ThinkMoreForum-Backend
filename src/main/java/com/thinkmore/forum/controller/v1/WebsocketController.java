@@ -3,6 +3,7 @@ package com.thinkmore.forum.controller.v1;
 import com.thinkmore.forum.websocket.OnlineMsg;
 import com.thinkmore.forum.websocket.ReminderMessage;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.event.EventListener;
 import org.springframework.messaging.handler.annotation.Header;
 import org.springframework.messaging.handler.annotation.MessageMapping;
@@ -13,10 +14,10 @@ import org.springframework.web.socket.messaging.SessionDisconnectEvent;
 import redis.clients.jedis.Jedis;
 import redis.clients.jedis.JedisPool;
 
+import javax.annotation.PostConstruct;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
-import java.util.stream.Collectors;
 
 @Controller
 public class WebsocketController {
@@ -24,10 +25,21 @@ public class WebsocketController {
     @Autowired
     private SimpMessagingTemplate simpMessagingTemplate;
 
-    private final JedisPool pool = new JedisPool("localhost", 6379);
+    @Value("${spring.redis.host}")
+    private String redisHost;
+
+    @Value("${spring.redis.port}")
+    private Integer redisPort;
+
+    private JedisPool pool;
 
     private final String userIdRedisHeader = "userId:";
     private final String sessionIdRedisHeader = "sessionId:";
+
+    @PostConstruct
+    public void initialize() {
+        this.pool = new JedisPool(this.redisHost, this.redisPort);
+    }
 
     @MessageMapping("/hello")
     @SendTo("/hall/greetings")
