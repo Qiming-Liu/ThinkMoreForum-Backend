@@ -48,8 +48,10 @@ public class WebsocketController {
         List<String> allAvailableKeyList = new ArrayList<String>();
 
         try (Jedis jedis = pool.getResource()) {
-            jedis.set(usernameRedisHeader + onlineMsg.getUsername(), onlineMsg.getStatus());
-            jedis.set(sessionIdRedisHeader + sessionId, onlineMsg.getUsername());
+            if (onlineMsg.getUsername().length() > 0) {
+                jedis.set(usernameRedisHeader + onlineMsg.getUsername(), onlineMsg.getStatus());
+                jedis.set(sessionIdRedisHeader + sessionId, onlineMsg.getUsername());
+            }
         } catch (Error error) {
             System.out.println("Failed to set user to online");
         }
