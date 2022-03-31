@@ -33,7 +33,7 @@ public class WebsocketController {
 
     private JedisPool pool;
 
-    private final String userIdRedisHeader = "userId:";
+    private final String usernameRedisHeader = "username:";
     private final String sessionIdRedisHeader = "sessionId:";
 
     @PostConstruct
@@ -48,14 +48,14 @@ public class WebsocketController {
         List<String> allAvailableKeyList = new ArrayList<String>();
 
         try (Jedis jedis = pool.getResource()) {
-            jedis.set(userIdRedisHeader + onlineMsg.getUserId(), onlineMsg.getStatus());
-            jedis.set(sessionIdRedisHeader + sessionId, onlineMsg.getUserId());
+            jedis.set(usernameRedisHeader + onlineMsg.getUsername(), onlineMsg.getStatus());
+            jedis.set(sessionIdRedisHeader + sessionId, onlineMsg.getUsername());
         } catch (Error error) {
             System.out.println("Failed to set user to online");
         }
 
         try (Jedis jedis = pool.getResource()) {
-            Set<String> allAvailableKeys = jedis.keys(userIdRedisHeader + "*");
+            Set<String> allAvailableKeys = jedis.keys(usernameRedisHeader + "*");
             allAvailableKeys.stream()
                     .forEach((key) -> {allAvailableKeyList.add(key);});
         } catch (Error error) {
@@ -75,8 +75,8 @@ public class WebsocketController {
     public void onDisconnectEvent(SessionDisconnectEvent event) {
         String userSessionId = event.getSessionId();
         try (Jedis jedis = pool.getResource()) {
-            String userId = jedis.get(sessionIdRedisHeader + userSessionId);
-            jedis.del(userIdRedisHeader + userId);
+            String username = jedis.get(sessionIdRedisHeader + userSessionId);
+            jedis.del(usernameRedisHeader + username);
             jedis.del(sessionIdRedisHeader + userSessionId);
         } catch (Error error) {
             System.out.println("Failed to set user to offline");
@@ -85,7 +85,7 @@ public class WebsocketController {
         List<String> onlineUserList = new ArrayList<String>();
 
         try (Jedis jedis = pool.getResource()) {
-            Set<String> onlineUserSet = jedis.keys(userIdRedisHeader + "*");
+            Set<String> onlineUserSet = jedis.keys(usernameRedisHeader + "*");
             onlineUserSet.stream()
                     .forEach((key) -> {onlineUserList.add(key);});
             this.simpMessagingTemplate.convertAndSend("/hall/greetings", onlineUserList);
