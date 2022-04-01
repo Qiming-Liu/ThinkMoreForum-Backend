@@ -97,8 +97,8 @@ public class PostService {
     @Transactional
     public List<PostGetDto> getPostByTitleContainingString(String string) {
         return postRepository.findByTitleContainingIgnoreCase(string).stream()
-                             .map(postMapper::fromEntity)
-                             .collect(Collectors.toList());
+                .map(postMapper::fromEntity)
+                .collect(Collectors.toList());
     }
 
     @Transactional

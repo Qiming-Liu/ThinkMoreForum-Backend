@@ -3,10 +3,21 @@ package com.thinkmore.forum.controller.v1;
 import com.thinkmore.forum.websocket.OnlineMsg;
 import com.thinkmore.forum.websocket.ReminderMessage;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.context.event.EventListener;
+import org.springframework.messaging.handler.annotation.Header;
 import org.springframework.messaging.handler.annotation.MessageMapping;
 import org.springframework.messaging.handler.annotation.SendTo;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.socket.messaging.SessionDisconnectEvent;
+import redis.clients.jedis.Jedis;
+import redis.clients.jedis.JedisPool;
+
+import javax.annotation.PostConstruct;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Set;
 
 @Controller
 public class WebsocketController {
@@ -14,17 +25,74 @@ public class WebsocketController {
     @Autowired
     private SimpMessagingTemplate simpMessagingTemplate;
 
+    @Value("${spring.redis.host}")
+    private String redisHost;
+
+    @Value("${spring.redis.port}")
+    private Integer redisPort;
+
+    private JedisPool pool;
+
+    private final String usernameRedisHeader = "username:";
+    private final String sessionIdRedisHeader = "sessionId:";
+
+    @PostConstruct
+    public void initialize() {
+        this.pool = new JedisPool(this.redisHost, this.redisPort);
+    }
+
     @MessageMapping("/hello")
     @SendTo("/hall/greetings")
-    public OnlineMsg rigisterOnline(OnlineMsg onlineMsg) throws Exception {
-        return onlineMsg;
+    public List<String> rigisterOnline(@Header("simpSessionId") String sessionId, OnlineMsg onlineMsg) throws Exception {
+
+        List<String> allAvailableKeyList = new ArrayList<String>();
+
+        try (Jedis jedis = pool.getResource()) {
+            if (onlineMsg.getUsername().length() > 0) {
+                jedis.set(usernameRedisHeader + onlineMsg.getUsername(), onlineMsg.getStatus());
+                jedis.set(sessionIdRedisHeader + sessionId, onlineMsg.getUsername());
+            }
+        } catch (Error error) {
+            System.out.println("Failed to set user to online");
+        }
+
+        try (Jedis jedis = pool.getResource()) {
+            Set<String> allAvailableKeys = jedis.keys(usernameRedisHeader + "*");
+            allAvailableKeys.stream()
+                    .forEach((key) -> {allAvailableKeyList.add(key);});
+        } catch (Error error) {
+            System.out.println("Failed to get online users");
+        }
+
+        return allAvailableKeyList;
     }
 
     @MessageMapping("/reminder")
     public ReminderMessage forwardReminder(ReminderMessage reminder){
         simpMessagingTemplate.convertAndSendToUser(reminder.getRecipient(), "/reminded", reminder);
-        System.out.println(reminder.toString());
         return reminder;
     }
 
+    @EventListener
+    public void onDisconnectEvent(SessionDisconnectEvent event) {
+        String userSessionId = event.getSessionId();
+        try (Jedis jedis = pool.getResource()) {
+            String username = jedis.get(sessionIdRedisHeader + userSessionId);
+            jedis.del(usernameRedisHeader + username);
+            jedis.del(sessionIdRedisHeader + userSessionId);
+        } catch (Error error) {
+            System.out.println("Failed to set user to offline");
+        }
+
+        List<String> onlineUserList = new ArrayList<String>();
+
+        try (Jedis jedis = pool.getResource()) {
+            Set<String> onlineUserSet = jedis.keys(usernameRedisHeader + "*");
+            onlineUserSet.stream()
+                    .forEach((key) -> {onlineUserList.add(key);});
+            this.simpMessagingTemplate.convertAndSend("/hall/greetings", onlineUserList);
+        } catch (Error error) {
+            System.out.println("Failed to broadcast online users list");
+        }
+    }
 }

@@ -6,6 +6,6 @@ import lombok.NoArgsConstructor;
 @Data
 @NoArgsConstructor
 public class OnlineMsg {
-    private String userId;
-    private Boolean online;
+    private String username;
+    private String status;
 }

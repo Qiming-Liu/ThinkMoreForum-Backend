@@ -17,7 +17,7 @@ public class Config {
     };
 
     // Role
-    public final static String DefaultRole = "unverified_user";
+    public final static String DefaultRole = "general_user";
 
     // Email
     public final static String DecodedKey = "1a53d4469f513e1ae3856fc2c603b8d6";
