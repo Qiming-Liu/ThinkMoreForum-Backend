@@ -9,6 +9,8 @@ services:
     ports:
       - "9002:9000"
       - "9001:9001"
+    volumes:
+      - ./data:/data
     command: server --console-address ":9001" /data
   nginx:
     container_name: nginx
