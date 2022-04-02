@@ -56,6 +56,10 @@ public class PostService {
     public PostCommentGetDto getMaxCountCommentPost(Pageable pageable) {
         List<Post> posts = postRepository.findByOrderByCommentCountDesc(pageable);
 
+        if (posts.size() < 3) {
+            return null;
+        }
+
         Random random = new Random();
         int i = random.nextInt(3);
 
@@ -69,7 +73,10 @@ public class PostService {
     }
 
     @Transactional
-    public String postPost(UUID userId, PostPostDto postPostDto) {
+    public String postPost
+            (UUID
+                     userId, PostPostDto
+                     postPostDto) {
 
         Post post = postMapper.toEntity(postPostDto);
         post.setPostUsers(usersRepository.getById(userId));
@@ -88,21 +95,26 @@ public class PostService {
     }
 
     @Transactional
-    public List<PostMiniGetDto> getAllPostsCoreInfo() {
+    public List<PostMiniGetDto> getAllPostsCoreInfo
+            () {
         return postRepository.findAll().stream()
                              .map(postMapper::entityToMiniDto)
                              .collect(Collectors.toList());
     }
 
     @Transactional
-    public List<PostGetDto> getPostByTitleContainingString(String string) {
+    public List<PostGetDto> getPostByTitleContainingString
+            (String
+                     string) {
         return postRepository.findByTitleContainingIgnoreCase(string).stream()
-                .map(postMapper::fromEntity)
-                .collect(Collectors.toList());
+                             .map(postMapper::fromEntity)
+                             .collect(Collectors.toList());
     }
 
     @Transactional
-    public List<PostGetDto> getPostsByPostUsersName(String username) {
+    public List<PostGetDto> getPostsByPostUsersName
+            (String
+                     username) {
         Users user = usersRepository.findByUsername(username)
                                     .orElseThrow(() -> new UserNotFoundException("Invalid UserName"));
         return postRepository.findByPostUsersId(user.getId()).stream()
@@ -111,19 +123,27 @@ public class PostService {
     }
 
     @Transactional
-    public long getCountOfVisiblePostsByCategoryId(UUID categoryId) {
+    public long getCountOfVisiblePostsByCategoryId
+            (UUID
+                     categoryId) {
         return postRepository.countByCategory_IdAndVisibilityIsTrue(categoryId);
     }
 
     @Transactional
-    public List<PostGetDto> getVisiblePostsByCategoryId(UUID categoryId, Pageable pageable) {
+    public List<PostGetDto> getVisiblePostsByCategoryId
+            (UUID
+                     categoryId, Pageable
+                     pageable) {
         return postRepository.findByCategory_IdAndVisibilityIsTrue(categoryId, pageable).stream()
                              .map(postMapper::fromEntity)
                              .collect(Collectors.toList());
     }
 
     @Transactional
-    public Boolean changePostVisibility(UUID postId, UUID userId) {
+    public Boolean changePostVisibility
+            (UUID
+                     postId, UUID
+                     userId) {
         Post oldPost = postRepository.findById(postId).get();
         Users requestInitiator = usersRepository.findById(userId).get();
         if (!requestInitiator.getRole().getRoleName().equals("admin")) {
@@ -144,7 +164,9 @@ public class PostService {
     }
 
     @Transactional
-    public void updateViewCount(UUID postId) {
+    public void updateViewCount
+            (UUID
+                     postId) {
         Post post = postRepository.findById(postId).get();
         post.setViewCount(post.getViewCount() + 1);
         postRepository.save(post);
