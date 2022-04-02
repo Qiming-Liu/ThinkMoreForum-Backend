@@ -13,8 +13,11 @@ import org.springframework.security.crypto.argon2.Argon2PasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.servlet.config.annotation.CorsRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
+import redis.clients.jedis.JedisPool;
+import redis.clients.jedis.JedisPoolConfig;
 
 import javax.crypto.SecretKey;
+
 import java.nio.charset.StandardCharsets;
 
 @EnableRabbit
@@ -30,6 +33,19 @@ public class Singleton {
     @Value("${minio.url}")
     private String minioUrl;
 
+    @Value("${spring.redis.host}")
+    private String redisHost;
+
+    @Value("${spring.redis.port}")
+    private Integer redisPort;
+
+    @Bean
+    public JedisPool jedisPool() {
+        JedisPoolConfig config = new JedisPoolConfig();
+        config.setJmxEnabled(false);
+        return new JedisPool(config, redisHost, redisPort);
+    }
+
     @Bean
     public static PasswordEncoder passwordEncoder() {
         return new Argon2PasswordEncoder();
@@ -40,7 +56,7 @@ public class Singleton {
     @Bean
     public MinioClient minioClient() throws Exception {
         MinioClient minioClient = MinioClient.builder().endpoint(minioUrl)
-                .credentials(minioUsername, minioPassword).build();
+                                             .credentials(minioUsername, minioPassword).build();
 
         boolean found = minioClient.bucketExists(BucketExistsArgs.builder().bucket(Config.BucketName).build());
         if (!found) {
@@ -61,7 +77,7 @@ public class Singleton {
             public void addCorsMappings(CorsRegistry registry) {
                 registry.addMapping("/**")
                         .allowedMethods("GET", "POST", "PUT", "DELETE")
-                        .allowedHeaders("X-Requested-With","Origin","Content-Type","Accept","Authorization")
+                        .allowedHeaders("X-Requested-With", "Origin", "Content-Type", "Accept", "Authorization")
                         .exposedHeaders("Access-Control-Allow-Headers", "Authorization, x-xsrf-token, Access-Control-Allow-Headers, Origin, Accept, X-Requested-With, Content-Type, Access-Control-Request-Method, Access-Control-Request-Headers")
                         .allowedOrigins("*");
             }

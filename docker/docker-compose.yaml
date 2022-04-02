@@ -46,7 +46,6 @@ services:
       RABBITMQ_DEFAULT_PASS: development
       REDIS_HOST: localhost
       REDIS_PORT: 6379
-      REDIS_PASSWORD: development
       MINIO_URL: https://img.thinkmoreapp.com
       MINIO_ROOT_USER: minio
       MINIO_ROOT_PASSWORD: development
