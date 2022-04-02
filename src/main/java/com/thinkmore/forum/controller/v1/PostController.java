@@ -3,7 +3,6 @@ package com.thinkmore.forum.controller.v1;
 import com.thinkmore.forum.dto.post.PostGetDto;
 import com.thinkmore.forum.dto.post.PostMiniPutDto;
 import com.thinkmore.forum.dto.post.PostPostDto;
-import com.thinkmore.forum.dto.users.UsersMiniPutDto;
 import com.thinkmore.forum.service.PostService;
 import com.thinkmore.forum.util.Util;
 import lombok.RequiredArgsConstructor;
