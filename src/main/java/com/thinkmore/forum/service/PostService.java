@@ -1,10 +1,7 @@
 package com.thinkmore.forum.service;
 
 import com.thinkmore.forum.dto.comment.CommentGetDto;
-import com.thinkmore.forum.dto.post.PostCommentGetDto;
-import com.thinkmore.forum.dto.post.PostGetDto;
-import com.thinkmore.forum.dto.post.PostMiniGetDto;
-import com.thinkmore.forum.dto.post.PostPostDto;
+import com.thinkmore.forum.dto.post.*;
 import com.thinkmore.forum.entity.Category;
 import com.thinkmore.forum.entity.Comment;
 import com.thinkmore.forum.entity.Post;
@@ -92,6 +89,29 @@ public class PostService {
         categoryService.updateParticipant(post.getCategory().getId());
 
         return post.getId().toString();
+    }
+
+    @Transactional
+    public boolean editPost (UUID postId, UUID userId, PostMiniPutDto postMiniPutDto) {
+        Post currentPost = postRepository.findById(postId).get();
+        Users requestUser = usersRepository.findById(userId).get();
+        if (!requestUser.getRole().getRoleName().equals("admin")) {
+            if (!currentPost.getPostUsers().getId().equals(userId)) {
+                return false;
+            }
+        }
+
+        currentPost.setHeadImgUrl(postMiniPutDto.getHeadImgUrl());
+        currentPost.setTitle(postMiniPutDto.getTitle());
+        currentPost.setContext(postMiniPutDto.getContext());
+        postRepository.save(currentPost);
+
+        Category categoryToUpdate = categoryRepository.findById(currentPost.getCategory().getId()).get();
+        int newPostCount = (int) postRepository.countByCategory_IdAndVisibilityIsTrue(categoryToUpdate.getId());
+        categoryToUpdate.setPostCount(newPostCount);
+        categoryRepository.save(categoryToUpdate);
+
+        return true;
     }
 
     @Transactional
