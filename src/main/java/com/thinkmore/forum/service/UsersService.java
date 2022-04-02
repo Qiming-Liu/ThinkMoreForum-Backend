@@ -1,10 +1,7 @@
 package com.thinkmore.forum.service;
 
 import com.thinkmore.forum.dto.oauth.OauthPostDto;
-import com.thinkmore.forum.dto.users.UsersGetDto;
-import com.thinkmore.forum.dto.users.UsersImgPutDto;
-import com.thinkmore.forum.dto.users.UsersMiniPutDto;
-import com.thinkmore.forum.dto.users.UsersPostDto;
+import com.thinkmore.forum.dto.users.*;
 import com.thinkmore.forum.entity.JwtUser;
 import com.thinkmore.forum.configuration.Config;
 import com.thinkmore.forum.entity.Oauth;
@@ -242,11 +239,11 @@ public class UsersService implements UserDetailsService {
     }
 
     @Transactional
-    public boolean resetPassword(UUID usersId, String password) {
+    public boolean resetPassword(UUID usersId, UsersPasswordPutDto password) {
         Users user = usersRepository.findById(usersId)
                                     .orElseThrow(() -> new UserNotFoundException("Invalid UserID"));
 
-        user.setPassword(Singleton.passwordEncoder().encode(password));
+        user.setPassword(Singleton.passwordEncoder().encode(password.getPassword()));
         usersRepository.save(user);
         return true;
     }
