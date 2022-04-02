@@ -54,7 +54,10 @@ public class CommentService {
 
         String context;
         Users notifyUser;
-        if (comment.getParentComment() == null) {
+        if (comment.getMentionUsers() != null) {
+            notifyUser = comment.getMentionUsers();
+            context = comment.getCommentUsers().getUsername() + " mentioned you in a comment";
+        } else if (comment.getParentComment() == null) {
             notifyUser = comment.getPost().getPostUsers();
             context = " replied your post.";
         } else {
