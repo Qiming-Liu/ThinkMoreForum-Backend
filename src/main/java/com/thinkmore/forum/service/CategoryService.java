@@ -81,6 +81,7 @@ public class CategoryService {
             if (category.getId() == null) {
                 return false;
             }
+            category.setLastUpdateTimestamp(OffsetDateTime.now());
             return true;
         }).collect(Collectors.toList());
 

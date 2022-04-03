@@ -1,4 +1,5 @@
-CREATE EXTENSION IF NOT EXISTS pgcrypto;
+CREATE
+EXTENSION IF NOT EXISTS pgcrypto;
 
 CREATE TABLE img
 (
@@ -62,7 +63,7 @@ CREATE TABLE category
     description           varchar(255),
     view_count            int                      DEFAULT 0,
     post_count            int                      DEFAULT 0,
-    sort_order            int         NOT NULL UNIQUE,
+    sort_order            int         NOT NULL,
     participant_count     int                      DEFAULT 0,
     last_update_timestamp timestamp with time zone DEFAULT now()
 );
