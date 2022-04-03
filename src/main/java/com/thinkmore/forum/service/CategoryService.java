@@ -55,15 +55,8 @@ public class CategoryService {
     public Boolean putCategory(List<CategoryPutDto> categoryPutDtoList) {
         List<Category> categoryNewList = categoryPutDtoList.stream().map(categoryMapper::toEntity).collect(Collectors.toList());
         List<Category> categoryOldList = categoryRepository.findByOrderBySortOrderAsc();
-        if (categoryOldList.get(0).getSortOrder() >= 10000) {
-            for (int i = 0; i < categoryNewList.size(); i++) {
-                categoryNewList.get(i).setSortOrder(i);
-            }
-        }
-        else {
-            for (int i = 0; i < categoryNewList.size(); i++) {
-                categoryNewList.get(i).setSortOrder(i+10000);
-            }
+        for (int i = 0; i < categoryNewList.size(); i++) {
+            categoryNewList.get(i).setSortOrder(i);
         }
 
         List<Category> removeList = categoryOldList.stream().filter(category -> {
