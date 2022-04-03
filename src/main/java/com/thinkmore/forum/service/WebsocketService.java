@@ -1,76 +1,54 @@
 package com.thinkmore.forum.service;
 
-import com.thinkmore.forum.websocket.OnlineMsg;
-import com.thinkmore.forum.websocket.ReminderMessage;
+import com.thinkmore.forum.entity.redis.OnlineUser;
+import com.thinkmore.forum.entity.websocket.OnlineMessage;
+import com.thinkmore.forum.entity.websocket.ReminderMessage;
+import com.thinkmore.forum.repository.OnlineUsersRepository;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.socket.messaging.SessionDisconnectEvent;
-import redis.clients.jedis.Jedis;
-import redis.clients.jedis.JedisPool;
 
 import java.util.*;
+import java.util.stream.Collectors;
 
 @Slf4j
 @Service
 @RequiredArgsConstructor
 public class WebsocketService {
-    private final JedisPool jedisPool;
+    private final OnlineUsersRepository onlineUsersRepository;
     private final SimpMessagingTemplate simpMessagingTemplate;
 
-    private final String usernameRedisHeader = "username:";
-    private final String sessionIdRedisHeader = "sessionId:";
+    @Transactional
+    public List<String> signOnline(String sessionId, OnlineMessage onlineMsg) {
 
-    public List<String> signOnline(String sessionId, OnlineMsg onlineMsg) {
-
-        List<String> allAvailableKeyList = new ArrayList<>();
-
-        try (Jedis jedis = jedisPool.getResource()) {
-            if (onlineMsg.getUsername().length() > 0) {
-                jedis.set(usernameRedisHeader + onlineMsg.getUsername(), onlineMsg.getStatus());
-                jedis.set(sessionIdRedisHeader + sessionId, onlineMsg.getUsername());
+        if (onlineMsg.getUsername().length() > 0) {
+            if(onlineUsersRepository.findByUsername(onlineMsg.getUsername()).isEmpty()){
+                OnlineUser onlineUser = new OnlineUser();
+                onlineUser.setId(sessionId);
+                onlineUser.setUsername(onlineMsg.getUsername());
+                onlineUsersRepository.save(onlineUser);
             }
-        } catch (Error error) {
-            log.info("Failed to set user to online");
-            throw new RuntimeException(error);
         }
 
-        try (Jedis jedis = jedisPool.getResource()) {
-            Set<String> allAvailableKeys = jedis.keys(usernameRedisHeader + "*");
-            allAvailableKeyList.addAll(allAvailableKeys);
-        } catch (Error error) {
-            log.info("Failed to get online users");
-            throw new RuntimeException(error);
-        }
-
-        return allAvailableKeyList;
+        List<OnlineUser> onlineUserList = onlineUsersRepository.findAll();
+        return onlineUserList.stream().map(OnlineUser::getUsername).collect(Collectors.toList());
     }
 
+    @Transactional
     public ReminderMessage forwardReminder(ReminderMessage reminder){
         simpMessagingTemplate.convertAndSendToUser(reminder.getRecipient(), "/reminded", reminder);
         return reminder;
     }
 
+    @Transactional
     public void signOffline(SessionDisconnectEvent event) {
-        String userSessionId = event.getSessionId();
-        try (Jedis jedis = jedisPool.getResource()) {
-            String username = jedis.get(sessionIdRedisHeader + userSessionId);
-            jedis.del(usernameRedisHeader + username);
-            jedis.del(sessionIdRedisHeader + userSessionId);
-        } catch (Error error) {
-            System.out.println("Failed to set user to offline");
-        }
+        onlineUsersRepository.findById(event.getSessionId()).ifPresent(onlineUsersRepository::delete);
 
-        List<String> onlineUserList = new ArrayList<>();
-
-        try (Jedis jedis = jedisPool.getResource()) {
-            Set<String> onlineUserSet = jedis.keys(usernameRedisHeader + "*");
-            onlineUserList.addAll(onlineUserSet);
-            this.simpMessagingTemplate.convertAndSend("/hall/greetings", onlineUserList);
-        } catch (Error error) {
-            System.out.println("Failed to broadcast online users list");
-        }
+        List<OnlineUser> onlineUserList = onlineUsersRepository.findAll();
+        this.simpMessagingTemplate.convertAndSend("/hall/greetings", onlineUserList.stream().map(OnlineUser::getUsername).collect(Collectors.toList()));
     }
 }

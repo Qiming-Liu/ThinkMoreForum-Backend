@@ -3,19 +3,19 @@ package com.thinkmore.forum.service;
 import com.thinkmore.forum.dto.oauth.OauthPostDto;
 import com.thinkmore.forum.dto.users.*;
 import com.thinkmore.forum.entity.JwtUser;
-import com.thinkmore.forum.configuration.Config;
+import com.thinkmore.forum.configuration.StaticConfig;
 import com.thinkmore.forum.entity.Oauth;
 import com.thinkmore.forum.entity.Roles;
 import com.thinkmore.forum.entity.Users;
 import com.thinkmore.forum.exception.InvalidOldPasswordException;
 import com.thinkmore.forum.exception.UserNotFoundException;
 import com.thinkmore.forum.mapper.UsersMapper;
-import com.thinkmore.forum.message.ResetPasswordEmailMessage;
-import com.thinkmore.forum.message.VerificationEmailMessage;
+import com.thinkmore.forum.entity.rabbitmq.ResetPasswordEmailMessage;
+import com.thinkmore.forum.entity.rabbitmq.VerificationEmailMessage;
 import com.thinkmore.forum.repository.OauthRepository;
 import com.thinkmore.forum.repository.RolesRepository;
 import com.thinkmore.forum.repository.UsersRepository;
-import com.thinkmore.forum.configuration.Singleton;
+import com.thinkmore.forum.configuration.RabbitMinioConfig;
 import com.thinkmore.forum.util.Util;
 
 import lombok.RequiredArgsConstructor;
@@ -26,6 +26,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -46,6 +47,9 @@ public class UsersService implements UserDetailsService {
     @Autowired
     RabbitTemplate rabbitTemplate;
 
+    @Autowired
+    PasswordEncoder passwordEncoder;
+
     private final UsersRepository usersRepository;
     private final OauthRepository oauthRepository;
     private final UsersMapper usersMapper;
@@ -64,9 +68,9 @@ public class UsersService implements UserDetailsService {
         Users user = usersMapper.toEntity(usersPostDto);
 
         user.setUsername(usersPostDto.getUsername());
-        user.setPassword(Singleton.passwordEncoder().encode(usersPostDto.getPassword()));
+        user.setPassword(passwordEncoder.encode(usersPostDto.getPassword()));
         user.setEmail(usersPostDto.getEmail());
-        user.setRole(rolesRepository.findByRoleName(Config.DefaultRole).orElseThrow());
+        user.setRole(rolesRepository.findByRoleName(StaticConfig.DefaultRole).orElseThrow());
 
         usersRepository.save(user);
 
@@ -77,7 +81,7 @@ public class UsersService implements UserDetailsService {
     public Boolean thirdPartyLogin(String email, String username, OauthPostDto oauthPostDto) {
         if (!uniqueEmail(email)) {
             Users users = usersRepository.findByEmail(email).get();
-            users.setPassword(Singleton.passwordEncoder().encode(oauthPostDto.getOpenid()));
+            users.setPassword(passwordEncoder.encode(oauthPostDto.getOpenid()));
 
             Oauth oauth = new Oauth();
 
@@ -95,8 +99,8 @@ public class UsersService implements UserDetailsService {
 
         user.setEmail(email);
         user.setUsername(username);
-        user.setPassword(Singleton.passwordEncoder().encode(oauthPostDto.getOpenid()));
-        user.setRole(rolesRepository.findByRoleName(Config.DefaultRole).orElseThrow());
+        user.setPassword(passwordEncoder.encode(oauthPostDto.getOpenid()));
+        user.setRole(rolesRepository.findByRoleName(StaticConfig.DefaultRole).orElseThrow());
 
         usersRepository.save(user);
 
@@ -176,16 +180,16 @@ public class UsersService implements UserDetailsService {
                                     .orElseThrow(() -> new UserNotFoundException("Invalid UserID"));
 
         Util.createMail(
-                Config.fromEmail,
+                StaticConfig.fromEmail,
                 user.getEmail(),
                 "Change Email Request",
                 "Your account " + user.getUsername() + " is changing email to " + message.getNew_email());
 
         Util.createMail(
-                Config.fromEmail,
+                StaticConfig.fromEmail,
                 message.getNew_email(),
                 "Verify Email",
-                Config.VerifyEmailContext + domainName + Config.VerifyEmailUrl + message.getNew_email());
+                StaticConfig.VerifyEmailContext + domainName + StaticConfig.VerifyEmailUrl + message.getNew_email());
     }
 
     @Transactional
@@ -204,11 +208,11 @@ public class UsersService implements UserDetailsService {
         Users user = usersRepository.findById(usersId)
                                     .orElseThrow(() -> new UserNotFoundException("Invalid UserID"));
 
-        if (!Singleton.passwordEncoder().matches(usersMiniPutDto.getOldPassword(), user.getPassword())) {
+        if (!passwordEncoder.matches(usersMiniPutDto.getOldPassword(), user.getPassword())) {
             throw new InvalidOldPasswordException("Old password is wrong");
         }
 
-        user.setPassword(Singleton.passwordEncoder().encode(usersMiniPutDto.getNewPassword()));
+        user.setPassword(passwordEncoder.encode(usersMiniPutDto.getNewPassword()));
         usersRepository.save(user);
         return true;
     }
@@ -227,14 +231,14 @@ public class UsersService implements UserDetailsService {
 
         if (user.isPresent()) {
 
-            String encode = Util.UrlEncoder(Config.JwtPrefix + Util.generateJwt(new JwtUser(user.get())));
+            String encode = Util.UrlEncoder(StaticConfig.JwtPrefix + Util.generateJwt(new JwtUser(user.get())));
 
             Util.createMail(
-                    Config.fromEmail,
+                    StaticConfig.fromEmail,
                     message.getEmail(),
                     "Reset password",
-                    Config.ResetPasswordContext +
-                            domainName + Config.ResetPasswordUrl + encode);
+                    StaticConfig.ResetPasswordContext +
+                            domainName + StaticConfig.ResetPasswordUrl + encode);
         }
     }
 
@@ -243,7 +247,7 @@ public class UsersService implements UserDetailsService {
         Users user = usersRepository.findById(usersId)
                                     .orElseThrow(() -> new UserNotFoundException("Invalid UserID"));
 
-        user.setPassword(Singleton.passwordEncoder().encode(password.getPassword()));
+        user.setPassword(passwordEncoder.encode(password.getPassword()));
         usersRepository.save(user);
         return true;
     }

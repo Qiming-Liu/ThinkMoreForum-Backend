@@ -50,7 +50,7 @@ public class SwaggerConfig {
                 .description("JWT")
                 .modelRef(new ModelRef("string"))
                 .parameterType("header")
-                .defaultValue(Config.JwtPrefix + "{jwt}")
+                .defaultValue(StaticConfig.JwtPrefix + "{jwt}")
                 .required(false);
         pars.add(tokenPar.build());
         return pars;

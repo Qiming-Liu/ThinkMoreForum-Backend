@@ -1,4 +1,4 @@
-package com.thinkmore.forum.message;
+package com.thinkmore.forum.entity.rabbitmq;
 
 import java.io.Serializable;
 

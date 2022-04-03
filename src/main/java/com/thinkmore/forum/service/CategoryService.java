@@ -35,6 +35,7 @@ public class CategoryService {
 
     @Transactional
     public List<CategoryGetDto> getAllCategories() {
+        int i = 0;
         return categoryRepository.findByOrderBySortOrderAsc().stream().map(categoryMapper::fromEntity).collect(Collectors.toList());
     }
 
