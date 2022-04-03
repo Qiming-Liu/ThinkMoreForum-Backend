@@ -1,10 +1,17 @@
 package com.thinkmore.forum.configuration;
 
+import java.nio.charset.StandardCharsets;
+
+import javax.crypto.SecretKey;
+
 import com.thinkmore.forum.filter.JwtGenerateFilter;
 import com.thinkmore.forum.filter.JwtCheckFilter;
 import com.thinkmore.forum.service.UsersService;
+
+import io.jsonwebtoken.security.Keys;
 import lombok.RequiredArgsConstructor;
 import lombok.SneakyThrows;
+import org.jetbrains.annotations.NotNull;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
@@ -13,6 +20,10 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.config.http.SessionCreationPolicy;
+import org.springframework.security.crypto.argon2.Argon2PasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.web.servlet.config.annotation.CorsRegistry;
+import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
 @Configuration
 @RequiredArgsConstructor
@@ -20,6 +31,8 @@ import org.springframework.security.config.http.SessionCreationPolicy;
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     private final UsersService usersService;
+
+    public final static SecretKey secretKey = Keys.hmacShaKeyFor(StaticConfig.JwtSecretKey.getBytes(StandardCharsets.UTF_8));
 
     @SneakyThrows
     protected void configure(HttpSecurity http) {
@@ -32,7 +45,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .addFilter(new JwtGenerateFilter(usersService, authenticationManager()))
                 .addFilterAfter(new JwtCheckFilter(), JwtGenerateFilter.class)
                 .authorizeRequests()
-                .antMatchers(Config.ignoreUrl).permitAll()
+                .antMatchers(StaticConfig.ignoreUrl).permitAll()
                 .anyRequest().authenticated();
     }
 
@@ -45,8 +58,13 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     @Bean
     public DaoAuthenticationProvider daoAuthenticationProvider() {
         DaoAuthenticationProvider provider = new DaoAuthenticationProvider();
-        provider.setPasswordEncoder(Singleton.passwordEncoder());
+        provider.setPasswordEncoder(passwordEncoder());
         provider.setUserDetailsService(usersService);
         return provider;
+    }
+
+    @Bean
+    public static PasswordEncoder passwordEncoder() {
+        return new Argon2PasswordEncoder();
     }
 }

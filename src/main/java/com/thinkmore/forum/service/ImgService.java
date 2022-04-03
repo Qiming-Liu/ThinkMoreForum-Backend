@@ -1,6 +1,6 @@
 package com.thinkmore.forum.service;
 
-import com.thinkmore.forum.configuration.Config;
+import com.thinkmore.forum.configuration.StaticConfig;
 import com.thinkmore.forum.entity.Img;
 import com.thinkmore.forum.repository.ImgRepository;
 import io.minio.*;
@@ -13,7 +13,6 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.ByteArrayInputStream;
-import java.io.InputStream;
 import java.util.*;
 
 @Slf4j
@@ -46,7 +45,7 @@ public class ImgService {
 
         minioClient.putObject(
                 PutObjectArgs.builder()
-                        .bucket(Config.BucketName)
+                        .bucket(StaticConfig.BucketName)
                         .object(fileName)
                         .stream(new ByteArrayInputStream(imgBytes), imgBytes.length, -1)
                         .contentType(fileName.endsWith(".png") ? "image/png" : "image/jpeg")
@@ -54,7 +53,7 @@ public class ImgService {
 
         // set
         Img theImg = new Img();
-        theImg.setUrl(minioUrl + "/" + Config.BucketName + "/" + fileName);
+        theImg.setUrl(minioUrl + "/" + StaticConfig.BucketName + "/" + fileName);
         theImg.setMd5(md5);
         imgRepository.save(theImg);
 

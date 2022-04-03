@@ -10,8 +10,8 @@ import com.sendgrid.helpers.mail.Mail;
 import com.sendgrid.helpers.mail.objects.Content;
 import com.sendgrid.helpers.mail.objects.Email;
 
-import com.thinkmore.forum.configuration.Config;
-import com.thinkmore.forum.configuration.Singleton;
+import com.thinkmore.forum.configuration.SecurityConfig;
+import com.thinkmore.forum.configuration.StaticConfig;
 import com.thinkmore.forum.entity.JwtUser;
 
 import io.jsonwebtoken.Jwts;
@@ -23,7 +23,6 @@ import org.springframework.web.server.ResponseStatusException;
 
 import javax.crypto.Cipher;
 import javax.crypto.spec.SecretKeySpec;
-import javax.naming.NoPermissionException;
 
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
@@ -47,17 +46,17 @@ public class Util {
                    .setAudience(user.getPermission())
                    .setIssuedAt(new Date())
                    .setExpiration(java.sql.Date.valueOf(LocalDate.now().plusDays(1)))
-                   .signWith(Singleton.secretKey)
+                   .signWith(SecurityConfig.secretKey)
                    .compact();
     }
 
     public static void createMail(String from, String to, String emailTitle, String emailContent) throws Exception {
         Content content = new Content("text/plain", emailContent);
         Mail mail = new Mail(new Email(from), emailTitle, new Email(to), content);
-        Key key = new SecretKeySpec(Hex.decodeHex(Config.DecodedKey), "AES");
+        Key key = new SecretKeySpec(Hex.decodeHex(StaticConfig.DecodedKey), "AES");
         Cipher cipher = Cipher.getInstance("AES/ECB/PKCS5Padding");
         cipher.init(Cipher.DECRYPT_MODE, key);
-        SendGrid sg = new SendGrid(new String(cipher.doFinal(Hex.decodeHex(Config.Apikey))));
+        SendGrid sg = new SendGrid(new String(cipher.doFinal(Hex.decodeHex(StaticConfig.Apikey))));
         Request request = new Request();
         request.setMethod(Method.POST);
         request.setEndpoint("mail/send");

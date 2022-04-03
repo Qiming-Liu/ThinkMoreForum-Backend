@@ -1,8 +1,8 @@
 package com.thinkmore.forum.controller.v1;
 
 import com.thinkmore.forum.service.WebsocketService;
-import com.thinkmore.forum.websocket.OnlineMsg;
-import com.thinkmore.forum.websocket.ReminderMessage;
+import com.thinkmore.forum.entity.websocket.OnlineMessage;
+import com.thinkmore.forum.entity.websocket.ReminderMessage;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.event.EventListener;
@@ -22,7 +22,7 @@ public class WebsocketController {
 
     @MessageMapping("/hello")
     @SendTo("/hall/greetings")
-    public List<String> signOnline(@Header("simpSessionId") String sessionId, OnlineMsg onlineMsg) {
+    public List<String> signOnline(@Header("simpSessionId") String sessionId, OnlineMessage onlineMsg) {
         return websocketService.signOnline(sessionId, onlineMsg);
     }
 
