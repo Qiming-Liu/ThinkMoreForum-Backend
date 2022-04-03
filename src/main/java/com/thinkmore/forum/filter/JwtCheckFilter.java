@@ -3,6 +3,7 @@ package com.thinkmore.forum.filter;
 import com.thinkmore.forum.configuration.SecurityConfig;
 import com.thinkmore.forum.configuration.StaticConfig;
 import com.thinkmore.forum.entity.JwtUser;
+import com.thinkmore.forum.service.JwtRouterService;
 import com.thinkmore.forum.util.Util;
 
 import io.jsonwebtoken.*;
@@ -27,6 +28,7 @@ import java.util.ArrayList;
 @Slf4j
 @RequiredArgsConstructor
 public class JwtCheckFilter extends OncePerRequestFilter {
+    private final JwtRouterService jwtRouterService;
 
     @Override
     protected void doFilterInternal(HttpServletRequest request, @NotNull HttpServletResponse response, @NotNull FilterChain filterChain) throws ServletException, IOException {
@@ -36,14 +38,15 @@ public class JwtCheckFilter extends OncePerRequestFilter {
             return;
         }
 
-        String token = authorizationHeader.replace(StaticConfig.JwtPrefix, "");
+        String fakeJwt = authorizationHeader.replace(StaticConfig.JwtPrefix, "");
+        String realJwt = jwtRouterService.getRealJwt(fakeJwt);
 
         try {
             //check jwt
             Jws<Claims> claimsJws = Jwts.parserBuilder()
                                         .setSigningKey(SecurityConfig.secretKey)
                                         .build()
-                                        .parseClaimsJws(token);
+                                        .parseClaimsJws(realJwt);
             Claims body = claimsJws.getBody();
 
             ArrayList<String> principal = new ArrayList<>();
@@ -60,8 +63,10 @@ public class JwtCheckFilter extends OncePerRequestFilter {
 
             //update jwt
             JwtUser jwtUser = new JwtUser(principal);
+            String newJwt = Util.generateJwt(jwtUser);
+            response.addHeader(HttpHeaders.AUTHORIZATION, StaticConfig.JwtPrefix + jwtRouterService.getFakeJwt(newJwt));
+            jwtRouterService.delete(fakeJwt);
 
-            response.addHeader(HttpHeaders.AUTHORIZATION, StaticConfig.JwtPrefix + Util.generateJwt(jwtUser));
         } catch (ExpiredJwtException e) {
             response.setStatus(HttpStatus.UNAUTHORIZED.value());
             log.info(String.valueOf(e));
