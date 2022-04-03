@@ -1,6 +1,5 @@
 package com.thinkmore.forum.configuration;
 
-
 public class StaticConfig {
     public final static String[] ignoreUrl = new String[]{
             // -- Swagger UI v2

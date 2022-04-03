@@ -13,7 +13,6 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.socket.messaging.SessionDisconnectEvent;
 
 import java.util.*;
-import java.util.stream.Collectors;
 
 @Slf4j
 @Service
@@ -23,19 +22,24 @@ public class WebsocketService {
     private final SimpMessagingTemplate simpMessagingTemplate;
 
     @Transactional
+    public List<String> getOnlineUser() {
+        List<OnlineUser> onlineUserList = onlineUsersRepository.findAll();
+        Set<String> onlineUserSet = new HashSet<>();
+        onlineUserList.forEach(onlineUser -> onlineUserSet.add(onlineUser.getUsername()));
+        return new ArrayList<>(onlineUserSet);
+    }
+
+    @Transactional
     public List<String> signOnline(String sessionId, OnlineMessage onlineMsg) {
 
         if (onlineMsg.getUsername().length() > 0) {
-            if(onlineUsersRepository.findByUsername(onlineMsg.getUsername()).isEmpty()){
-                OnlineUser onlineUser = new OnlineUser();
-                onlineUser.setId(sessionId);
-                onlineUser.setUsername(onlineMsg.getUsername());
-                onlineUsersRepository.save(onlineUser);
-            }
+            OnlineUser onlineUser = new OnlineUser();
+            onlineUser.setId(sessionId);
+            onlineUser.setUsername(onlineMsg.getUsername());
+            onlineUsersRepository.save(onlineUser);
         }
 
-        List<OnlineUser> onlineUserList = onlineUsersRepository.findAll();
-        return onlineUserList.stream().map(OnlineUser::getUsername).collect(Collectors.toList());
+        return getOnlineUser();
     }
 
     @Transactional
@@ -48,7 +52,6 @@ public class WebsocketService {
     public void signOffline(SessionDisconnectEvent event) {
         onlineUsersRepository.findById(event.getSessionId()).ifPresent(onlineUsersRepository::delete);
 
-        List<OnlineUser> onlineUserList = onlineUsersRepository.findAll();
-        this.simpMessagingTemplate.convertAndSend("/hall/greetings", onlineUserList.stream().map(OnlineUser::getUsername).collect(Collectors.toList()));
+        this.simpMessagingTemplate.convertAndSend("/hall/greetings", getOnlineUser());
     }
 }

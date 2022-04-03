@@ -12,8 +12,6 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 import java.util.UUID;
 
-import javax.naming.NoPermissionException;
-
 @RestController
 @RequestMapping(path = "/v1/category")
 @RequiredArgsConstructor

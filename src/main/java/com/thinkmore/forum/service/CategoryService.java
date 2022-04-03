@@ -22,8 +22,6 @@ import java.util.Optional;
 import java.util.UUID;
 import java.util.stream.Collectors;
 
-import static org.springframework.data.jpa.domain.AbstractPersistable_.id;
-
 @Service
 @RequiredArgsConstructor
 public class CategoryService {
@@ -35,7 +33,6 @@ public class CategoryService {
 
     @Transactional
     public List<CategoryGetDto> getAllCategories() {
-        int i = 0;
         return categoryRepository.findByOrderBySortOrderAsc().stream().map(categoryMapper::fromEntity).collect(Collectors.toList());
     }
 

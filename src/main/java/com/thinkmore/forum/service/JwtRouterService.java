@@ -1,9 +1,7 @@
 package com.thinkmore.forum.service;
 
 import java.util.Optional;
-import java.util.Random;
 
-import com.thinkmore.forum.configuration.StaticConfig;
 import com.thinkmore.forum.entity.redis.JwtRouter;
 import com.thinkmore.forum.repository.JwtRouterRepository;
 
@@ -38,13 +36,13 @@ public class JwtRouterService {
         return fakeJwt;
     }
 
-    @Scheduled(cron = "0 0 19 * * ?")
-    public void cleanExpired() {
-        jwtRouterRepository.deleteAll();
-    }
-
     @Transactional
     public void delete(String fakeJwt) {
         jwtRouterRepository.deleteById(fakeJwt);
+    }
+
+    @Scheduled(cron = "0 0 19 * * ?")
+    public void clean() {
+        jwtRouterRepository.deleteAll();
     }
 }
