@@ -65,8 +65,9 @@ public class JwtCheckFilter extends OncePerRequestFilter {
             JwtUser jwtUser = new JwtUser(principal);
             String newJwt = Util.generateJwt(jwtUser);
             response.addHeader(HttpHeaders.AUTHORIZATION, StaticConfig.JwtPrefix + jwtRouterService.getFakeJwt(newJwt));
-            jwtRouterService.delete(fakeJwt);
-
+            if (StaticConfig.JwtOnlyOne) {
+                jwtRouterService.delete(fakeJwt);
+            }
         } catch (ExpiredJwtException e) {
             response.setStatus(HttpStatus.UNAUTHORIZED.value());
             log.info(String.valueOf(e));

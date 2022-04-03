@@ -1,7 +1,7 @@
 package com.thinkmore.forum.configuration;
 
 public class StaticConfig {
-    public final static String[] ignoreUrl = new String[]{
+    public final static String[] ignoreUrl = new String[] {
             // -- Swagger UI v2
             "/v2/api-docs",
             "/swagger-resources",
@@ -32,4 +32,5 @@ public class StaticConfig {
     // JWT
     public final static String JwtSecretKey = "https://github.com/Qiming-Liu/ThinkMoreForum-Backend";
     public final static String JwtPrefix = "Bearer ";
+    public final static Boolean JwtOnlyOne = false;
 }
