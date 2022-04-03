@@ -6,6 +6,7 @@ import javax.crypto.SecretKey;
 
 import com.thinkmore.forum.filter.JwtGenerateFilter;
 import com.thinkmore.forum.filter.JwtCheckFilter;
+import com.thinkmore.forum.service.JwtRouterService;
 import com.thinkmore.forum.service.UsersService;
 
 import io.jsonwebtoken.security.Keys;
@@ -31,6 +32,7 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     private final UsersService usersService;
+    private final JwtRouterService jwtRouterService;
 
     public final static SecretKey secretKey = Keys.hmacShaKeyFor(StaticConfig.JwtSecretKey.getBytes(StandardCharsets.UTF_8));
 
@@ -42,8 +44,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .csrf().disable()
                 .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                 .and()
-                .addFilter(new JwtGenerateFilter(usersService, authenticationManager()))
-                .addFilterAfter(new JwtCheckFilter(), JwtGenerateFilter.class)
+                .addFilter(new JwtGenerateFilter(usersService, jwtRouterService, authenticationManager()))
+                .addFilterAfter(new JwtCheckFilter(jwtRouterService), JwtGenerateFilter.class)
                 .authorizeRequests()
                 .antMatchers(StaticConfig.ignoreUrl).permitAll()
                 .anyRequest().authenticated();

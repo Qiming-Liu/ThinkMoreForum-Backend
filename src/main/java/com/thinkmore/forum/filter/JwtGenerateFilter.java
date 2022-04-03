@@ -8,6 +8,7 @@ import com.google.gson.JsonParser;
 import com.thinkmore.forum.dto.users.UsersGetDto;
 import com.thinkmore.forum.entity.JwtUser;
 import com.thinkmore.forum.configuration.StaticConfig;
+import com.thinkmore.forum.service.JwtRouterService;
 import com.thinkmore.forum.service.UsersService;
 import com.thinkmore.forum.util.Util;
 import lombok.RequiredArgsConstructor;
@@ -29,6 +30,7 @@ import java.util.stream.Collectors;
 @RequiredArgsConstructor
 public class JwtGenerateFilter extends UsernamePasswordAuthenticationFilter {
     private final UsersService usersService;
+    private final JwtRouterService jwtRouterService;
     private final AuthenticationManager authenticationManager;
 
     @SneakyThrows
@@ -57,7 +59,8 @@ public class JwtGenerateFilter extends UsernamePasswordAuthenticationFilter {
 
         //generate jwt
         JwtUser jwtUser = (JwtUser) authResult.getPrincipal();
-        response.addHeader(HttpHeaders.AUTHORIZATION, StaticConfig.JwtPrefix + Util.generateJwt(jwtUser));
+        String newJwt = Util.generateJwt(jwtUser);
+        response.addHeader(HttpHeaders.AUTHORIZATION, StaticConfig.JwtPrefix + jwtRouterService.getFakeJwt(newJwt));
 
         //return user info
         response.setContentType("application/json");
