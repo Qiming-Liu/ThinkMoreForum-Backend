@@ -32,5 +32,4 @@ public class StaticConfig {
     // JWT
     public final static String JwtSecretKey = "https://github.com/Qiming-Liu/ThinkMoreForum-Backend";
     public final static String JwtPrefix = "Bearer ";
-    public final static Boolean JwtOnlyOne = false;
 }

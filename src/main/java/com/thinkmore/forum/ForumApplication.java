@@ -9,7 +9,6 @@ import org.springframework.scheduling.annotation.EnableScheduling;
 
 @Slf4j
 @SpringBootApplication
-@EnableScheduling
 public class ForumApplication{
 
     public static void main(String[] args){

@@ -8,7 +8,6 @@ import com.thinkmore.forum.repository.JwtRouterRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.codec.digest.DigestUtils;
-import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -34,15 +33,5 @@ public class JwtRouterService {
         jwtRouter.setRealJwt(realJwt);
         jwtRouterRepository.save(jwtRouter);
         return fakeJwt;
-    }
-
-    @Transactional
-    public void delete(String fakeJwt) {
-        jwtRouterRepository.deleteById(fakeJwt);
-    }
-
-    @Scheduled(cron = "0 0 19 * * ?")
-    public void clean() {
-        jwtRouterRepository.deleteAll();
     }
 }
