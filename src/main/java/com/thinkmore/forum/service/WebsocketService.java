@@ -25,8 +25,12 @@ public class WebsocketService {
     public List<String> getOnlineUser() {
         List<OnlineUser> onlineUserList = onlineUsersRepository.findAll();
         Set<String> onlineUserSet = new HashSet<>();
-        onlineUserList.forEach(onlineUser -> onlineUserSet.add(onlineUser.getUsername()));
-        return new ArrayList<>(onlineUserSet);
+        if (onlineUserList.size() > 0) {
+            onlineUserList.forEach(onlineUser -> onlineUserSet.add(onlineUser.getUsername()));
+            return new ArrayList<>(onlineUserSet);
+        } else {
+            return new ArrayList<>();
+        }
     }
 
     @Transactional
@@ -43,7 +47,7 @@ public class WebsocketService {
     }
 
     @Transactional
-    public ReminderMessage forwardReminder(ReminderMessage reminder){
+    public ReminderMessage forwardReminder(ReminderMessage reminder) {
         simpMessagingTemplate.convertAndSendToUser(reminder.getRecipient(), "/reminded", reminder);
         return reminder;
     }

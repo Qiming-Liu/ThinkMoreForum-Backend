@@ -7,7 +7,7 @@ import lombok.Setter;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.redis.core.RedisHash;
 
-@RedisHash("JwtRouter")
+@RedisHash(value = "JwtRouter", timeToLive = 86400)
 @Getter
 @Setter
 public class JwtRouter {
