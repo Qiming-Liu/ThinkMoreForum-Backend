@@ -19,13 +19,3 @@ services:
       - ./nginx.conf:/etc/nginx/conf.d/default.conf
       - ./cert:/cert
     network_mode: "host"
-  mnt:
-    container_name: mnt
-    image: prom/prometheus:v2.34.0
-    ports:
-      - "9090:9090"
-  mnt-gui:
-    container_name: mnt-gui
-    image: grafana/grafana:8.4.5
-    ports:
-      - "3000:3000"
