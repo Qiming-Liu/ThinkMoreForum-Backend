@@ -30,6 +30,11 @@ services:
       REDIS_PASSWORD: development
     ports:
       - "6379:6379"
+  mnt:
+    container_name: mnt
+    image: prom/prometheus:v2.34.0
+    ports:
+      - "9090:9090"
   app:
     build:
       context: .

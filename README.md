@@ -42,6 +42,8 @@
 10. Redis (Jedis)
 11. Sockjs (websocket)
 12. Sendgrid (Email)
+13. Prometheus
+14. Grafana
 
 ### Architecture diagram
 
