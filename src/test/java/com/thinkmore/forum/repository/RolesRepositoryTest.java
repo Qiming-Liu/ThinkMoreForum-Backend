@@ -28,10 +28,10 @@ public class RolesRepositoryTest {
     @Test
     public void shouldReturnRoleGivenRoleName() {
         UUID id = UUID.randomUUID();
-        Roles role = utility.buildRoles(id, id.toString().substring(0, 10), "permission");
-        rolesRepository.save(role);
+        Roles role = utility.buildRoles(id, id.toString().substring(0,10), "permission");
+        Roles savedRole = rolesRepository.save(role);
 
-        Roles newRole = rolesRepository.findByRoleName(id.toString().substring(0, 10)).get();
+        Roles newRole = rolesRepository.findByRoleName(savedRole.getRoleName()).get();
         assertNotNull(newRole);
     }
 }
