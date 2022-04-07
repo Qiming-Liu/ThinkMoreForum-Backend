@@ -1,5 +1,6 @@
 package com.thinkmore.forum.service;
 
+import com.thinkmore.forum.configuration.StaticConfig;
 import com.thinkmore.forum.dto.roles.RolesGetDto;
 import com.thinkmore.forum.dto.roles.RolesPutDto;
 import com.thinkmore.forum.entity.Roles;
@@ -61,7 +62,7 @@ public class RoleService {
         roleRepository.saveAll(updateList);
         roleRepository.saveAll(addList);
 
-        Roles role = roleRepository.findByRoleName("general_user").get();
+        Roles role = roleRepository.findByRoleName(StaticConfig.DefaultRole).get();
         usersList.stream().map(list -> {
             if (!list.isEmpty()) {
                 list.stream().map(users -> {
