@@ -40,6 +40,11 @@ public class JwtCheckFilter extends OncePerRequestFilter {
 
         String fakeJwt = authorizationHeader.replace(StaticConfig.JwtPrefix, "");
         String realJwt = jwtRouterService.getRealJwt(fakeJwt);
+        if (stringIsNullOrEmpty(realJwt)) {
+            response.setStatus(HttpStatus.METHOD_NOT_ALLOWED.value());
+            log.info("Cannot find fakeJwt: {}", fakeJwt);
+            return;
+        }
 
         try {
             //check jwt
@@ -65,7 +70,6 @@ public class JwtCheckFilter extends OncePerRequestFilter {
             JwtUser jwtUser = new JwtUser(principal);
             String newJwt = Util.generateJwt(jwtUser);
             response.addHeader(HttpHeaders.AUTHORIZATION, StaticConfig.JwtPrefix + jwtRouterService.getFakeJwt(newJwt));
-
         } catch (ExpiredJwtException e) {
             response.setStatus(HttpStatus.UNAUTHORIZED.value());
             log.info(String.valueOf(e));

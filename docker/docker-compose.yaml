@@ -26,10 +26,9 @@ services:
     container_name: imd
     image: redis:6.2.6-alpine
     restart: unless-stopped
-    environment:
-      REDIS_PASSWORD: development
     ports:
       - "6379:6379"
+    command: redis-server --requirepass "development"
   app:
     build:
       context: .
@@ -46,6 +45,7 @@ services:
       RABBITMQ_DEFAULT_PASS: development
       REDIS_HOST: localhost
       REDIS_PORT: 6379
+      REDIS_PASSWORD: development
       MINIO_URL: https://img.thinkmoreapp.com
       MINIO_ROOT_USER: minio
       MINIO_ROOT_PASSWORD: development
