@@ -61,7 +61,7 @@ public class RoleService {
         roleRepository.saveAll(updateList);
         roleRepository.saveAll(addList);
 
-        Roles role = roleRepository.findByRoleName("verified_user").get();
+        Roles role = roleRepository.findByRoleName("general_user").get();
         usersList.stream().map(list -> {
             if (!list.isEmpty()) {
                 list.stream().map(users -> {
