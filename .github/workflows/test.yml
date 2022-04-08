@@ -15,6 +15,7 @@ jobs:
     - name: Test Build
       run: |
         chmod +x gradlew
+        ./gradlew test
         ./gradlew build
         mv "./rabbitmq/rabbitmq.conf" "./docker/rabbitmq.conf"
         mv "./rabbitmq/definitions.json" "./docker/definitions.json"
