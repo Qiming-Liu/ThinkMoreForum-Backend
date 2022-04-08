@@ -17,9 +17,8 @@ public class Utility {
         return rolesGetDto;
     }
 
-    public Roles buildRoles (UUID id, String roleName, String permission) {
+    public Roles buildRoles (String roleName, String permission) {
         Roles roles = new Roles();
-        roles.setId(id);
         roles.setRoleName(roleName);
         roles.setPermission(permission);
         return roles;

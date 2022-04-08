@@ -15,7 +15,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
 import java.util.List;
-import java.util.UUID;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -45,10 +44,8 @@ class RoleServiceTest {
 
     @Test
     public void shouldReturnRoleListGivenAccountsExist() {
-        UUID id1 = UUID.randomUUID();
-        UUID id2 = UUID.randomUUID();
-        Roles role1 = utility.buildRoles(id1, "roleName", "permission");
-        Roles role2 = utility.buildRoles(id2, "roleName", "permission");
+        Roles role1 = utility.buildRoles("roleName", "permission");
+        Roles role2 = utility.buildRoles("roleName", "permission");
         when(rolesRepository.findAll()).thenReturn(List.of(role1, role2));
         List<RolesGetDto> returnedRoleList = roleService.getAllRoles();
         assertNotNull(returnedRoleList);
