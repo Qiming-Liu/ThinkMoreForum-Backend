@@ -1,5 +1,7 @@
 name: Test
-on: 
+on:
+  push:
+    branches: [ main ]
   pull_request:
     branches: [ main ]
 jobs:
@@ -12,7 +14,7 @@ jobs:
         distribution: temurin
         java-version: 11
     - uses: gradle/gradle-build-action@v2
-    - name: Test Build
+    - name: Test
       run: |
         chmod +x gradlew
         ./gradlew test
@@ -20,6 +22,6 @@ jobs:
         mv "./rabbitmq/rabbitmq.conf" "./docker/rabbitmq.conf"
         mv "./rabbitmq/definitions.json" "./docker/definitions.json"
         mv "./build/libs/forum-1.0.0.jar" "./docker/app.jar"
-
-    - name: Test Run
-      run: docker-compose up -d
+        cd docker
+        echo "DATETIME=$(date +'%Y-%m-%d_%H.%M.%S')" > .env
+        docker-compose up -d
