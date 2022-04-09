@@ -1,4 +1,4 @@
-# Welcome to ThinkMoreForum contributing guide
+# Welcome to ThinkMore Forum contributing guide
 
 Thank you for investing your time in contributing to our project!
 
@@ -51,6 +51,8 @@ Scan through our [existing issues](https://github.com/github/docs/issues) to fin
 
 Commit the changes once you are happy with them.
 
+Please make sure that your commit message meet [conventional commits](https://www.conventionalcommits.org/en/v1.0.0/).
+
 ### Pull Request
 
 When you're finished with the changes, create a pull request, also known as a PR.
@@ -59,7 +61,7 @@ Fill the "Ready for review" template so that we can review your PR. This templat
 
 ### Your PR is merged!
 
-Congratulations :tada::tada: The ThinkMoreForum team thanks you :sparkles:.
+Congratulations :tada::tada: The ThinkMore Forum team thanks you :sparkles:.
 
 ## Windows
 

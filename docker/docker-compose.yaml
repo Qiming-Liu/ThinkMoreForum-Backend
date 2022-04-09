@@ -51,7 +51,7 @@ services:
       MINIO_ROOT_PASSWORD: development
       DOMAIN_NAME: https://www.thinkmoreapp.com
       SSL_ENABLE: 'true'
-      ENABLE_SWAGGER: 'true'
+      ENABLE_SWAGGER: 'false'
     restart: unless-stopped
     network_mode: "host"
     depends_on:

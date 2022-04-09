@@ -6,6 +6,7 @@ import com.thinkmore.forum.mapper.RolesMapper;
 import com.thinkmore.forum.repository.RolesRepository;
 import com.thinkmore.forum.repository.UsersRepository;
 import com.thinkmore.forum.utils.Utility;
+
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -51,5 +52,4 @@ class RoleServiceTest {
         assertNotNull(returnedRoleList);
         assertEquals(2, returnedRoleList.size());
     }
-
 }
