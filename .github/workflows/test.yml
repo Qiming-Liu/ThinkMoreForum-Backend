@@ -23,4 +23,5 @@ jobs:
         mv "./rabbitmq/definitions.json" "./docker/definitions.json"
         mv "./build/libs/forum-1.0.0.jar" "./docker/app.jar"
         cd docker
+        echo "DATETIME=$(date +'%Y-%m-%d_%H.%M.%S')" > .env
         docker-compose up -d
