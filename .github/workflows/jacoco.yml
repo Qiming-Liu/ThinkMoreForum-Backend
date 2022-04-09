@@ -20,5 +20,5 @@ jobs:
       - name: Jacoco
         uses: JamesIves/github-pages-deploy-action@v4
         with:
-          branch: javcoco
+          branch: jacoco
           folder: build/jacocoHtml
