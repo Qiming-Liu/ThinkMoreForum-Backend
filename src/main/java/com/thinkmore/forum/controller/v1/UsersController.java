@@ -4,6 +4,7 @@ import com.thinkmore.forum.dto.users.UsersGetDto;
 import com.thinkmore.forum.dto.users.UsersImgPutDto;
 import com.thinkmore.forum.dto.users.UsersMiniPutDto;
 import com.thinkmore.forum.dto.users.UsersPasswordPutDto;
+import com.thinkmore.forum.service.MessageService;
 import com.thinkmore.forum.service.UsersService;
 import com.thinkmore.forum.util.Util;
 import lombok.RequiredArgsConstructor;
@@ -20,23 +21,17 @@ import java.util.UUID;
 @Slf4j
 public class UsersController {
     private final UsersService usersService;
+    private final MessageService messageService;
 
     @GetMapping(path="/all")
     public  ResponseEntity<List<UsersGetDto>> getAllUsers(){
         return ResponseEntity.ok(usersService.getAllUsers());
     }
 
-    @GetMapping(path = "/string/{string}")
+    @GetMapping(path = "/search/{string}")
     public ResponseEntity<List<UsersGetDto>> getUserByContainingString(@PathVariable("string") String string) {
         List<UsersGetDto> response = usersService.getUserByContainingString(string);
         return ResponseEntity.ok(response);
-    }
-
-
-    @GetMapping("/open_id")
-    public ResponseEntity<Boolean> hasOpenid() {
-        UUID userId = UUID.fromString(Util.getJwtContext().get(0));
-        return ResponseEntity.ok(usersService.hasOpenid(userId));
     }
 
     @PutMapping("/password_reset")
@@ -72,7 +67,7 @@ public class UsersController {
     @GetMapping("/email/{new_email}")
     public ResponseEntity<Boolean> sendVerificationEmail(@PathVariable String new_email) throws Exception {
         UUID usersId = UUID.fromString(Util.getJwtContext().get(0));
-        return ResponseEntity.ok(usersService.sendVerificationEmail(usersId, new_email));
+        return ResponseEntity.ok(messageService.sendVerificationEmail(usersId, new_email));
     }
 
     @PutMapping("/email/{new_email}")

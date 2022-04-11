@@ -5,7 +5,6 @@ import com.thinkmore.forum.dto.category.CategoryGetDto;
 import com.thinkmore.forum.dto.component.ComponentGetDto;
 import com.thinkmore.forum.dto.followPost.FollowPostGetDto;
 import com.thinkmore.forum.dto.followerUsers.FollowerUsersGetDto;
-import com.thinkmore.forum.dto.oauth.OauthPostDto;
 import com.thinkmore.forum.dto.post.PostCommentGetDto;
 import com.thinkmore.forum.dto.post.PostGetDto;
 import com.thinkmore.forum.dto.post.PostMiniGetDto;
@@ -31,6 +30,7 @@ import java.util.UUID;
 public class PublicController {
 
     private final UsersService usersService;
+    private final MessageService messageService;
     private final CategoryService categoryService;
     private final PostService postService;
     private final CommentService commentService;
@@ -42,11 +42,6 @@ public class PublicController {
     @PostMapping(path = "/users/register")
     public ResponseEntity<Boolean> register(@RequestBody UsersPostDto usersPostDto) {
         return ResponseEntity.ok(usersService.register(usersPostDto));
-    }
-
-    @PostMapping(path = "/users/third_party_login/{email}/{username}")
-    public ResponseEntity<Boolean> thirdPartyLogin(@PathVariable String email, @PathVariable String username, @RequestBody OauthPostDto oauthPostDto) {
-        return ResponseEntity.ok(usersService.thirdPartyLogin(email, username, oauthPostDto));
     }
 
     @GetMapping(path = "/users/unique_email/{email}")
@@ -61,7 +56,7 @@ public class PublicController {
 
     @GetMapping("/users/reset_password/{email}")
     public ResponseEntity<Boolean> sendResetPasswordEmail(@PathVariable String email) {
-        return ResponseEntity.ok(usersService.sendResetPasswordEmail(email));
+        return ResponseEntity.ok(messageService.sendResetPasswordEmail(email));
     }
 
     @GetMapping(path = "/users/username/{username}")
@@ -97,6 +92,7 @@ public class PublicController {
     public ResponseEntity<List<PostMiniGetDto>> findAllPosts(){
         return ResponseEntity.ok(postService.getAllPostsCoreInfo());
     }
+
     @GetMapping(path = "/post/{post_id}")
     public ResponseEntity<PostGetDto> getPostById(@PathVariable String post_id) throws Exception {
         UUID postId = UUID.fromString(post_id);
