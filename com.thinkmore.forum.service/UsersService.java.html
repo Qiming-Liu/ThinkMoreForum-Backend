@@ -1,28 +1,18 @@
 <?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>UsersService.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">forum</a> &gt; <a href="index.source.html" class="el_package">com.thinkmore.forum.service</a> &gt; <span class="el_source">UsersService.java</span></div><h1>UsersService.java</h1><pre class="source lang-java linenums">package com.thinkmore.forum.service;
 
-import com.thinkmore.forum.dto.oauth.OauthPostDto;
 import com.thinkmore.forum.dto.users.*;
 import com.thinkmore.forum.entity.JwtUser;
 import com.thinkmore.forum.configuration.StaticConfig;
-import com.thinkmore.forum.entity.Oauth;
 import com.thinkmore.forum.entity.Roles;
 import com.thinkmore.forum.entity.Users;
 import com.thinkmore.forum.exception.InvalidOldPasswordException;
 import com.thinkmore.forum.exception.UserNotFoundException;
 import com.thinkmore.forum.mapper.UsersMapper;
-import com.thinkmore.forum.entity.rabbitmq.ResetPasswordEmailMessage;
-import com.thinkmore.forum.entity.rabbitmq.VerificationEmailMessage;
-import com.thinkmore.forum.repository.OauthRepository;
 import com.thinkmore.forum.repository.RolesRepository;
 import com.thinkmore.forum.repository.UsersRepository;
-import com.thinkmore.forum.configuration.RabbitMinioConfig;
-import com.thinkmore.forum.util.Util;
 
 import lombok.RequiredArgsConstructor;
-import org.springframework.amqp.rabbit.annotation.RabbitListener;
-import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -38,253 +28,153 @@ import java.util.UUID;
 import java.util.stream.Collectors;
 
 @Service
-<span class="nc" id="L41">@RequiredArgsConstructor</span>
+<span class="nc" id="L31">@RequiredArgsConstructor</span>
 public class UsersService implements UserDetailsService {
-
-    @Value(&quot;${domain.name}&quot;)
-    public String domainName;
-
-    @Autowired
-    RabbitTemplate rabbitTemplate;
 
     @Autowired
     PasswordEncoder passwordEncoder;
 
     private final UsersRepository usersRepository;
-    private final OauthRepository oauthRepository;
     private final UsersMapper usersMapper;
     private final RolesRepository rolesRepository;
 
     //only for jwt
     @Override
     public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
-<span class="nc" id="L61">        Users user = usersRepository.findByEmail(email).orElseThrow(() -&gt;</span>
-<span class="nc" id="L62">                new UsernameNotFoundException(String.format(&quot;Login Email %s not found&quot;, email)));</span>
-<span class="nc" id="L63">        return new JwtUser(user);</span>
+<span class="nc" id="L44">        Users user = usersRepository.findByEmail(email).orElseThrow(() -&gt;</span>
+<span class="nc" id="L45">                new UsernameNotFoundException(String.format(&quot;Login Email %s not found&quot;, email)));</span>
+<span class="nc" id="L46">        return new JwtUser(user);</span>
     }
 
     @Transactional
     public Boolean register(UsersPostDto usersPostDto) {
-<span class="nc" id="L68">        Users user = usersMapper.toEntity(usersPostDto);</span>
+<span class="nc" id="L51">        Users user = usersMapper.toEntity(usersPostDto);</span>
 
-<span class="nc" id="L70">        user.setUsername(usersPostDto.getUsername());</span>
-<span class="nc" id="L71">        user.setPassword(passwordEncoder.encode(usersPostDto.getPassword()));</span>
-<span class="nc" id="L72">        user.setEmail(usersPostDto.getEmail());</span>
-<span class="nc" id="L73">        user.setRole(rolesRepository.findByRoleName(StaticConfig.DefaultRole).orElseThrow());</span>
+<span class="nc" id="L53">        user.setUsername(usersPostDto.getUsername());</span>
+<span class="nc" id="L54">        user.setPassword(passwordEncoder.encode(usersPostDto.getPassword()));</span>
+<span class="nc" id="L55">        user.setEmail(usersPostDto.getEmail());</span>
+<span class="nc" id="L56">        user.setRole(rolesRepository.findByRoleName(StaticConfig.DefaultRole).orElseThrow());</span>
 
-<span class="nc" id="L75">        usersRepository.save(user);</span>
+<span class="nc" id="L58">        usersRepository.save(user);</span>
 
-<span class="nc" id="L77">        return true;</span>
-    }
-
-    @Transactional
-    public Boolean thirdPartyLogin(String email, String username, OauthPostDto oauthPostDto) {
-<span class="nc bnc" id="L82" title="All 2 branches missed.">        if (!uniqueEmail(email)) {</span>
-<span class="nc" id="L83">            Users users = usersRepository.findByEmail(email).get();</span>
-<span class="nc" id="L84">            users.setPassword(passwordEncoder.encode(oauthPostDto.getOpenid()));</span>
-
-<span class="nc" id="L86">            Oauth oauth = new Oauth();</span>
-
-<span class="nc" id="L88">            oauth.setUsers(users);</span>
-<span class="nc" id="L89">            oauth.setOauthType(oauthPostDto.getOauthType());</span>
-<span class="nc" id="L90">            oauth.setOpenid(oauthPostDto.getOpenid());</span>
-
-<span class="nc" id="L92">            oauthRepository.save(oauth);</span>
-<span class="nc" id="L93">            return true;</span>
-<span class="nc bnc" id="L94" title="All 2 branches missed.">        } else if (oauthRepository.findByOpenid(oauthPostDto.getOpenid()).isPresent()) {</span>
-<span class="nc" id="L95">            return true;</span>
-        }
-
-<span class="nc" id="L98">        Users user = new Users();</span>
-
-<span class="nc" id="L100">        user.setEmail(email);</span>
-<span class="nc" id="L101">        user.setUsername(username);</span>
-<span class="nc" id="L102">        user.setPassword(passwordEncoder.encode(oauthPostDto.getOpenid()));</span>
-<span class="nc" id="L103">        user.setRole(rolesRepository.findByRoleName(StaticConfig.DefaultRole).orElseThrow());</span>
-
-<span class="nc" id="L105">        usersRepository.save(user);</span>
-
-<span class="nc" id="L107">        Oauth oauth = new Oauth();</span>
-
-<span class="nc" id="L109">        oauth.setUsers(user);</span>
-<span class="nc" id="L110">        oauth.setOauthType(oauthPostDto.getOauthType());</span>
-<span class="nc" id="L111">        oauth.setOpenid(oauthPostDto.getOpenid());</span>
-
-<span class="nc" id="L113">        oauthRepository.save(oauth);</span>
-<span class="nc" id="L114">        return true;</span>
+<span class="nc" id="L60">        return true;</span>
     }
 
     @Transactional
     public UsersGetDto updateLastLoginTimestamp(String username) {
-<span class="nc" id="L119">        Users user = usersRepository.findByUsername(username).orElseThrow(() -&gt;</span>
-<span class="nc" id="L120">                new UsernameNotFoundException(String.format(&quot;Username %s not found&quot;, username)));</span>
-<span class="nc" id="L121">        user.setLastLoginTimestamp(OffsetDateTime.now());</span>
-<span class="nc" id="L122">        usersRepository.save(user);</span>
-<span class="nc" id="L123">        return usersMapper.fromEntity(user);</span>
+<span class="nc" id="L65">        Users user = usersRepository.findByUsername(username).orElseThrow(() -&gt;</span>
+<span class="nc" id="L66">                new UsernameNotFoundException(String.format(&quot;Username %s not found&quot;, username)));</span>
+<span class="nc" id="L67">        user.setLastLoginTimestamp(OffsetDateTime.now());</span>
+<span class="nc" id="L68">        usersRepository.save(user);</span>
+<span class="nc" id="L69">        return usersMapper.fromEntity(user);</span>
     }
 
     public boolean uniqueEmail(String email) {
-<span class="nc" id="L127">        return usersRepository.findByEmail(email).isEmpty();</span>
+<span class="nc" id="L73">        return usersRepository.findByEmail(email).isEmpty();</span>
     }
 
     public boolean uniqueUsername(String username) {
-<span class="nc" id="L131">        return usersRepository.findByUsername(username).isEmpty();</span>
-    }
-
-    public boolean hasOpenid(UUID usersId) {
-<span class="nc" id="L135">        Users user = usersRepository.findById(usersId).get();</span>
-<span class="nc" id="L136">        return oauthRepository.findByUsers(user).isPresent();</span>
+<span class="nc" id="L77">        return usersRepository.findByUsername(username).isEmpty();</span>
     }
 
     @Transactional
     public boolean changeUsername(UUID usersId, String newUsername) {
-<span class="nc" id="L141">        Users user = usersRepository.findById(usersId)</span>
-<span class="nc" id="L142">                                    .orElseThrow(() -&gt; new UserNotFoundException(&quot;Invalid UserID&quot;));</span>
+<span class="nc" id="L82">        Users user = usersRepository.findById(usersId)</span>
+<span class="nc" id="L83">                                    .orElseThrow(() -&gt; new UserNotFoundException(&quot;Invalid UserID&quot;));</span>
 
-<span class="nc" id="L144">        user.setUsername(newUsername);</span>
-<span class="nc" id="L145">        usersRepository.save(user);</span>
-<span class="nc" id="L146">        return true;</span>
+<span class="nc" id="L85">        user.setUsername(newUsername);</span>
+<span class="nc" id="L86">        usersRepository.save(user);</span>
+<span class="nc" id="L87">        return true;</span>
     }
 
     @Transactional
     public boolean changeHeadImgUrl(UUID usersId, UsersImgPutDto usersImgPutDto) {
-<span class="nc" id="L151">        Users user = usersRepository.findById(usersId)</span>
-<span class="nc" id="L152">                                    .orElseThrow(() -&gt; new UserNotFoundException(&quot;Invalid UserID&quot;));</span>
+<span class="nc" id="L92">        Users user = usersRepository.findById(usersId)</span>
+<span class="nc" id="L93">                                    .orElseThrow(() -&gt; new UserNotFoundException(&quot;Invalid UserID&quot;));</span>
 
-<span class="nc" id="L154">        user.setHeadImgUrl(usersImgPutDto.getHeadImgUrl());</span>
-<span class="nc" id="L155">        usersRepository.save(user);</span>
-<span class="nc" id="L156">        return true;</span>
+<span class="nc" id="L95">        user.setHeadImgUrl(usersImgPutDto.getHeadImgUrl());</span>
+<span class="nc" id="L96">        usersRepository.save(user);</span>
+<span class="nc" id="L97">        return true;</span>
     }
 
     @Transactional
     public boolean changeProfileImgUrl(UUID usersId, UsersImgPutDto usersImgPutDto) {
-<span class="nc" id="L161">        Users user = usersRepository.findById(usersId)</span>
-<span class="nc" id="L162">                                    .orElseThrow(() -&gt; new UserNotFoundException(&quot;Invalid UserID&quot;));</span>
+<span class="nc" id="L102">        Users user = usersRepository.findById(usersId)</span>
+<span class="nc" id="L103">                                    .orElseThrow(() -&gt; new UserNotFoundException(&quot;Invalid UserID&quot;));</span>
 
-<span class="nc" id="L164">        user.setProfileImgUrl(usersImgPutDto.getProfileImgUrl());</span>
-<span class="nc" id="L165">        usersRepository.save(user);</span>
-<span class="nc" id="L166">        return true;</span>
+<span class="nc" id="L105">        user.setProfileImgUrl(usersImgPutDto.getProfileImgUrl());</span>
+<span class="nc" id="L106">        usersRepository.save(user);</span>
+<span class="nc" id="L107">        return true;</span>
     }
-
-    @Transactional
-    public boolean sendVerificationEmail(UUID usersId, String newEmail) {
-<span class="nc" id="L171">        VerificationEmailMessage message = new VerificationEmailMessage(usersId, newEmail);</span>
-<span class="nc" id="L172">        rabbitTemplate.convertAndSend(&quot;VerificationEmail&quot;, message);</span>
-<span class="nc" id="L173">        return true;</span>
-    }
-
-    @Transactional
-    @RabbitListener(queues = &quot;VerificationEmail&quot;)
-    public void handleVerificationEmail(VerificationEmailMessage message) throws Exception {
-<span class="nc" id="L179">        Users user = usersRepository.findById(message.getUsersId())</span>
-<span class="nc" id="L180">                                    .orElseThrow(() -&gt; new UserNotFoundException(&quot;Invalid UserID&quot;));</span>
-
-<span class="nc" id="L182">        Util.createMail(</span>
-                StaticConfig.fromEmail,
-<span class="nc" id="L184">                user.getEmail(),</span>
-                &quot;Change Email Request&quot;,
-<span class="nc" id="L186">                &quot;Your account &quot; + user.getUsername() + &quot; is changing email to &quot; + message.getNew_email());</span>
-
-<span class="nc" id="L188">        Util.createMail(</span>
-                StaticConfig.fromEmail,
-<span class="nc" id="L190">                message.getNew_email(),</span>
-                &quot;Verify Email&quot;,
-<span class="nc" id="L192">                StaticConfig.VerifyEmailContext + domainName + StaticConfig.VerifyEmailUrl + message.getNew_email());</span>
-<span class="nc" id="L193">    }</span>
 
     @Transactional
     public boolean changeEmail(UUID usersId, String newEmail) {
-<span class="nc" id="L197">        Users user = usersRepository.findById(usersId)</span>
-<span class="nc" id="L198">                                    .orElseThrow(() -&gt; new UserNotFoundException(&quot;Invalid UserID&quot;));</span>
+<span class="nc" id="L112">        Users user = usersRepository.findById(usersId)</span>
+<span class="nc" id="L113">                                    .orElseThrow(() -&gt; new UserNotFoundException(&quot;Invalid UserID&quot;));</span>
 
-<span class="nc" id="L200">        user.setEmail(newEmail);</span>
-<span class="nc" id="L201">        usersRepository.save(user);</span>
+<span class="nc" id="L115">        user.setEmail(newEmail);</span>
+<span class="nc" id="L116">        usersRepository.save(user);</span>
 
-<span class="nc" id="L203">        return true;</span>
+<span class="nc" id="L118">        return true;</span>
     }
 
     @Transactional
     public boolean changePassword(UUID usersId, UsersMiniPutDto usersMiniPutDto) {
-<span class="nc" id="L208">        Users user = usersRepository.findById(usersId)</span>
-<span class="nc" id="L209">                                    .orElseThrow(() -&gt; new UserNotFoundException(&quot;Invalid UserID&quot;));</span>
+<span class="nc" id="L123">        Users user = usersRepository.findById(usersId)</span>
+<span class="nc" id="L124">                                    .orElseThrow(() -&gt; new UserNotFoundException(&quot;Invalid UserID&quot;));</span>
 
-<span class="nc bnc" id="L211" title="All 2 branches missed.">        if (!passwordEncoder.matches(usersMiniPutDto.getOldPassword(), user.getPassword())) {</span>
-<span class="nc" id="L212">            throw new InvalidOldPasswordException(&quot;Old password is wrong&quot;);</span>
+<span class="nc bnc" id="L126" title="All 2 branches missed.">        if (!passwordEncoder.matches(usersMiniPutDto.getOldPassword(), user.getPassword())) {</span>
+<span class="nc" id="L127">            throw new InvalidOldPasswordException(&quot;Old password is wrong&quot;);</span>
         }
 
-<span class="nc" id="L215">        user.setPassword(passwordEncoder.encode(usersMiniPutDto.getNewPassword()));</span>
-<span class="nc" id="L216">        usersRepository.save(user);</span>
-<span class="nc" id="L217">        return true;</span>
+<span class="nc" id="L130">        user.setPassword(passwordEncoder.encode(usersMiniPutDto.getNewPassword()));</span>
+<span class="nc" id="L131">        usersRepository.save(user);</span>
+<span class="nc" id="L132">        return true;</span>
     }
-
-    @Transactional
-    public boolean sendResetPasswordEmail(String email) {
-<span class="nc" id="L222">        ResetPasswordEmailMessage message = new ResetPasswordEmailMessage(email);</span>
-<span class="nc" id="L223">        rabbitTemplate.convertAndSend(&quot;ResetPasswordEmail&quot;, message);</span>
-<span class="nc" id="L224">        return true;</span>
-    }
-
-    @Transactional
-    @RabbitListener(queues = &quot;ResetPasswordEmail&quot;)
-    public void handleResetPasswordEmail(ResetPasswordEmailMessage message) throws Exception {
-<span class="nc" id="L230">        Optional&lt;Users&gt; user = usersRepository.findByEmail(message.getEmail());</span>
-
-<span class="nc bnc" id="L232" title="All 2 branches missed.">        if (user.isPresent()) {</span>
-
-<span class="nc" id="L234">            String encode = Util.UrlEncoder(StaticConfig.JwtPrefix + Util.generateJwt(new JwtUser(user.get())));</span>
-
-<span class="nc" id="L236">            Util.createMail(</span>
-                    StaticConfig.fromEmail,
-<span class="nc" id="L238">                    message.getEmail(),</span>
-                    &quot;Reset password&quot;,
-                    StaticConfig.ResetPasswordContext +
-                            domainName + StaticConfig.ResetPasswordUrl + encode);
-        }
-<span class="nc" id="L243">    }</span>
 
     @Transactional
     public boolean resetPassword(UUID usersId, UsersPasswordPutDto password) {
-<span class="nc" id="L247">        Users user = usersRepository.findById(usersId)</span>
-<span class="nc" id="L248">                                    .orElseThrow(() -&gt; new UserNotFoundException(&quot;Invalid UserID&quot;));</span>
+<span class="nc" id="L137">        Users user = usersRepository.findById(usersId)</span>
+<span class="nc" id="L138">                                    .orElseThrow(() -&gt; new UserNotFoundException(&quot;Invalid UserID&quot;));</span>
 
-<span class="nc" id="L250">        user.setPassword(passwordEncoder.encode(password.getPassword()));</span>
-<span class="nc" id="L251">        usersRepository.save(user);</span>
-<span class="nc" id="L252">        return true;</span>
+<span class="nc" id="L140">        user.setPassword(passwordEncoder.encode(password.getPassword()));</span>
+<span class="nc" id="L141">        usersRepository.save(user);</span>
+<span class="nc" id="L142">        return true;</span>
     }
 
     @Transactional
     public UsersGetDto getUserByUsername(String username) {
-<span class="nc" id="L257">        Optional&lt;Users&gt; targetUsers = usersRepository.findByUsername(username);</span>
-<span class="nc" id="L258">        return usersMapper.fromEntity(targetUsers.get());</span>
+<span class="nc" id="L147">        Optional&lt;Users&gt; targetUsers = usersRepository.findByUsername(username);</span>
+<span class="nc" id="L148">        return usersMapper.fromEntity(targetUsers.get());</span>
     }
 
     public List&lt;UsersGetDto&gt; getUserByContainingString(String string) {
-<span class="nc" id="L262">        List&lt;Users&gt; users = usersRepository.findByUsernameContainingIgnoreCase(string);</span>
-<span class="nc" id="L263">        List&lt;UsersGetDto&gt; usersGetDto = new ArrayList&lt;&gt;();</span>
-<span class="nc bnc" id="L264" title="All 2 branches missed.">        for (Users user : users) {</span>
-<span class="nc" id="L265">            usersGetDto.add(usersMapper.fromEntity(user));</span>
-<span class="nc" id="L266">        }</span>
-<span class="nc" id="L267">        return usersGetDto;</span>
+<span class="nc" id="L152">        List&lt;Users&gt; users = usersRepository.findByUsernameContainingIgnoreCase(string);</span>
+<span class="nc" id="L153">        List&lt;UsersGetDto&gt; usersGetDto = new ArrayList&lt;&gt;();</span>
+<span class="nc bnc" id="L154" title="All 2 branches missed.">        for (Users user : users) {</span>
+<span class="nc" id="L155">            usersGetDto.add(usersMapper.fromEntity(user));</span>
+<span class="nc" id="L156">        }</span>
+<span class="nc" id="L157">        return usersGetDto;</span>
     }
 
     @Transactional
     public List&lt;UsersGetDto&gt; getAllUsers() {
-<span class="nc" id="L272">        return usersRepository.findAll().stream()</span>
-<span class="nc" id="L273">                              .map(usersMapper::fromEntity)</span>
-<span class="nc" id="L274">                              .collect(Collectors.toList());</span>
+<span class="nc" id="L162">        return usersRepository.findAll().stream()</span>
+<span class="nc" id="L163">                              .map(usersMapper::fromEntity)</span>
+<span class="nc" id="L164">                              .collect(Collectors.toList());</span>
     }
 
     @Transactional
     public void changeSingleUserRole(UsersGetDto inputUserGetDto) {
-<span class="nc" id="L279">        Users userToUpdate = usersRepository.findById(inputUserGetDto.getId()).get();</span>
-<span class="nc" id="L280">        Roles newRoleOfUser = rolesRepository.findByRoleName(inputUserGetDto.getRole().getRoleName()).orElseThrow();</span>
-<span class="nc" id="L281">        userToUpdate.setRole(newRoleOfUser);</span>
-<span class="nc" id="L282">        usersRepository.save(userToUpdate);</span>
-<span class="nc" id="L283">    }</span>
+<span class="nc" id="L169">        Users userToUpdate = usersRepository.findById(inputUserGetDto.getId()).get();</span>
+<span class="nc" id="L170">        Roles newRoleOfUser = rolesRepository.findByRoleName(inputUserGetDto.getRole().getRoleName()).orElseThrow();</span>
+<span class="nc" id="L171">        userToUpdate.setRole(newRoleOfUser);</span>
+<span class="nc" id="L172">        usersRepository.save(userToUpdate);</span>
+<span class="nc" id="L173">    }</span>
 
     @Transactional
     public void changeUsersRoles(List&lt;UsersGetDto&gt; usersGetDtoList) {
-<span class="nc" id="L287">        usersGetDtoList.forEach(singleUserGetDto -&gt; changeSingleUserRole(singleUserGetDto));</span>
-<span class="nc" id="L288">    }</span>
+<span class="nc" id="L177">        usersGetDtoList.forEach(singleUserGetDto -&gt; changeSingleUserRole(singleUserGetDto));</span>
+<span class="nc" id="L178">    }</span>
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.7.202105040129</span></div></body></html>

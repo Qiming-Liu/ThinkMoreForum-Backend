@@ -1,0 +1,102 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>MessageService.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">forum</a> &gt; <a href="index.source.html" class="el_package">com.thinkmore.forum.service</a> &gt; <span class="el_source">MessageService.java</span></div><h1>MessageService.java</h1><pre class="source lang-java linenums">package com.thinkmore.forum.service;
+
+import java.time.OffsetDateTime;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Optional;
+import java.util.UUID;
+import java.util.stream.Collectors;
+
+import com.thinkmore.forum.configuration.StaticConfig;
+import com.thinkmore.forum.dto.users.UsersGetDto;
+import com.thinkmore.forum.dto.users.UsersImgPutDto;
+import com.thinkmore.forum.dto.users.UsersMiniPutDto;
+import com.thinkmore.forum.dto.users.UsersPasswordPutDto;
+import com.thinkmore.forum.dto.users.UsersPostDto;
+import com.thinkmore.forum.entity.JwtUser;
+import com.thinkmore.forum.entity.Roles;
+import com.thinkmore.forum.entity.Users;
+import com.thinkmore.forum.entity.rabbitmq.ResetPasswordEmailMessage;
+import com.thinkmore.forum.entity.rabbitmq.VerificationEmailMessage;
+import com.thinkmore.forum.exception.InvalidOldPasswordException;
+import com.thinkmore.forum.exception.UserNotFoundException;
+import com.thinkmore.forum.mapper.UsersMapper;
+import com.thinkmore.forum.repository.RolesRepository;
+import com.thinkmore.forum.repository.UsersRepository;
+import com.thinkmore.forum.util.Util;
+
+import lombok.RequiredArgsConstructor;
+import org.springframework.amqp.rabbit.annotation.RabbitListener;
+import org.springframework.amqp.rabbit.core.RabbitTemplate;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
+@Service
+<span class="nc" id="L41">@RequiredArgsConstructor</span>
+public class MessageService {
+
+    @Value(&quot;${domain.name}&quot;)
+    public String domainName;
+
+    @Autowired
+    RabbitTemplate rabbitTemplate;
+
+    private final UsersRepository usersRepository;
+    private final UsersMapper usersMapper;
+
+    @Transactional
+    public boolean sendVerificationEmail(UUID usersId, String newEmail) {
+<span class="nc" id="L55">        VerificationEmailMessage message = new VerificationEmailMessage(usersId, newEmail);</span>
+<span class="nc" id="L56">        rabbitTemplate.convertAndSend(&quot;VerificationEmail&quot;, message);</span>
+<span class="nc" id="L57">        return true;</span>
+    }
+
+    @Transactional
+    @RabbitListener(queues = &quot;VerificationEmail&quot;)
+    public void handleVerificationEmail(VerificationEmailMessage message) throws Exception {
+<span class="nc" id="L63">        Users user = usersRepository.findById(message.getUsersId())</span>
+<span class="nc" id="L64">                                    .orElseThrow(() -&gt; new UserNotFoundException(&quot;Invalid UserID&quot;));</span>
+
+<span class="nc" id="L66">        Util.createMail(</span>
+                StaticConfig.fromEmail,
+<span class="nc" id="L68">                user.getEmail(),</span>
+                &quot;Change Email Request&quot;,
+<span class="nc" id="L70">                &quot;Your account &quot; + user.getUsername() + &quot; is changing email to &quot; + message.getNew_email());</span>
+
+<span class="nc" id="L72">        Util.createMail(</span>
+                StaticConfig.fromEmail,
+<span class="nc" id="L74">                message.getNew_email(),</span>
+                &quot;Verify Email&quot;,
+<span class="nc" id="L76">                StaticConfig.VerifyEmailContext + domainName + StaticConfig.VerifyEmailUrl + message.getNew_email());</span>
+<span class="nc" id="L77">    }</span>
+
+    @Transactional
+    public boolean sendResetPasswordEmail(String email) {
+<span class="nc" id="L81">        ResetPasswordEmailMessage message = new ResetPasswordEmailMessage(email);</span>
+<span class="nc" id="L82">        rabbitTemplate.convertAndSend(&quot;ResetPasswordEmail&quot;, message);</span>
+<span class="nc" id="L83">        return true;</span>
+    }
+
+    @Transactional
+    @RabbitListener(queues = &quot;ResetPasswordEmail&quot;)
+    public void handleResetPasswordEmail(ResetPasswordEmailMessage message) throws Exception {
+<span class="nc" id="L89">        Optional&lt;Users&gt; user = usersRepository.findByEmail(message.getEmail());</span>
+
+<span class="nc bnc" id="L91" title="All 2 branches missed.">        if (user.isPresent()) {</span>
+<span class="nc" id="L92">            String encode = Util.UrlEncoder(StaticConfig.JwtPrefix + Util.generateJwt(new JwtUser(user.get())));</span>
+<span class="nc" id="L93">            Util.createMail(</span>
+                    StaticConfig.fromEmail,
+<span class="nc" id="L95">                    message.getEmail(),</span>
+                    &quot;Reset password&quot;,
+                    StaticConfig.ResetPasswordContext +
+                            domainName + StaticConfig.ResetPasswordUrl + encode);
+        }
+<span class="nc" id="L100">    }</span>
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.7.202105040129</span></div></body></html>

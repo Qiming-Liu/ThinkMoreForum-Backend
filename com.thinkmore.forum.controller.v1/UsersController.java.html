@@ -4,6 +4,7 @@ import com.thinkmore.forum.dto.users.UsersGetDto;
 import com.thinkmore.forum.dto.users.UsersImgPutDto;
 import com.thinkmore.forum.dto.users.UsersMiniPutDto;
 import com.thinkmore.forum.dto.users.UsersPasswordPutDto;
+import com.thinkmore.forum.service.MessageService;
 import com.thinkmore.forum.service.UsersService;
 import com.thinkmore.forum.util.Util;
 import lombok.RequiredArgsConstructor;
@@ -16,76 +17,70 @@ import java.util.UUID;
 
 @RestController
 @RequestMapping(path = &quot;/v1/users&quot;)
-<span class="nc" id="L19">@RequiredArgsConstructor</span>
-<span class="nc" id="L20">@Slf4j</span>
+<span class="nc" id="L20">@RequiredArgsConstructor</span>
+<span class="nc" id="L21">@Slf4j</span>
 public class UsersController {
     private final UsersService usersService;
+    private final MessageService messageService;
 
     @GetMapping(path=&quot;/all&quot;)
     public  ResponseEntity&lt;List&lt;UsersGetDto&gt;&gt; getAllUsers(){
-<span class="nc" id="L26">        return ResponseEntity.ok(usersService.getAllUsers());</span>
+<span class="nc" id="L28">        return ResponseEntity.ok(usersService.getAllUsers());</span>
     }
 
-    @GetMapping(path = &quot;/string/{string}&quot;)
+    @GetMapping(path = &quot;/search/{string}&quot;)
     public ResponseEntity&lt;List&lt;UsersGetDto&gt;&gt; getUserByContainingString(@PathVariable(&quot;string&quot;) String string) {
-<span class="nc" id="L31">        List&lt;UsersGetDto&gt; response = usersService.getUserByContainingString(string);</span>
-<span class="nc" id="L32">        return ResponseEntity.ok(response);</span>
-    }
-
-
-    @GetMapping(&quot;/open_id&quot;)
-    public ResponseEntity&lt;Boolean&gt; hasOpenid() {
-<span class="nc" id="L38">        UUID userId = UUID.fromString(Util.getJwtContext().get(0));</span>
-<span class="nc" id="L39">        return ResponseEntity.ok(usersService.hasOpenid(userId));</span>
+<span class="nc" id="L33">        List&lt;UsersGetDto&gt; response = usersService.getUserByContainingString(string);</span>
+<span class="nc" id="L34">        return ResponseEntity.ok(response);</span>
     }
 
     @PutMapping(&quot;/password_reset&quot;)
     public ResponseEntity&lt;Boolean&gt; passwordReset(@RequestBody UsersPasswordPutDto new_password) {
-<span class="nc" id="L44">        UUID userId = UUID.fromString(Util.getJwtContext().get(0));</span>
-<span class="nc" id="L45">        return ResponseEntity.ok(usersService.resetPassword(userId, new_password));</span>
+<span class="nc" id="L39">        UUID userId = UUID.fromString(Util.getJwtContext().get(0));</span>
+<span class="nc" id="L40">        return ResponseEntity.ok(usersService.resetPassword(userId, new_password));</span>
     }
 
     @PutMapping(&quot;/password&quot;)
     public ResponseEntity&lt;Boolean&gt; changePassword(@RequestBody UsersMiniPutDto usersMiniPutDto) {
-<span class="nc" id="L50">        UUID usersId = UUID.fromString(Util.getJwtContext().get(0));</span>
-<span class="nc" id="L51">        return ResponseEntity.ok(usersService.changePassword(usersId, usersMiniPutDto));</span>
+<span class="nc" id="L45">        UUID usersId = UUID.fromString(Util.getJwtContext().get(0));</span>
+<span class="nc" id="L46">        return ResponseEntity.ok(usersService.changePassword(usersId, usersMiniPutDto));</span>
     }
 
     @PutMapping(&quot;/username/{new_username}&quot;)
     public ResponseEntity&lt;Boolean&gt; changeUsername(@PathVariable String new_username) {
-<span class="nc" id="L56">        UUID usersId = UUID.fromString(Util.getJwtContext().get(0));</span>
-<span class="nc" id="L57">        return ResponseEntity.ok(usersService.changeUsername(usersId, new_username));</span>
+<span class="nc" id="L51">        UUID usersId = UUID.fromString(Util.getJwtContext().get(0));</span>
+<span class="nc" id="L52">        return ResponseEntity.ok(usersService.changeUsername(usersId, new_username));</span>
     }
 
     @PutMapping(&quot;/headimg&quot;)
     public ResponseEntity&lt;Boolean&gt; changeHeadImg(@RequestBody UsersImgPutDto usersImgPutDto) {
-<span class="nc" id="L62">        UUID usersId = UUID.fromString(Util.getJwtContext().get(0));</span>
-<span class="nc" id="L63">        return ResponseEntity.ok(usersService.changeHeadImgUrl(usersId, usersImgPutDto));</span>
+<span class="nc" id="L57">        UUID usersId = UUID.fromString(Util.getJwtContext().get(0));</span>
+<span class="nc" id="L58">        return ResponseEntity.ok(usersService.changeHeadImgUrl(usersId, usersImgPutDto));</span>
     }
 
     @PutMapping(&quot;/profile_img&quot;)
     public ResponseEntity&lt;Boolean&gt; changeProfileImg(@RequestBody UsersImgPutDto usersImgPutDto) {
-<span class="nc" id="L68">        UUID usersId = UUID.fromString(Util.getJwtContext().get(0));</span>
-<span class="nc" id="L69">        return ResponseEntity.ok(usersService.changeProfileImgUrl(usersId, usersImgPutDto));</span>
+<span class="nc" id="L63">        UUID usersId = UUID.fromString(Util.getJwtContext().get(0));</span>
+<span class="nc" id="L64">        return ResponseEntity.ok(usersService.changeProfileImgUrl(usersId, usersImgPutDto));</span>
     }
 
     @GetMapping(&quot;/email/{new_email}&quot;)
     public ResponseEntity&lt;Boolean&gt; sendVerificationEmail(@PathVariable String new_email) throws Exception {
-<span class="nc" id="L74">        UUID usersId = UUID.fromString(Util.getJwtContext().get(0));</span>
-<span class="nc" id="L75">        return ResponseEntity.ok(usersService.sendVerificationEmail(usersId, new_email));</span>
+<span class="nc" id="L69">        UUID usersId = UUID.fromString(Util.getJwtContext().get(0));</span>
+<span class="nc" id="L70">        return ResponseEntity.ok(messageService.sendVerificationEmail(usersId, new_email));</span>
     }
 
     @PutMapping(&quot;/email/{new_email}&quot;)
     public ResponseEntity&lt;Boolean&gt; changeEmail(@PathVariable String new_email) {
-<span class="nc" id="L80">        UUID usersId = UUID.fromString(Util.getJwtContext().get(0));</span>
-<span class="nc" id="L81">        return ResponseEntity.ok(usersService.changeEmail(usersId, new_email));</span>
+<span class="nc" id="L75">        UUID usersId = UUID.fromString(Util.getJwtContext().get(0));</span>
+<span class="nc" id="L76">        return ResponseEntity.ok(usersService.changeEmail(usersId, new_email));</span>
     }
 
     @PutMapping(path=&quot;/roles&quot;)
     public ResponseEntity&lt;String&gt; changeUsersRoles(@RequestBody List&lt;UsersGetDto&gt; usersGetDtoList) {
-<span class="nc" id="L86">        Util.checkPermission(&quot;adminManagement&quot;);</span>
-<span class="nc" id="L87">        usersService.changeUsersRoles(usersGetDtoList);</span>
-<span class="nc" id="L88">        return ResponseEntity.ok(&quot;Done&quot;);</span>
+<span class="nc" id="L81">        Util.checkPermission(&quot;adminManagement&quot;);</span>
+<span class="nc" id="L82">        usersService.changeUsersRoles(usersGetDtoList);</span>
+<span class="nc" id="L83">        return ResponseEntity.ok(&quot;Done&quot;);</span>
     }
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.7.202105040129</span></div></body></html>
