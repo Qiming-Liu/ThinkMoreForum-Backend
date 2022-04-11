@@ -8,8 +8,8 @@ services:
       POSTGRES_PASSWORD: development
     ports:
       - "5432:5432"
-#    volumes:
-#     - /database:/var/lib/postgresql/data
+    volumes:
+     - /database:/var/lib/postgresql/data
   mq:
     container_name: mq
     image: rabbitmq:3.9.13-management-alpine

@@ -18,6 +18,12 @@ import java.util.UUID;
 public class PostController {
     private final PostService postService;
 
+    @GetMapping(path = "/search/{string}")
+    public ResponseEntity<List<PostGetDto>> getPostByTitleContainingString(@PathVariable("string") String string) {
+        List<PostGetDto> response = postService.getPostByTitleContainingString(string);
+        return ResponseEntity.ok(response);
+    }
+
     @PostMapping
     public ResponseEntity<String> postPost(@RequestBody PostPostDto postPostDto) {
         Util.checkPermission("makePost");
@@ -40,11 +46,6 @@ public class PostController {
         UUID postId = UUID.fromString(post_id);
         UUID userId = UUID.fromString(Util.getJwtContext().get(0));
         Boolean response = postService.changePostVisibility(postId, userId);
-        return ResponseEntity.ok(response);
-    }
-    @GetMapping(path = "/string/{string}")
-    public ResponseEntity<List<PostGetDto>> getPostByTitleContainingString(@PathVariable("string") String string) {
-        List<PostGetDto> response = postService.getPostByTitleContainingString(string);
         return ResponseEntity.ok(response);
     }
 }

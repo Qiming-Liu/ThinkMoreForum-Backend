@@ -19,7 +19,7 @@ public class CategoryController {
     private final CategoryService categoryService;
 
     @PutMapping
-    public ResponseEntity<Boolean> putCategory(@RequestBody List<CategoryPutDto> categoryPutDtoList) {
+    public ResponseEntity<Boolean> putCategories(@RequestBody List<CategoryPutDto> categoryPutDtoList) {
         Util.checkPermission("adminManagement");
         return ResponseEntity.ok(categoryService.putCategory(categoryPutDtoList));
     }
