@@ -12,11 +12,9 @@
   <img src="https://github.com/Qiming-Liu/ThinkMoreForum-Frontend/raw/main/public/home-preview.png">
 </p>
 
-## Website: [https://www.thinkmoreapp.com/](https://www.thinkmoreapp.com/)
+### [Website](https://www.thinkmoreapp.com/)
 
-### Frontend Repo: [https://github.com/Qiming-Liu/ThinkMoreForum-Frontend](https://github.com/Qiming-Liu/ThinkMoreForum-Frontend)
-
-### Front-end technology stack
+### [Front-end technology stack](https://github.com/Qiming-Liu/ThinkMoreForum-Frontend)
 
 1. Next.js
 2. React.js
@@ -28,7 +26,7 @@
 8. React testing-library Jest
 9. Eslint, sass-lint, prettier
 
-### Back-end technology stack
+### [Back-end technology stack](https://github.com/Qiming-Liu/ThinkMoreForum-Backend)
 
 1. Spring boot
 2. Lombok & Mapstruct
@@ -42,8 +40,6 @@
 10. Redis (Jedis)
 11. Sockjs (websocket)
 12. Sendgrid (Email)
-13. Grafana
-14. Portainer.io
 
 ### Architecture diagram
 
