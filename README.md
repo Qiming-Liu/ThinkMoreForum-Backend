@@ -8,46 +8,52 @@
 ![Code Size](https://img.shields.io/github/languages/code-size/Qiming-Liu/ThinkMoreForum-Backend)
 ![Stars](https://img.shields.io/github/commit-activity/y/Qiming-Liu/ThinkMoreForum-Backend)
 
-<p align="center">
-  <img src="https://github.com/Qiming-Liu/ThinkMoreForum-Frontend/raw/main/public/home-preview.png">
-</p>
+<p align="center"><img src="https://github.com/Qiming-Liu/ThinkMoreForum-Frontend/raw/main/public/3d.png"></p>
 
-### [Website](https://www.thinkmoreapp.com/)
+## [thinkmoreapp.com](https://www.thinkmoreapp.com/)
 
-### [Front-end technology stack](https://github.com/Qiming-Liu/ThinkMoreForum-Frontend)
+ThinkMoreForum is a place for people to make any kind of discussion, where people come together to share their opinion. As a discussion platform, it is multifunctional, interactive, and mobile-ready. Administrators can easily set the look and topic of the forum, manage user permissions, and customize the site footer. The development process uses Jira as an agile scrum software to help the team organize and prioritize the work, and uses Github as a version control tool for a lightweight, branch-based workflow. From a technical perspective, the project uses message queues to send emails, and implements high-level JWT updates and protection, constructs WebSocket to achieve real-time online users and real-time notifications.  
 
-1. Next.js
-2. React.js
-3. Redux thunk
-4. Typescript
-5. MUI Antd
-6. Axios
-7. Husky
-8. React testing-library Jest
-9. Eslint, sass-lint, prettier
+## Project Architecture
 
-### [Back-end technology stack](https://github.com/Qiming-Liu/ThinkMoreForum-Backend)
+<table align="center" border=0>
+   <tr>
+      <td width="500"><a herf="https://github.com/Qiming-Liu/ThinkMoreForum-Frontend"><b>Front-end</b></a></td>
+      <td width="500"><a herf="https://github.com/Qiming-Liu/ThinkMoreForum-Backend"><b>Back-end</b></a></td>
+   </tr>
+   <tr>
+      <td>
+         • Next.js<br>
+         • Redux<br>
+         • Typescript<br>
+         • MUI<br>
+         • Axios<br>
+         • Husky<br>
+         • Jest<br>
+         • Eslint<br>
+         • Sass-lint<br>
+         • Prettier<br>
+         • Yup, Formik
+      </td>
+      <td>
+         • Spring boot<br>
+         • Lombok & Mapstruct<br>
+         • Flyway & PostgreSQL (JPA)<br>
+         • Swagger & Postman<br>
+         • Spring Security & JWT<br>
+         • Jacoco & Mockito<br>
+         • RabbitMQ (amqp)<br>
+         • Amazon S3 (MinIO)<br>
+         • Redis (Jedis)<br>
+         • Sockjs (websocket)<br>
+         • Sendgrid (Email)
+      </td>
+   </tr>
+</table>  
 
-1. Spring boot
-2. Lombok & Mapstruct
-3. Flyway & PostgreSQL (JPA)
-4. Swagger & Postman
-5. Spring Security & JWT
-6. Unit Test & Jacoco & Mockito
-7. Gradle
-8. RabbitMQ (amqp)
-9. Amazon S3 (MinIO)
-10. Redis (Jedis)
-11. Sockjs (websocket)
-12. Sendgrid (Email)
+![Project Architecture](https://github.com/Qiming-Liu/ThinkMoreForum-Frontend/raw/main/public/ThinkMore.png)  
 
-### Architecture diagram
-
-<p align="center">
-  <img src="https://github.com/Qiming-Liu/ThinkMoreForum-Frontend/raw/main/public/ThinkMore.svg">
-</p>
-
-### Local Development
+## Local Development
 
 1. Use idea to open this project
 2. ```docker-compose up -d```
