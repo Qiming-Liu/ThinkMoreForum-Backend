@@ -51,7 +51,7 @@ ThinkMoreForum is a place for people to make any kind of discussion, where peopl
    </tr>
 </table>  
 
-![Project Architecture](https://github.com/Qiming-Liu/ThinkMoreForum-Frontend/raw/main/public/ThinkMore.png)  
+![Project Architecture](https://github.com/Qiming-Liu/ThinkMoreForum-Frontend/raw/main/public/ThinkMore.svg)  
 
 ## Local Development
 
