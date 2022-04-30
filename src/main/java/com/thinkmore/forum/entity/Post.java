@@ -25,7 +25,7 @@ public class Post {
     @JoinColumn(name = "post_users_id", nullable = false)
     private Users postUsers;
 
-    @ManyToOne(optional = false)
+    @ManyToOne
     @JoinColumn(name = "category_id")
     private Category category;
 

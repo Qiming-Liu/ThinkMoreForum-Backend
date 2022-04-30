@@ -1,6 +1,7 @@
 package com.thinkmore.forum.configuration;
 
 import org.jetbrains.annotations.NotNull;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.messaging.simp.config.MessageBrokerRegistry;
@@ -13,6 +14,9 @@ import org.springframework.web.socket.config.annotation.WebSocketMessageBrokerCo
 @Configuration
 @EnableWebSocketMessageBroker
 public class WebSocketConfig implements WebSocketMessageBrokerConfigurer {
+
+    @Value("${domain.name}")
+    public String domainName;
 
     @Override
     public void configureMessageBroker(MessageBrokerRegistry config) {
@@ -35,7 +39,7 @@ public class WebSocketConfig implements WebSocketMessageBrokerConfigurer {
                         .allowedMethods("GET", "POST", "PUT", "DELETE")
                         .allowedHeaders("X-Requested-With", "Origin", "Content-Type", "Accept", "Authorization")
                         .exposedHeaders("Access-Control-Allow-Headers", "Authorization, x-xsrf-token, Access-Control-Allow-Headers, Origin, Accept, X-Requested-With, Content-Type, Access-Control-Request-Method, Access-Control-Request-Headers")
-                        .allowedOrigins("*");
+                        .allowedOrigins(domainName, "http://localhost:3000/");
             }
         };
     }
