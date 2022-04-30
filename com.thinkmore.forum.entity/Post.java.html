@@ -25,7 +25,7 @@ import java.util.UUID;
     @JoinColumn(name = &quot;post_users_id&quot;, nullable = false)
 <span class="nc" id="L26">    private Users postUsers;</span>
 
-    @ManyToOne(optional = false)
+    @ManyToOne
     @JoinColumn(name = &quot;category_id&quot;)
 <span class="nc" id="L30">    private Category category;</span>
 
