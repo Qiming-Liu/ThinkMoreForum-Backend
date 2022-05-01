@@ -1,4 +1,4 @@
-name: Build Push Deploy
+name: Build
 on:
   push:
     branches: [ main ]
@@ -26,19 +26,3 @@ jobs:
       with:
         branch: build
         folder: docker 
-    - name: Deploy
-      uses: appleboy/ssh-action@master
-      with:
-        host: ${{ secrets.SSH_HOST }}
-        username: centos
-        key: ${{ secrets.SSH_KEY }}
-        port: 22
-        script: |
-          cd ThinkMoreForum-Backend/
-          sudo docker-compose down
-          cd ..
-          rm -rf ThinkMoreForum-Backend
-          git clone -b build https://github.com/Qiming-Liu/ThinkMoreForum-Backend.git
-          cd ThinkMoreForum-Backend/
-          echo "DATETIME=$(date +'%Y-%m-%d_%H.%M.%S')" > .env
-          sudo docker-compose up -d

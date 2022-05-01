@@ -5,7 +5,7 @@ on:
   pull_request:
     branches: [ main ]
 jobs:
-  check:
+  test:
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v2
@@ -25,3 +25,9 @@ jobs:
         cd docker
         echo "DATETIME=$(date +'%Y-%m-%d_%H.%M.%S')" > .env
         docker-compose up -d
+    
+    - name: Jacoco
+      uses: JamesIves/github-pages-deploy-action@v4
+      with:
+        branch: jacoco
+        folder: build/jacocoHtml
