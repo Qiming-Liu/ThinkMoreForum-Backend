@@ -70,6 +70,12 @@ dependencies {
     testImplementation 'org.springframework.security:spring-security-test:5.6.2'
     testImplementation 'org.mockito:mockito-core:4.3.1'
     testImplementation 'org.mockito:mockito-junit-jupiter:4.3.1'
+
+    //Prometheus
+    implementation group: 'io.micrometer', name: 'micrometer-registry-prometheus', version: '1.7.0'
+
+    //actuator
+    implementation group: 'org.springframework.boot', name: 'spring-boot-starter-actuator', version: '2.5.5'
 }
 
 tasks.named('test') {

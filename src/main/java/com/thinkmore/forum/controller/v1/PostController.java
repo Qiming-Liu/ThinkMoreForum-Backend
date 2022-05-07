@@ -5,6 +5,8 @@ import com.thinkmore.forum.dto.post.PostMiniPutDto;
 import com.thinkmore.forum.dto.post.PostPostDto;
 import com.thinkmore.forum.service.PostService;
 import com.thinkmore.forum.util.Util;
+import io.micrometer.core.instrument.Counter;
+import io.micrometer.core.instrument.Metrics;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -17,6 +19,8 @@ import java.util.UUID;
 @RequiredArgsConstructor
 public class PostController {
     private final PostService postService;
+    static final Counter postCounter = Metrics.
+            counter("post.counter.total", "controller", "post");
 
     @GetMapping(path = "/search/{string}")
     public ResponseEntity<List<PostGetDto>> getPostByTitleContainingString(@PathVariable("string") String string) {
@@ -29,6 +33,7 @@ public class PostController {
         Util.checkPermission("makePost");
         UUID userId = UUID.fromString(Util.getJwtContext().get(0));
         String response = postService.postPost(userId, postPostDto);
+        postCounter.increment(1D);
         return ResponseEntity.ok(response);
     }
 
