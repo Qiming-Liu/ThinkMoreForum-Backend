@@ -12,6 +12,9 @@ import com.thinkmore.forum.dto.users.UsersGetDto;
 import com.thinkmore.forum.dto.users.UsersPostDto;
 import com.thinkmore.forum.service.*;
 
+import io.micrometer.core.instrument.Counter;
+import io.micrometer.core.instrument.Metrics;
+import io.prometheus.client.Histogram;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Pageable;
@@ -25,8 +28,8 @@ import java.util.UUID;
 
 @RestController
 @RequestMapping(path = &quot;/v1/public&quot;)
-<span class="nc" id="L28">@RequiredArgsConstructor</span>
-<span class="nc" id="L29">@Slf4j</span>
+<span class="nc" id="L31">@RequiredArgsConstructor</span>
+<span class="nc" id="L32">@Slf4j</span>
 public class PublicController {
 
     private final UsersService usersService;
@@ -37,111 +40,119 @@ public class PublicController {
     private final FollowPostService followPostService;
     private final FollowerUsersService followerUsersService;
     private final ComponentService componentService;
+<span class="nc" id="L43">    static final Counter newUserCounter = Metrics.</span>
+<span class="nc" id="L44">            counter(&quot;newUser.counter.total&quot;, &quot;controller&quot;, &quot;public&quot;);</span>
+<span class="nc" id="L45">    static final Histogram postRequestLatency = Histogram.build()</span>
+<span class="nc" id="L46">            .name(&quot;post_requests_latency_seconds&quot;).help(&quot;Post request latency in seconds.&quot;).register();</span>
 
     // Users
     @PostMapping(path = &quot;/users/register&quot;)
     public ResponseEntity&lt;Boolean&gt; register(@RequestBody UsersPostDto usersPostDto) {
-<span class="nc" id="L44">        return ResponseEntity.ok(usersService.register(usersPostDto));</span>
+<span class="nc" id="L51">        newUserCounter.increment(1D);</span>
+<span class="nc" id="L52">        return ResponseEntity.ok(usersService.register(usersPostDto));</span>
     }
 
     @GetMapping(path = &quot;/users/unique_email/{email}&quot;)
     public ResponseEntity&lt;Boolean&gt; uniqueEmail(@PathVariable String email) {
-<span class="nc" id="L49">        return ResponseEntity.ok(usersService.uniqueEmail(email));</span>
+<span class="nc" id="L57">        return ResponseEntity.ok(usersService.uniqueEmail(email));</span>
     }
 
     @GetMapping(path = &quot;/users/unique_username/{username}&quot;)
     public ResponseEntity&lt;Boolean&gt; uniqueUsername(@PathVariable String username) {
-<span class="nc" id="L54">        return ResponseEntity.ok(usersService.uniqueUsername(username));</span>
+<span class="nc" id="L62">        return ResponseEntity.ok(usersService.uniqueUsername(username));</span>
     }
 
     @GetMapping(&quot;/users/reset_password/{email}&quot;)
     public ResponseEntity&lt;Boolean&gt; sendResetPasswordEmail(@PathVariable String email) {
-<span class="nc" id="L59">        return ResponseEntity.ok(messageService.sendResetPasswordEmail(email));</span>
+<span class="nc" id="L67">        return ResponseEntity.ok(messageService.sendResetPasswordEmail(email));</span>
     }
 
     @GetMapping(path = &quot;/users/username/{username}&quot;)
     public ResponseEntity&lt;UsersGetDto&gt; getUserById(@PathVariable String username) {
-<span class="nc" id="L64">        return ResponseEntity.ok(usersService.getUserByUsername(username));</span>
+<span class="nc" id="L72">        return ResponseEntity.ok(usersService.getUserByUsername(username));</span>
     }
 
     // Category
     @GetMapping(path = &quot;/category&quot;)
     public ResponseEntity&lt;List&lt;CategoryGetDto&gt;&gt; getAllCategories() {
-<span class="nc" id="L70">        return ResponseEntity.ok(categoryService.getAllCategories());</span>
+<span class="nc" id="L78">        return ResponseEntity.ok(categoryService.getAllCategories());</span>
     }
 
     @GetMapping(path = &quot;/category/{category_title}&quot;)
     public ResponseEntity&lt;CategoryGetDto&gt; getCategoryByTitle(@PathVariable(&quot;category_title&quot;) String category_title) throws Exception {
-<span class="nc" id="L75">        return ResponseEntity.ok(categoryService.getCategoryByCategoryTitle(category_title));</span>
+<span class="nc" id="L83">        return ResponseEntity.ok(categoryService.getCategoryByCategoryTitle(category_title));</span>
     }
 
     @GetMapping(path = &quot;/category/{category_id}/visible_post&quot;)
     public ResponseEntity&lt;List&lt;PostGetDto&gt;&gt; findVisiblePostsByCategoryId(@PathVariable(&quot;category_id&quot;) String category_id, @PageableDefault(page = 0, size = 10, sort = {&quot;createTimestamp&quot;}, direction = Sort.Direction.DESC) Pageable pageable) throws Exception {
-<span class="nc" id="L80">        UUID categoryId = UUID.fromString(category_id);</span>
-<span class="nc" id="L81">        return ResponseEntity.ok(postService.getVisiblePostsByCategoryId(categoryId, pageable));</span>
+<span class="nc" id="L88">        UUID categoryId = UUID.fromString(category_id);</span>
+<span class="nc" id="L89">        return ResponseEntity.ok(postService.getVisiblePostsByCategoryId(categoryId, pageable));</span>
     }
 
     @GetMapping(path = &quot;/category/{category_id}/visible_count&quot;)
     public ResponseEntity&lt;Long&gt; findNumOfVisiblePostsInCategory(@PathVariable(&quot;category_id&quot;) String category_id) {
-<span class="nc" id="L86">        UUID categoryId = UUID.fromString(category_id);</span>
-<span class="nc" id="L87">        return ResponseEntity.ok(postService.getCountOfVisiblePostsByCategoryId(categoryId));</span>
+<span class="nc" id="L94">        UUID categoryId = UUID.fromString(category_id);</span>
+<span class="nc" id="L95">        return ResponseEntity.ok(postService.getCountOfVisiblePostsByCategoryId(categoryId));</span>
     }
 
     // Post
     @GetMapping(path = &quot;/post&quot;)
     public ResponseEntity&lt;List&lt;PostMiniGetDto&gt;&gt; findAllPosts(){
-<span class="nc" id="L93">        return ResponseEntity.ok(postService.getAllPostsCoreInfo());</span>
+<span class="nc" id="L101">        Histogram.Timer postRequestTimer = postRequestLatency.startTimer();</span>
+<span class="nc" id="L102">        List &lt;PostMiniGetDto&gt; result = postService.getAllPostsCoreInfo();</span>
+<span class="nc" id="L103">        postRequestTimer.observeDuration();</span>
+<span class="nc" id="L104">        return ResponseEntity.ok(result);</span>
     }
 
     @GetMapping(path = &quot;/post/{post_id}&quot;)
     public ResponseEntity&lt;PostGetDto&gt; getPostById(@PathVariable String post_id) throws Exception {
-<span class="nc" id="L98">        UUID postId = UUID.fromString(post_id);</span>
-<span class="nc" id="L99">        return ResponseEntity.ok(postService.getPostById(postId));</span>
+<span class="nc" id="L109">        UUID postId = UUID.fromString(post_id);</span>
+<span class="nc" id="L110">        return ResponseEntity.ok(postService.getPostById(postId));</span>
     }
 
     @GetMapping(path = &quot;/post/user/{username}&quot;)
     public ResponseEntity&lt;List&lt;PostGetDto&gt;&gt; findPostByPostUsersId(@PathVariable String username) {
-<span class="nc" id="L104">        return ResponseEntity.ok(postService.getPostsByPostUsersName(username));</span>
+<span class="nc" id="L115">        return ResponseEntity.ok(postService.getPostsByPostUsersName(username));</span>
     }
 
     @PutMapping(path = &quot;/post/{post_id}/view_count&quot;)
     public void updatePostViewCount(@PathVariable(&quot;post_id&quot;) String post_id) {
-<span class="nc" id="L109">        UUID postId = UUID.fromString(post_id);</span>
-<span class="nc" id="L110">        postService.updateViewCount(postId);</span>
-<span class="nc" id="L111">    }</span>
+<span class="nc" id="L120">        UUID postId = UUID.fromString(post_id);</span>
+<span class="nc" id="L121">        postService.updateViewCount(postId);</span>
+<span class="nc" id="L122">    }</span>
 
     @GetMapping(path = &quot;/post/follows/find_all_by_username/{username}&quot;)
     public ResponseEntity&lt;List&lt;FollowPostGetDto&gt;&gt; getFollowPostByUsername(@PathVariable String username) {
-<span class="nc" id="L115">        return ResponseEntity.ok(followPostService.getAllFollowPostsByUsername(username));</span>
+<span class="nc" id="L126">        return ResponseEntity.ok(followPostService.getAllFollowPostsByUsername(username));</span>
     }
 
     @GetMapping(path=&quot;/post/max_count_comment&quot;)
     public ResponseEntity&lt;PostCommentGetDto&gt; getMaxCountCommentPost(@PageableDefault(page = 0, size = 3) Pageable pageable) {
-<span class="nc" id="L120">        return ResponseEntity.ok(postService.getMaxCountCommentPost(pageable));</span>
+<span class="nc" id="L131">        return ResponseEntity.ok(postService.getMaxCountCommentPost(pageable));</span>
     }
 
     // Comment
     @GetMapping(path = &quot;/comment/{post_id}&quot;)
     public ResponseEntity&lt;List&lt;CommentGetDto&gt;&gt; getCommentsByPostId(@PathVariable String post_id) {
-<span class="nc" id="L126">        UUID postId = UUID.fromString(post_id);</span>
-<span class="nc" id="L127">        return ResponseEntity.ok(commentService.getAllByPost(postId));</span>
+<span class="nc" id="L137">        UUID postId = UUID.fromString(post_id);</span>
+<span class="nc" id="L138">        return ResponseEntity.ok(commentService.getAllByPost(postId));</span>
     }
 
     // Followers, Following
     @GetMapping(path = &quot;/follower/{username}&quot;)
     public ResponseEntity&lt;List&lt;FollowerUsersGetDto&gt;&gt; getFollower(@PathVariable(&quot;username&quot;) String target_username) {
-<span class="nc" id="L133">        return ResponseEntity.ok(followerUsersService.getFollowersByUsername(target_username));</span>
+<span class="nc" id="L144">        return ResponseEntity.ok(followerUsersService.getFollowersByUsername(target_username));</span>
     }
 
     @GetMapping(path = &quot;/following/{username}&quot;)
     public ResponseEntity&lt;List&lt;FollowerUsersGetDto&gt;&gt; getFollowing(@PathVariable(&quot;username&quot;) String target_username) {
-<span class="nc" id="L138">        return ResponseEntity.ok(followerUsersService.getFollowingByUsername(target_username));</span>
+<span class="nc" id="L149">        return ResponseEntity.ok(followerUsersService.getFollowingByUsername(target_username));</span>
     }
 
     // Component
     @GetMapping(path = &quot;/component/{name}&quot;)
     public ResponseEntity&lt;ComponentGetDto&gt; getComponentByName(@PathVariable String name) throws Exception {
-<span class="nc" id="L144">        return ResponseEntity.ok(componentService.getComponent(name));</span>
+<span class="nc" id="L155">        return ResponseEntity.ok(componentService.getComponent(name));</span>
     }
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.7.202105040129</span></div></body></html>
