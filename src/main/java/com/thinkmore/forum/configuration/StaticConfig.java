@@ -12,6 +12,7 @@ public class StaticConfig {
             "/webjars/**",
             // -- API
             "/v1/public/**",
+            "/actuator/prometheus"
     };
 
     // Role

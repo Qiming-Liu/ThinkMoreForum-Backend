@@ -12,6 +12,9 @@ import com.thinkmore.forum.dto.users.UsersGetDto;
 import com.thinkmore.forum.dto.users.UsersPostDto;
 import com.thinkmore.forum.service.*;
 
+import io.micrometer.core.instrument.Counter;
+import io.micrometer.core.instrument.Metrics;
+import io.prometheus.client.Histogram;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Pageable;
@@ -37,10 +40,15 @@ public class PublicController {
     private final FollowPostService followPostService;
     private final FollowerUsersService followerUsersService;
     private final ComponentService componentService;
+    static final Counter newUserCounter = Metrics.
+            counter("newUser.counter.total", "controller", "public");
+    static final Histogram postRequestLatency = Histogram.build()
+            .name("post_requests_latency_seconds").help("Post request latency in seconds.").register();
 
     // Users
     @PostMapping(path = "/users/register")
     public ResponseEntity<Boolean> register(@RequestBody UsersPostDto usersPostDto) {
+        newUserCounter.increment(1D);
         return ResponseEntity.ok(usersService.register(usersPostDto));
     }
 
@@ -90,7 +98,10 @@ public class PublicController {
     // Post
     @GetMapping(path = "/post")
     public ResponseEntity<List<PostMiniGetDto>> findAllPosts(){
-        return ResponseEntity.ok(postService.getAllPostsCoreInfo());
+        Histogram.Timer postRequestTimer = postRequestLatency.startTimer();
+        List <PostMiniGetDto> result = postService.getAllPostsCoreInfo();
+        postRequestTimer.observeDuration();
+        return ResponseEntity.ok(result);
     }
 
     @GetMapping(path = "/post/{post_id}")
