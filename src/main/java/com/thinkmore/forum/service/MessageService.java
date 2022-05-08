@@ -32,10 +32,10 @@ public class MessageService {
     RabbitTemplate rabbitTemplate;
 
     private static final Gauge emailQueue = Gauge.build()
-            .name("email-queue")
-            .help("size of email queue.")
-            .register();
-  
+                                                 .name("email-queue")
+                                                 .help("size of email queue.")
+                                                 .register();
+
     private final UsersRepository usersRepository;
     private final JwtRouterService jwtRouterService;
 
@@ -80,15 +80,15 @@ public class MessageService {
         Optional<Users> user = usersRepository.findByEmail(message.getEmail());
         emailQueue.dec();
 
-        if (user.isPresent()) {
-            String fakeJwt = StaticConfig.JwtPrefix + jwtRouterService.getFakeJwt(Util.generateJwt(new JwtUser(user.get())));
-            String encode = Util.UrlEncoder(fakeJwt);
-            Util.createMail(
-                    StaticConfig.fromEmail,
-                    message.getEmail(),
-                    "Reset password",
-                    StaticConfig.ResetPasswordContext +
-                            domainName + StaticConfig.ResetPasswordUrl + encode);
-        }
+//        if (user.isPresent()) {
+//            String fakeJwt = StaticConfig.JwtPrefix + jwtRouterService.getFakeJwt(Util.generateJwt(new JwtUser(user.get())));
+//            String encode = Util.UrlEncoder(fakeJwt);
+//            Util.createMail(
+//                    StaticConfig.fromEmail,
+//                    message.getEmail(),
+//                    "Reset password",
+//                    StaticConfig.ResetPasswordContext +
+//                            domainName + StaticConfig.ResetPasswordUrl + encode);
+//        }
     }
 }
