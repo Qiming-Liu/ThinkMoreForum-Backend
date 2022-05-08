@@ -57,6 +57,7 @@ services:
     depends_on:
       - db
       - mq
+      - imd
   ms:
     container_name: ms
     image: prom/prometheus:v2.35.0
@@ -66,7 +67,5 @@ services:
       - --config.file=/etc/prometheus/prometheus/prometheus.yml
     ports:
       - "9090:9090"
-    links:
-      - app
     depends_on:
       - app
