@@ -40,9 +40,9 @@ public class PublicController {
     private final FollowPostService followPostService;
     private final FollowerUsersService followerUsersService;
     private final ComponentService componentService;
-<span class="nc" id="L43">    private static final Counter newUserCounter = Metrics.</span>
+<span class="nc" id="L43">    static final Counter newUserCounter = Metrics.</span>
 <span class="nc" id="L44">            counter(&quot;newUser.counter.total&quot;, &quot;controller&quot;, &quot;public&quot;);</span>
-<span class="nc" id="L45">    private static final Histogram postRequestLatency = Histogram.build()</span>
+<span class="nc" id="L45">    static final Histogram postRequestLatency = Histogram.build()</span>
 <span class="nc" id="L46">            .name(&quot;post_requests_latency_seconds&quot;).help(&quot;Post request latency in seconds.&quot;).register();</span>
 
     // Users
