@@ -29,20 +29,6 @@ services:
     ports:
       - "6379:6379"
     command: redis-server --requirepass "development"
-  prometheus:
-    image: prom/prometheus:v2.35.0
-    container_name: prometheus
-    volumes:
-      - ./prometheus/prometheus.yml:/etc/prometheus/prometheus.yml
-    command:
-      - --config.file=/etc/prometheus/prometheus.yml
-    ports:
-      - "9090:9090"
-  grafana:
-    image: grafana/grafana:8.5.2
-    container_name: grafana
-    ports:
-      - "3000:3000"
   app:
     build:
       context: .
@@ -71,3 +57,15 @@ services:
     depends_on:
       - db
       - mq
+      - imd
+  ms:
+    container_name: ms
+    image: prom/prometheus:v2.35.0
+    volumes:
+      - ./prometheus:/etc/prometheus/prometheus
+    command:
+      - --config.file=/etc/prometheus/prometheus/prometheus.yml
+    ports:
+      - "9090:9090"
+    depends_on:
+      - app
