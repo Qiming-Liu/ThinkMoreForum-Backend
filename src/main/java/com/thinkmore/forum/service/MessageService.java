@@ -31,9 +31,13 @@ public class MessageService {
     @Autowired
     RabbitTemplate rabbitTemplate;
 
+    private static final Gauge emailQueue = Gauge.build()
+            .name("email-queue")
+            .help("size of email queue.")
+            .register();
+  
     private final UsersRepository usersRepository;
-    static final Gauge emailQueue = Gauge.build()
-            .name("email-queue").help("size of email queue.").register();
+    private final JwtRouterService jwtRouterService;
 
     @Transactional
     public boolean sendVerificationEmail(UUID usersId, String newEmail) {
@@ -77,7 +81,8 @@ public class MessageService {
         emailQueue.dec();
 
         if (user.isPresent()) {
-            String encode = Util.UrlEncoder(StaticConfig.JwtPrefix + Util.generateJwt(new JwtUser(user.get())));
+            String fakeJwt = StaticConfig.JwtPrefix + jwtRouterService.getFakeJwt(Util.generateJwt(new JwtUser(user.get())));
+            String encode = Util.UrlEncoder(fakeJwt);
             Util.createMail(
                     StaticConfig.fromEmail,
                     message.getEmail(),
