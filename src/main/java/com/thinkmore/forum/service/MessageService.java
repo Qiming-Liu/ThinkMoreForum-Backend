@@ -49,6 +49,7 @@ public class MessageService {
 
     private final UsersRepository usersRepository;
     private final UsersMapper usersMapper;
+    private final JwtRouterService jwtRouterService;
 
     @Transactional
     public boolean sendVerificationEmail(UUID usersId, String newEmail) {
@@ -89,7 +90,8 @@ public class MessageService {
         Optional<Users> user = usersRepository.findByEmail(message.getEmail());
 
         if (user.isPresent()) {
-            String encode = Util.UrlEncoder(StaticConfig.JwtPrefix + Util.generateJwt(new JwtUser(user.get())));
+            String fakeJwt = StaticConfig.JwtPrefix + jwtRouterService.getFakeJwt(Util.generateJwt(new JwtUser(user.get())));
+            String encode = Util.UrlEncoder(fakeJwt);
             Util.createMail(
                     StaticConfig.fromEmail,
                     message.getEmail(),
