@@ -5,8 +5,6 @@ import com.thinkmore.forum.dto.post.PostMiniPutDto;
 import com.thinkmore.forum.dto.post.PostPostDto;
 import com.thinkmore.forum.service.PostService;
 import com.thinkmore.forum.util.Util;
-import io.micrometer.core.instrument.Counter;
-import io.micrometer.core.instrument.Metrics;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -16,42 +14,39 @@ import java.util.UUID;
 
 @RestController
 @RequestMapping(path = &quot;/v1/post&quot;)
-<span class="nc" id="L19">@RequiredArgsConstructor</span>
+<span class="nc" id="L17">@RequiredArgsConstructor</span>
 public class PostController {
     private final PostService postService;
-<span class="nc" id="L22">    static final Counter postCounter = Metrics.</span>
-<span class="nc" id="L23">            counter(&quot;post.counter.total&quot;, &quot;controller&quot;, &quot;post&quot;);</span>
 
     @GetMapping(path = &quot;/search/{string}&quot;)
     public ResponseEntity&lt;List&lt;PostGetDto&gt;&gt; getPostByTitleContainingString(@PathVariable(&quot;string&quot;) String string) {
-<span class="nc" id="L27">        List&lt;PostGetDto&gt; response = postService.getPostByTitleContainingString(string);</span>
-<span class="nc" id="L28">        return ResponseEntity.ok(response);</span>
+<span class="nc" id="L23">        List&lt;PostGetDto&gt; response = postService.getPostByTitleContainingString(string);</span>
+<span class="nc" id="L24">        return ResponseEntity.ok(response);</span>
     }
 
     @PostMapping
     public ResponseEntity&lt;String&gt; postPost(@RequestBody PostPostDto postPostDto) {
-<span class="nc" id="L33">        Util.checkPermission(&quot;makePost&quot;);</span>
-<span class="nc" id="L34">        UUID userId = UUID.fromString(Util.getJwtContext().get(0));</span>
-<span class="nc" id="L35">        String response = postService.postPost(userId, postPostDto);</span>
-<span class="nc" id="L36">        postCounter.increment(1D);</span>
-<span class="nc" id="L37">        return ResponseEntity.ok(response);</span>
+<span class="nc" id="L29">        Util.checkPermission(&quot;makePost&quot;);</span>
+<span class="nc" id="L30">        UUID userId = UUID.fromString(Util.getJwtContext().get(0));</span>
+<span class="nc" id="L31">        String response = postService.postPost(userId, postPostDto);</span>
+<span class="nc" id="L32">        return ResponseEntity.ok(response);</span>
     }
 
     @PutMapping(&quot;/{post_id}&quot;)
     public ResponseEntity&lt;Boolean&gt; editPost(@PathVariable(&quot;post_id&quot;) String post_id, @RequestBody PostMiniPutDto postMiniPutDto) {
-<span class="nc" id="L42">        Util.checkPermission(&quot;postManagement&quot;);</span>
-<span class="nc" id="L43">        UUID postId = UUID.fromString(post_id);</span>
-<span class="nc" id="L44">        UUID usersId = UUID.fromString(Util.getJwtContext().get(0));</span>
-<span class="nc" id="L45">        return ResponseEntity.ok(postService.editPost(postId, usersId, postMiniPutDto));</span>
+<span class="nc" id="L37">        Util.checkPermission(&quot;postManagement&quot;);</span>
+<span class="nc" id="L38">        UUID postId = UUID.fromString(post_id);</span>
+<span class="nc" id="L39">        UUID usersId = UUID.fromString(Util.getJwtContext().get(0));</span>
+<span class="nc" id="L40">        return ResponseEntity.ok(postService.editPost(postId, usersId, postMiniPutDto));</span>
     }
 
     @PutMapping(path = &quot;/{post_id}/visibility&quot;)
     public ResponseEntity&lt;Boolean&gt; changePostVisibility(@PathVariable(&quot;post_id&quot;) String post_id) {
-<span class="nc" id="L50">        Util.checkPermission(&quot;postManagement&quot;);</span>
-<span class="nc" id="L51">        UUID postId = UUID.fromString(post_id);</span>
-<span class="nc" id="L52">        UUID userId = UUID.fromString(Util.getJwtContext().get(0));</span>
-<span class="nc" id="L53">        Boolean response = postService.changePostVisibility(postId, userId);</span>
-<span class="nc" id="L54">        return ResponseEntity.ok(response);</span>
+<span class="nc" id="L45">        Util.checkPermission(&quot;postManagement&quot;);</span>
+<span class="nc" id="L46">        UUID postId = UUID.fromString(post_id);</span>
+<span class="nc" id="L47">        UUID userId = UUID.fromString(Util.getJwtContext().get(0));</span>
+<span class="nc" id="L48">        Boolean response = postService.changePostVisibility(postId, userId);</span>
+<span class="nc" id="L49">        return ResponseEntity.ok(response);</span>
     }
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.7.202105040129</span></div></body></html>
