@@ -39,7 +39,7 @@ import org.springframework.web.socket.config.annotation.WebSocketMessageBrokerCo
 <span class="nc" id="L39">                        .allowedMethods(&quot;GET&quot;, &quot;POST&quot;, &quot;PUT&quot;, &quot;DELETE&quot;)</span>
 <span class="nc" id="L40">                        .allowedHeaders(&quot;X-Requested-With&quot;, &quot;Origin&quot;, &quot;Content-Type&quot;, &quot;Accept&quot;, &quot;Authorization&quot;)</span>
 <span class="nc" id="L41">                        .exposedHeaders(&quot;Access-Control-Allow-Headers&quot;, &quot;Authorization, x-xsrf-token, Access-Control-Allow-Headers, Origin, Accept, X-Requested-With, Content-Type, Access-Control-Request-Method, Access-Control-Request-Headers&quot;)</span>
-<span class="nc" id="L42">                        .allowedOrigins(&quot;*&quot;);</span>
+<span class="nc" id="L42">                        .allowedOrigins(domainName, &quot;http://localhost:3000/&quot;);</span>
 <span class="nc" id="L43">            }</span>
         };
     }
