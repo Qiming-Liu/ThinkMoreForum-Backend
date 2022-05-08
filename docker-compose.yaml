@@ -33,9 +33,9 @@ services:
     container_name: ms
     image: prom/prometheus:v2.35.0
     volumes:
-      - ./prometheus/prometheus.yml:/etc/prometheus/prometheus.yml
+      - ./prometheus/prometheus:/etc/prometheus/prometheus
     command:
-      - --config.file=/etc/prometheus/prometheus.yml
+      - --config.file=/etc/prometheus/prometheus/prometheus.yml
     ports:
       - "9090:9090"
   app:
