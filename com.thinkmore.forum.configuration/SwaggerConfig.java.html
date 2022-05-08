@@ -1,8 +1,18 @@
 <?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>SwaggerConfig.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">forum</a> &gt; <a href="index.source.html" class="el_package">com.thinkmore.forum.configuration</a> &gt; <span class="el_source">SwaggerConfig.java</span></div><h1>SwaggerConfig.java</h1><pre class="source lang-java linenums">package com.thinkmore.forum.configuration;
 
+import org.flywaydb.core.internal.util.StringUtils;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.boot.actuate.autoconfigure.endpoint.web.CorsEndpointProperties;
+import org.springframework.boot.actuate.autoconfigure.endpoint.web.WebEndpointProperties;
+import org.springframework.boot.actuate.autoconfigure.web.server.ManagementPortType;
+import org.springframework.boot.actuate.endpoint.ExposableEndpoint;
+import org.springframework.boot.actuate.endpoint.web.*;
+import org.springframework.boot.actuate.endpoint.web.annotation.ControllerEndpointsSupplier;
+import org.springframework.boot.actuate.endpoint.web.annotation.ServletEndpointsSupplier;
+import org.springframework.boot.actuate.endpoint.web.servlet.WebMvcEndpointHandlerMapping;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.core.env.Environment;
 import springfox.documentation.builders.ApiInfoBuilder;
 import springfox.documentation.builders.ParameterBuilder;
 import springfox.documentation.builders.PathSelectors;
@@ -15,45 +25,67 @@ import springfox.documentation.spring.web.plugins.Docket;
 import springfox.documentation.swagger2.annotations.EnableSwagger2;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 
 @Configuration
 @EnableSwagger2
-<span class="nc" id="L22">public class SwaggerConfig {</span>
+<span class="nc" id="L33">public class SwaggerConfig {</span>
 
     @Value(&quot;${swagger.enable}&quot;)
     private boolean swaggerEnable;
 
     @Bean
     public Docket api() {
-<span class="nc" id="L29">        return new Docket(DocumentationType.SWAGGER_2)</span>
-<span class="nc" id="L30">                .enable(swaggerEnable)</span>
-<span class="nc" id="L31">                .apiInfo(apiInfo())</span>
-<span class="nc" id="L32">                .globalOperationParameters(jwt())</span>
-<span class="nc" id="L33">                .select()</span>
-<span class="nc" id="L34">                .apis(RequestHandlerSelectors.any())</span>
-<span class="nc" id="L35">                .paths(PathSelectors.any())</span>
-<span class="nc" id="L36">                .build();</span>
+<span class="nc" id="L40">        return new Docket(DocumentationType.SWAGGER_2)</span>
+<span class="nc" id="L41">                .enable(swaggerEnable)</span>
+<span class="nc" id="L42">                .apiInfo(apiInfo())</span>
+<span class="nc" id="L43">                .globalOperationParameters(jwt())</span>
+<span class="nc" id="L44">                .select()</span>
+<span class="nc" id="L45">                .apis(RequestHandlerSelectors.any())</span>
+<span class="nc" id="L46">                .paths(PathSelectors.any())</span>
+<span class="nc" id="L47">                .build();</span>
     }
 
     private ApiInfo apiInfo() {
-<span class="nc" id="L40">        return new ApiInfoBuilder()</span>
-<span class="nc" id="L41">                .title(&quot;ThinkMoreForum Api&quot;)</span>
-<span class="nc" id="L42">                .version(&quot;1.2&quot;)</span>
-<span class="nc" id="L43">                .build();</span>
+<span class="nc" id="L51">        return new ApiInfoBuilder()</span>
+<span class="nc" id="L52">                .title(&quot;ThinkMoreForum Api&quot;)</span>
+<span class="nc" id="L53">                .version(&quot;1.2&quot;)</span>
+<span class="nc" id="L54">                .build();</span>
     }
 
     private List&lt;Parameter&gt; jwt() {
-<span class="nc" id="L47">        ParameterBuilder tokenPar = new ParameterBuilder();</span>
-<span class="nc" id="L48">        List&lt;Parameter&gt; pars = new ArrayList&lt;&gt;();</span>
-<span class="nc" id="L49">        tokenPar.name(&quot;Authorization&quot;)</span>
-<span class="nc" id="L50">                .description(&quot;JWT&quot;)</span>
-<span class="nc" id="L51">                .modelRef(new ModelRef(&quot;string&quot;))</span>
-<span class="nc" id="L52">                .parameterType(&quot;header&quot;)</span>
-<span class="nc" id="L53">                .defaultValue(StaticConfig.JwtPrefix + &quot;{jwt}&quot;)</span>
-<span class="nc" id="L54">                .required(false);</span>
-<span class="nc" id="L55">        pars.add(tokenPar.build());</span>
-<span class="nc" id="L56">        return pars;</span>
+<span class="nc" id="L58">        ParameterBuilder tokenPar = new ParameterBuilder();</span>
+<span class="nc" id="L59">        List&lt;Parameter&gt; pars = new ArrayList&lt;&gt;();</span>
+<span class="nc" id="L60">        tokenPar.name(&quot;Authorization&quot;)</span>
+<span class="nc" id="L61">                .description(&quot;JWT&quot;)</span>
+<span class="nc" id="L62">                .modelRef(new ModelRef(&quot;string&quot;))</span>
+<span class="nc" id="L63">                .parameterType(&quot;header&quot;)</span>
+<span class="nc" id="L64">                .defaultValue(StaticConfig.JwtPrefix + &quot;{jwt}&quot;)</span>
+<span class="nc" id="L65">                .required(false);</span>
+<span class="nc" id="L66">        pars.add(tokenPar.build());</span>
+<span class="nc" id="L67">        return pars;</span>
     }
+    @Bean
+    public WebMvcEndpointHandlerMapping webEndpointServletHandlerMapping(WebEndpointsSupplier webEndpointsSupplier,
+                                                                         ServletEndpointsSupplier servletEndpointsSupplier, ControllerEndpointsSupplier controllerEndpointsSupplier,
+                                                                         EndpointMediaTypes endpointMediaTypes, CorsEndpointProperties corsProperties,
+                                                                         WebEndpointProperties webEndpointProperties, Environment environment) {
+
+<span class="nc" id="L75">        List&lt;ExposableEndpoint&lt;?&gt;&gt; allEndpoints = new ArrayList&lt;&gt;();</span>
+<span class="nc" id="L76">        Collection&lt;ExposableWebEndpoint&gt; webEndpoints = webEndpointsSupplier.getEndpoints();</span>
+<span class="nc" id="L77">        allEndpoints.addAll(webEndpoints);</span>
+<span class="nc" id="L78">        allEndpoints.addAll(servletEndpointsSupplier.getEndpoints());</span>
+<span class="nc" id="L79">        allEndpoints.addAll(controllerEndpointsSupplier.getEndpoints());</span>
+<span class="nc" id="L80">        String basePath = webEndpointProperties.getBasePath();</span>
+<span class="nc" id="L81">        EndpointMapping endpointMapping = new EndpointMapping(basePath);</span>
+<span class="nc" id="L82">        boolean shouldRegisterLinksMapping =</span>
+<span class="nc bnc" id="L83" title="All 4 branches missed.">                webEndpointProperties.getDiscovery().isEnabled() &amp;&amp; (StringUtils.hasText(basePath)</span>
+<span class="nc bnc" id="L84" title="All 2 branches missed.">                        || ManagementPortType.get(environment).equals(ManagementPortType.DIFFERENT));</span>
+<span class="nc" id="L85">        return new WebMvcEndpointHandlerMapping(endpointMapping, webEndpoints, endpointMediaTypes,</span>
+<span class="nc" id="L86">                corsProperties.toCorsConfiguration(), new EndpointLinksResolver(allEndpoints, basePath),</span>
+                shouldRegisterLinksMapping, null);
+    }
+
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.7.202105040129</span></div></body></html>
