@@ -39,8 +39,8 @@ services:
       - "6379:6379"
     command: redis-server --requirepass "development"
   ms:
+    container_name: ms
     image: prom/prometheus:v2.35.0
-    container_name: prometheus
     volumes:
       - ./docker/prometheus/prometheus.yml:/etc/prometheus/prometheus.yml
     command:
