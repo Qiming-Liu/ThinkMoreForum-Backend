@@ -1,13 +1,20 @@
 global:
-  scrape_interval: 15s # By default, scrape targets every 15 seconds.
+  scrape_interval:     15s # Default is every 1 minute.
+  evaluation_interval: 15s # Evaluate rules every 15 seconds. The default is every 1 minute.
 
+rule_files:
+# - "first_rules.yml"
+# - "second_rules.yml"
+
+# A scrape configuration containing exactly one endpoint to scrape:
 scrape_configs:
-  - job_name: 'thinkmoreforum-backend'
-    scrape_interval: 5s
-    metrics_path: "/actuator/prometheus"
-    tls_config:
-      cert_file: /etc/prometheus/prometheus/api.thinkmoreapp.com_bundle.crt
-      key_file: /etc/prometheus/prometheus/api.thinkmoreapp.com.key
-      insecure_skip_verify: true
+  - job_name: 'prometheus'
+
     static_configs:
-      - targets: ['localhost:443']
+      - targets: ['app:443']
+
+  - job_name: 'spring-actuator'
+    metrics_path: '/actuator/prometheus'
+    scrape_interval: 5s
+    static_configs:
+      - targets: ['app:443'] # refer system ip address rather that localhost

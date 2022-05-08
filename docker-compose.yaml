@@ -29,15 +29,6 @@ services:
     ports:
       - "6379:6379"
     command: redis-server --requirepass "development"
-  ms:
-    container_name: ms
-    image: prom/prometheus:v2.35.0
-    volumes:
-      - ./prometheus/prometheus:/etc/prometheus/prometheus
-    command:
-      - --config.file=/etc/prometheus/prometheus/prometheus.yml
-    ports:
-      - "9090:9090"
   app:
     build:
       context: .
@@ -66,3 +57,16 @@ services:
     depends_on:
       - db
       - mq
+  ms:
+    container_name: ms
+    image: prom/prometheus:v2.35.0
+    volumes:
+      - ./prometheus:/etc/prometheus/prometheus
+    command:
+      - --config.file=/etc/prometheus/prometheus/prometheus.yml
+    ports:
+      - "9090:9090"
+    links:
+      - app
+    depends_on:
+      - app
