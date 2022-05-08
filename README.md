@@ -58,3 +58,8 @@ ThinkMoreForum is a place for people to make any kind of discussion, where peopl
 1. Use idea to open this project
 2. ```docker-compose up -d```
 3. Click Run or Debug
+
+## [Grafana](https://g-d310600675.grafana-workspace.ap-southeast-2.amazonaws.com/) Viewer Account
+* Username: Allen
+* Password: Thinkmore-grafana1
+

@@ -39,7 +39,7 @@ public class WebSocketConfig implements WebSocketMessageBrokerConfigurer {
                         .allowedMethods("GET", "POST", "PUT", "DELETE")
                         .allowedHeaders("X-Requested-With", "Origin", "Content-Type", "Accept", "Authorization")
                         .exposedHeaders("Access-Control-Allow-Headers", "Authorization, x-xsrf-token, Access-Control-Allow-Headers, Origin, Accept, X-Requested-With, Content-Type, Access-Control-Request-Method, Access-Control-Request-Headers")
-                        .allowedOrigins(domainName, "http://localhost:3000/");
+                        .allowedOrigins("*");
             }
         };
     }

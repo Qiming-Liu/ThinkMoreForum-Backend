@@ -32,10 +32,10 @@ public class MessageService {
     RabbitTemplate rabbitTemplate;
 
     private static final Gauge emailQueue = Gauge.build()
-            .name("email-queue")
-            .help("size of email queue.")
-            .register();
-  
+                                                 .name("email")
+                                                 .help("size of email queue.")
+                                                 .register();
+
     private final UsersRepository usersRepository;
     private final JwtRouterService jwtRouterService;
 
