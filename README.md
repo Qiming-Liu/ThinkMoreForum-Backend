@@ -12,14 +12,16 @@
 
 ## [thinkmoreapp.com](https://www.thinkmoreapp.com/)
 
+https://user-images.githubusercontent.com/68600416/167850826-1a155349-2daf-4b8b-b8d2-e6c9452d5020.mp4
+
 ThinkMoreForum is a place for people to make any kind of discussion, where people come together to share their opinion. As a discussion platform, it is multifunctional, interactive, and mobile-ready. Administrators can easily set the look and topic of the forum, manage user permissions, and customize the site footer. The development process uses Jira as an agile scrum software to help the team organize and prioritize the work, and uses Github as a version control tool for a lightweight, branch-based workflow. From a technical perspective, the project uses message queues to send emails, and implements high-level JWT updates and protection, constructs WebSocket to achieve real-time online users and real-time notifications.  
 
 ## Project Architecture
 
 <table align="center" border=0>
    <tr>
-      <td width="500"><a herf="https://github.com/Qiming-Liu/ThinkMoreForum-Frontend"><b>Front-end</b></a></td>
-      <td width="500"><a herf="https://github.com/Qiming-Liu/ThinkMoreForum-Backend"><b>Back-end</b></a></td>
+      <td width="500"><b>Front-end</b></td>
+      <td width="500"><b>Back-end</b></td>
    </tr>
    <tr>
       <td>
@@ -59,7 +61,8 @@ ThinkMoreForum is a place for people to make any kind of discussion, where peopl
 2. ```docker-compose up -d```
 3. Click Run or Debug
 
-## [Grafana](https://g-d310600675.grafana-workspace.ap-southeast-2.amazonaws.com/) Viewer Account
+## [Grafana](https://g-d310600675.grafana-workspace.ap-southeast-2.amazonaws.com/)
+> Account
 * Username: Allen
 * Password: Thinkmore-grafana1
 
