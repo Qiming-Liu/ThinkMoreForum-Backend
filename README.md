@@ -61,8 +61,6 @@ ThinkMoreForum is a place for people to make any kind of discussion, where peopl
 2. ```docker-compose up -d```
 3. Click Run or Debug
 
-## [Grafana](https://g-d310600675.grafana-workspace.ap-southeast-2.amazonaws.com/)
-> Account
-* Username: Allen
-* Password: Thinkmore-grafana1
-
+## Grafana (offline now)
+![JVM (Micrometer) - Amazon Managed Grafana](https://user-images.githubusercontent.com/68600416/182594832-b41350b5-e982-433c-82aa-04ace29bcd5f.png)
+![AWS Cloud - Amazon Managed Grafana](https://user-images.githubusercontent.com/68600416/182594814-0f36a3c1-ca88-460c-90e5-7f60b498d986.png)
