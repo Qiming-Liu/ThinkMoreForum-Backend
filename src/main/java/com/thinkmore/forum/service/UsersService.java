@@ -80,7 +80,7 @@ public class UsersService implements UserDetailsService {
     @Transactional
     public boolean changeUsername(UUID usersId, String newUsername) {
         Users user = usersRepository.findById(usersId)
-                                    .orElseThrow(() -> new UserNotFoundException("Invalid UserID"));
+                .orElseThrow(() -> new UserNotFoundException("Invalid UserID"));
 
         user.setUsername(newUsername);
         usersRepository.save(user);
@@ -90,7 +90,7 @@ public class UsersService implements UserDetailsService {
     @Transactional
     public boolean changeHeadImgUrl(UUID usersId, UsersImgPutDto usersImgPutDto) {
         Users user = usersRepository.findById(usersId)
-                                    .orElseThrow(() -> new UserNotFoundException("Invalid UserID"));
+                .orElseThrow(() -> new UserNotFoundException("Invalid UserID"));
 
         user.setHeadImgUrl(usersImgPutDto.getHeadImgUrl());
         usersRepository.save(user);
@@ -100,7 +100,7 @@ public class UsersService implements UserDetailsService {
     @Transactional
     public boolean changeProfileImgUrl(UUID usersId, UsersImgPutDto usersImgPutDto) {
         Users user = usersRepository.findById(usersId)
-                                    .orElseThrow(() -> new UserNotFoundException("Invalid UserID"));
+                .orElseThrow(() -> new UserNotFoundException("Invalid UserID"));
 
         user.setProfileImgUrl(usersImgPutDto.getProfileImgUrl());
         usersRepository.save(user);
@@ -110,7 +110,7 @@ public class UsersService implements UserDetailsService {
     @Transactional
     public boolean changeEmail(UUID usersId, String newEmail) {
         Users user = usersRepository.findById(usersId)
-                                    .orElseThrow(() -> new UserNotFoundException("Invalid UserID"));
+                .orElseThrow(() -> new UserNotFoundException("Invalid UserID"));
 
         user.setEmail(newEmail);
         usersRepository.save(user);
@@ -121,7 +121,7 @@ public class UsersService implements UserDetailsService {
     @Transactional
     public boolean changePassword(UUID usersId, UsersMiniPutDto usersMiniPutDto) {
         Users user = usersRepository.findById(usersId)
-                                    .orElseThrow(() -> new UserNotFoundException("Invalid UserID"));
+                .orElseThrow(() -> new UserNotFoundException("Invalid UserID"));
 
         if (!passwordEncoder.matches(usersMiniPutDto.getOldPassword(), user.getPassword())) {
             throw new InvalidOldPasswordException("Old password is wrong");
@@ -135,7 +135,7 @@ public class UsersService implements UserDetailsService {
     @Transactional
     public boolean resetPassword(UUID usersId, UsersPasswordPutDto password) {
         Users user = usersRepository.findById(usersId)
-                                    .orElseThrow(() -> new UserNotFoundException("Invalid UserID"));
+                .orElseThrow(() -> new UserNotFoundException("Invalid UserID"));
 
         user.setPassword(passwordEncoder.encode(password.getPassword()));
         usersRepository.save(user);
@@ -144,8 +144,8 @@ public class UsersService implements UserDetailsService {
 
     @Transactional
     public UsersGetDto getUserByUsername(String username) {
-        Users targetUsers = usersRepository.findByUsername(username).ofNullable().orElse();
-        return usersMapper.fromEntity(targetUsers);
+        Optional<Users> targetUsers = usersRepository.findByUsername(username);
+        return targetUsers.map(usersMapper::fromEntity).orElse(null);
     }
 
     public List<UsersGetDto> getUserByContainingString(String string) {
@@ -160,8 +160,8 @@ public class UsersService implements UserDetailsService {
     @Transactional
     public List<UsersGetDto> getAllUsers() {
         return usersRepository.findAll().stream()
-                              .map(usersMapper::fromEntity)
-                              .collect(Collectors.toList());
+                .map(usersMapper::fromEntity)
+                .collect(Collectors.toList());
     }
 
     @Transactional
