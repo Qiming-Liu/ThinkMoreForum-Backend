@@ -144,8 +144,8 @@ public class UsersService implements UserDetailsService {
 
     @Transactional
     public UsersGetDto getUserByUsername(String username) {
-        Optional<Users> targetUsers = usersRepository.findByUsername(username);
-        return usersMapper.fromEntity(targetUsers.get());
+        Users targetUsers = usersRepository.findByUsername(username).ofNullable().orElse();
+        return usersMapper.fromEntity(targetUsers);
     }
 
     public List<UsersGetDto> getUserByContainingString(String string) {
