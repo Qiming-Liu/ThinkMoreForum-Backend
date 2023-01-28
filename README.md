@@ -55,12 +55,20 @@ ThinkMoreForum is a place for people to make any kind of discussion, where peopl
 
 ![Project Architecture](https://github.com/Qiming-Liu/ThinkMoreForum-Frontend/raw/main/public/ThinkMore.svg)  
 
-## Local Development
+## Development
+### Pre Install:
+1. JDK 11
+2. Docker
+3. Intellij Idea
+### Step:
+1. Open the project Intellij Idea IDE and aut
+2. Run `$ docker-compose up -d`
+3. Run project in Intellij Idea IDE
 
-1. Use idea to open this project
-2. ```docker-compose up -d```
-3. Click Run or Debug
+## Deployment
+1. Deploy Minio `./docker/minio/docker-compose.yml`
+2. GitHub Action `./.github/workflows/build.yml`
 
-## Grafana (offline now)
+## Grafana (Offline)
 ![JVM (Micrometer) - Amazon Managed Grafana](https://user-images.githubusercontent.com/68600416/182594832-b41350b5-e982-433c-82aa-04ace29bcd5f.png)
 ![AWS Cloud - Amazon Managed Grafana](https://user-images.githubusercontent.com/68600416/182594814-0f36a3c1-ca88-460c-90e5-7f60b498d986.png)

@@ -19,7 +19,6 @@ public class ComponentService {
     private final ComponentRepository componentRepository;
     private final ComponentMapper componentMapper;
 
-    @Transactional
     public ComponentGetDto getComponent(String name) throws Exception {
         Optional<Component> component = componentRepository.findByName(name);
         return componentMapper.fromEntity(component.orElseThrow(() -> new Exception("Component not found")));

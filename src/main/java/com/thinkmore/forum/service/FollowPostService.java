@@ -38,14 +38,12 @@ public class FollowPostService {
 
     private final NotificationService notificationService;
 
-    @Transactional
     public List<FollowPostGetDto> getAllFollowPostsByUserId(UUID userId) {
         return followPostRepository.findByUsers_IdOrderByCreateTimestampDesc(userId).stream()
                 .map(followPostMapper::fromEntity)
                 .collect(Collectors.toList());
     }
 
-    @Transactional
     public List<FollowPostGetDto> getAllFollowPostsByUsername(String username) {
         Users user = usersRepository.findByUsername(username)
                 .orElseThrow(() -> new UserNotFoundException("Invalid UserName"));
@@ -54,7 +52,6 @@ public class FollowPostService {
                 .collect(Collectors.toList());
     }
 
-    @Transactional
     public Boolean checkUserFollowingState(UUID postId, UUID userId) {
         Optional<FollowPost> targetFollowPost = followPostRepository.findByPost_IdAndUsers_Id(postId, userId);
         if (targetFollowPost.isPresent()) {
