@@ -1,0 +1,71 @@
+version: '3.9'
+services:
+  db:
+    container_name: db
+    image: postgres:14.2-alpine
+    environment:
+      POSTGRES_USERNAME: postgres
+      POSTGRES_PASSWORD: development
+    ports:
+      - "5432:5432"
+    # volumes:
+    #  - /database:/var/lib/postgresql/data
+  mq:
+    container_name: mq
+    image: rabbitmq:3.9.13-management-alpine
+    environment:
+      RABBITMQ_DEFAULT_USER: rabbitmq
+      RABBITMQ_DEFAULT_PASS: development
+    volumes:
+      - ./rabbitmq/rabbitmq.conf:/etc/rabbitmq/rabbitmq.conf
+      - ./rabbitmq/definitions.json:/etc/rabbitmq/definitions.json
+    ports:
+      - "5672:5672"
+      - "15672:15672"
+  imd:
+    container_name: imd
+    image: redis:6.2.6-alpine
+    restart: unless-stopped
+    ports:
+      - "6379:6379"
+    command: redis-server --requirepass "development"
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: app
+    image: app:${DATETIME}
+    environment:
+      POSTGRES_URL: api.thinkmoreapp.com:5432
+      POSTGRES_USERNAME: postgres
+      POSTGRES_PASSWORD: development
+      RABBITMQ_HOST: localhost
+      RABBITMQ_PORT: 5672
+      RABBITMQ_DEFAULT_USER: rabbitmq
+      RABBITMQ_DEFAULT_PASS: development
+      REDIS_HOST: localhost
+      REDIS_PORT: 6379
+      REDIS_PASSWORD: development
+      MINIO_URL: https://img.thinkmoreapp.com
+      MINIO_ROOT_USER: minio
+      MINIO_ROOT_PASSWORD: development
+      DOMAIN_NAME: https://www.thinkmoreapp.com
+      SSL_ENABLE: 'true'
+      ENABLE_SWAGGER: 'false'
+    restart: unless-stopped
+    network_mode: "host"
+    depends_on:
+      - db
+      - mq
+      - imd
+  ms:
+    container_name: ms
+    image: prom/prometheus:v2.35.0
+    volumes:
+      - ./prometheus:/etc/prometheus/prometheus
+    command:
+      - --config.file=/etc/prometheus/prometheus/prometheus.yml
+    ports:
+      - "9090:9090"
+    depends_on:
+      - app

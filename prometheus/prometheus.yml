@@ -1,0 +1,14 @@
+global:
+  scrape_interval:     15s # Default is every 1 minute.
+
+scrape_configs:
+  - job_name: 'prometheus'
+    static_configs:
+      - targets: ['localhost:9090']
+
+  - job_name: 'spring-actuator'
+    scheme: https
+    metrics_path: '/actuator/prometheus'
+    scrape_interval: 5s
+    static_configs:
+      - targets: ['api.thinkmoreapp.com'] # refer system ip address rather that localhost
