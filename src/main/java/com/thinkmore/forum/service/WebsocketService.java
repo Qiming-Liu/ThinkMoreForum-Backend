@@ -21,12 +21,15 @@ public class WebsocketService {
     private final OnlineUsersRepository onlineUsersRepository;
     private final SimpMessagingTemplate simpMessagingTemplate;
 
-    @Transactional
     public List<String> getOnlineUser() {
         List<OnlineUser> onlineUserList = onlineUsersRepository.findAll();
         Set<String> onlineUserSet = new HashSet<>();
         if (onlineUserList.size() > 0) {
-            onlineUserList.forEach(onlineUser -> onlineUserSet.add(onlineUser.getUsername()));
+            onlineUserList.forEach(onlineUser -> {
+                if (onlineUser != null) {
+                    onlineUserSet.add(onlineUser.getUsername());
+                }
+            });
             return new ArrayList<>(onlineUserSet);
         } else {
             return new ArrayList<>();
@@ -46,7 +49,6 @@ public class WebsocketService {
         return getOnlineUser();
     }
 
-    @Transactional
     public ReminderMessage forwardReminder(ReminderMessage reminder) {
         simpMessagingTemplate.convertAndSendToUser(reminder.getRecipient(), "/reminded", reminder);
         return reminder;
@@ -55,7 +57,6 @@ public class WebsocketService {
     @Transactional
     public void signOffline(SessionDisconnectEvent event) {
         onlineUsersRepository.findById(event.getSessionId()).ifPresent(onlineUsersRepository::delete);
-
         this.simpMessagingTemplate.convertAndSend("/hall/greetings", getOnlineUser());
     }
 }

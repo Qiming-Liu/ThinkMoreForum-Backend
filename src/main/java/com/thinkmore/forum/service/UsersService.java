@@ -60,7 +60,6 @@ public class UsersService implements UserDetailsService {
         return true;
     }
 
-    @Transactional
     public UsersGetDto updateLastLoginTimestamp(String username) {
         Users user = usersRepository.findByUsername(username).orElseThrow(() ->
                 new UsernameNotFoundException(String.format("Username %s not found", username)));
@@ -77,7 +76,6 @@ public class UsersService implements UserDetailsService {
         return usersRepository.findByUsername(username).isEmpty();
     }
 
-    @Transactional
     public boolean changeUsername(UUID usersId, String newUsername) {
         Users user = usersRepository.findById(usersId)
                 .orElseThrow(() -> new UserNotFoundException("Invalid UserID"));
@@ -107,7 +105,6 @@ public class UsersService implements UserDetailsService {
         return true;
     }
 
-    @Transactional
     public boolean changeEmail(UUID usersId, String newEmail) {
         Users user = usersRepository.findById(usersId)
                 .orElseThrow(() -> new UserNotFoundException("Invalid UserID"));
@@ -118,7 +115,6 @@ public class UsersService implements UserDetailsService {
         return true;
     }
 
-    @Transactional
     public boolean changePassword(UUID usersId, UsersMiniPutDto usersMiniPutDto) {
         Users user = usersRepository.findById(usersId)
                 .orElseThrow(() -> new UserNotFoundException("Invalid UserID"));
@@ -132,7 +128,6 @@ public class UsersService implements UserDetailsService {
         return true;
     }
 
-    @Transactional
     public boolean resetPassword(UUID usersId, UsersPasswordPutDto password) {
         Users user = usersRepository.findById(usersId)
                 .orElseThrow(() -> new UserNotFoundException("Invalid UserID"));
@@ -142,7 +137,6 @@ public class UsersService implements UserDetailsService {
         return true;
     }
 
-    @Transactional
     public UsersGetDto getUserByUsername(String username) {
         Optional<Users> targetUsers = usersRepository.findByUsername(username);
         return targetUsers.map(usersMapper::fromEntity).orElse(null);
@@ -157,14 +151,12 @@ public class UsersService implements UserDetailsService {
         return usersGetDto;
     }
 
-    @Transactional
     public List<UsersGetDto> getAllUsers() {
         return usersRepository.findAll().stream()
                 .map(usersMapper::fromEntity)
                 .collect(Collectors.toList());
     }
 
-    @Transactional
     public void changeSingleUserRole(UsersGetDto inputUserGetDto) {
         Users userToUpdate = usersRepository.findById(inputUserGetDto.getId()).get();
         Roles newRoleOfUser = rolesRepository.findByRoleName(inputUserGetDto.getRole().getRoleName()).orElseThrow();
@@ -172,7 +164,6 @@ public class UsersService implements UserDetailsService {
         usersRepository.save(userToUpdate);
     }
 
-    @Transactional
     public void changeUsersRoles(List<UsersGetDto> usersGetDtoList) {
         usersGetDtoList.forEach(singleUserGetDto -> changeSingleUserRole(singleUserGetDto));
     }

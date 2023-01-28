@@ -30,7 +30,6 @@ public class CommentService {
     private final NotificationService notificationService;
     private final CategoryService categoryService;
 
-    @Transactional
     public List<CommentGetDto> getAllByPost(UUID postId) {
         return commentRepository.findByPost_IdOrderByCreateTimestampAsc(postId).stream()
                                 .map(commentMapper::fromEntity)

@@ -31,12 +31,10 @@ public class CategoryService {
     private final PostRepository postRepository;
     private final CommentRepository commentRepository;
 
-    @Transactional
     public List<CategoryGetDto> getAllCategories() {
         return categoryRepository.findByOrderBySortOrderAsc().stream().map(categoryMapper::fromEntity).collect(Collectors.toList());
     }
 
-    @Transactional
     public CategoryGetDto getCategoryByCategoryTitle(String category_title) throws Exception {
         Optional<Category> targetCategory = categoryRepository.findByTitle(category_title);
         CategoryGetDto targetCategoryGetDto;

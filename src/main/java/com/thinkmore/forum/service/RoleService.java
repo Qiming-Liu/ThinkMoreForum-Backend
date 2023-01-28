@@ -22,7 +22,6 @@ public class RoleService {
     private final RolesMapper rolesMapper;
     private final UsersRepository usersRepository;
 
-    @Transactional
     public List<RolesGetDto> getAllRoles() {
         return roleRepository.findAll().stream().map(rolesMapper::fromEntity).collect(Collectors.toList());
     }
@@ -33,7 +32,7 @@ public class RoleService {
         List<Roles> roleOldList = roleRepository.findAll();
 
         List<Roles> removeList = roleOldList.stream().filter(roles -> {
-            for(Roles roleNew : roleNewList) {
+            for (Roles roleNew : roleNewList) {
                 if (roleNew.getId().equals(roles.getId())) {
                     return false;
                 }

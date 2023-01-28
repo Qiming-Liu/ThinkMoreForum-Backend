@@ -37,7 +37,6 @@ public class PostService {
     private final CommentRepository commentRepository;
     private final CommentMapper commentMapper;
 
-    @Transactional
     public PostGetDto getPostById(UUID postId) throws Exception {
         Optional<Post> targetPost = postRepository.findById(postId);
         PostGetDto targetPostGetDto;
@@ -49,7 +48,6 @@ public class PostService {
         return targetPostGetDto;
     }
 
-    @Transactional
     public PostCommentGetDto getMaxCountCommentPost(Pageable pageable) {
         List<Post> posts = postRepository.findByOrderByCommentCountDesc(pageable);
 
@@ -114,7 +112,6 @@ public class PostService {
         return true;
     }
 
-    @Transactional
     public List<PostMiniGetDto> getAllPostsCoreInfo
             () {
         return postRepository.findAll().stream()
@@ -122,7 +119,6 @@ public class PostService {
                              .collect(Collectors.toList());
     }
 
-    @Transactional
     public List<PostGetDto> getPostByTitleContainingString
             (String
                      string) {
@@ -131,7 +127,6 @@ public class PostService {
                              .collect(Collectors.toList());
     }
 
-    @Transactional
     public List<PostGetDto> getPostsByPostUsersName
             (String
                      username) {
@@ -142,14 +137,12 @@ public class PostService {
                              .collect(Collectors.toList());
     }
 
-    @Transactional
     public long getCountOfVisiblePostsByCategoryId
             (UUID
                      categoryId) {
         return postRepository.countByCategory_IdAndVisibilityIsTrue(categoryId);
     }
 
-    @Transactional
     public List<PostGetDto> getVisiblePostsByCategoryId
             (UUID
                      categoryId, Pageable

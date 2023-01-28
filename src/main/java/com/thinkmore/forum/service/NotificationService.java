@@ -20,7 +20,6 @@ public class NotificationService {
     private final NotificationRepository notificationRepository;
     private final NotificationMapper notificationMapper;
 
-    @Transactional
     public List<NotificationGetDto> getNotificationsByUserId(UUID userId) {
 
         List<NotificationGetDto> all = notificationRepository.findByNotifyUsers_IdOrderByCreateTimestampDesc(userId).stream()
@@ -33,7 +32,6 @@ public class NotificationService {
         return all;
     }
 
-    @Transactional
     public boolean markAsViewed(UUID notificationId) {
         notificationRepository.findById(notificationId).ifPresent(notification -> {
             notification.setViewed(true);
@@ -42,7 +40,6 @@ public class NotificationService {
         return true;
     }
 
-    @Transactional
     public boolean markAllAsViewed(UUID userId) {
         notificationRepository.findByNotifyUsers_IdOrderByCreateTimestampDesc(userId)
                 .forEach(notification -> {
@@ -53,7 +50,6 @@ public class NotificationService {
         return true;
     }
 
-    @Transactional
     public void postNotification(Users triggerUser, Users notifyUser, String context) {
 
         Notification notification = new Notification();

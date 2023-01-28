@@ -23,14 +23,12 @@ public class FollowerUsersService {
     private final FollowerUsersMapper followerUsersMapper;
     private final NotificationService notificationService;
 
-    @Transactional
     public List<FollowerUsersGetDto> getFollowersByUsername(String username) {
         Users user = usersRepository.findByUsername(username)
                 .orElseThrow(() -> new UserNotFoundException("Invalid UserName"));
         return followerUsersRepository.findAllByFollowedUsersId(user.getId()).stream().map(followerUsersMapper::fromEntity).collect(Collectors.toList());
     }
 
-    @Transactional
     public List<FollowerUsersGetDto> getFollowingByUsername(String username) {
         Users user = usersRepository.findByUsername(username)
                 .orElseThrow(() -> new UserNotFoundException("Invalid UserName"));
@@ -60,7 +58,6 @@ public class FollowerUsersService {
         followerUsersRepository.deleteByUsersIdAndFollowedUsersId(userID, followedUser.getId());
     }
 
-    @Transactional
     public boolean followStatus(String username, UUID usersId) {
         Users tampUser = usersRepository.findByUsername(username)
                 .orElseThrow(() -> new UserNotFoundException("Invalid UserName"));
